@@ -1,4 +1,4 @@
 package Characters;
 
-public class Enemy extends AbstractEnemy{
+public abstract class Enemy extends AbstractEnemy{
 }
