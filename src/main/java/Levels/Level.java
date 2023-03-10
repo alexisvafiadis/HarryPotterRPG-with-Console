@@ -11,13 +11,15 @@ public abstract class Level {
     int number;
     String place;
     Game game;
-    double HP_UPGRADE = 10;
-    double ATTACK_DAMAGE_UPGRADE;
-    double DAMAGE_RESISTANCE_UPGRADE;
-    double ACCURACY_UPGRADE;
+    final double HP_UPGRADE = 10;
+    final double ATTACK_DAMAGE_UPGRADE = 10;
+    final double DAMAGE_RESISTANCE_UPGRADE = 10;
+    final double ACCURACY_UPGRADE = 10;
+    Wizard player;
 
     public Level(Game game) {
         this.game = game;
+        player = game.getPlayer();
     }
 
     public abstract void introduce(Wizard wizard);
@@ -26,7 +28,11 @@ public abstract class Level {
 
     public abstract void conclude(Wizard wizard);
 
-    public void finishLevel(Wizard wizard) {
+    public void fail() {
+        System.out.println("You failed this level. Try again!");
+    }
+
+    public void finish(Wizard wizard) {
         System.out.println("Congratulations, you have completed this level");
         conclude(wizard);
         askForUpgrade();

@@ -17,12 +17,13 @@ public class Wizard extends Character{
     House house;
     List<Spell> knownSpells;
     List<Potion> potions;
-    double hp;
+    double HP;
     Game game;
     double DEFAULT_DAMAGE = 10;
-    double DEFAULT_HP = 100;
+    double MAX_HP = 100;
     double DEFAULT_ACCURACY;
     double DEFAULT_DAMAGE_RESISTANCE;
+    String name;
 
     public Wizard(Game game) {
         this.game = game;
@@ -85,19 +86,31 @@ public class Wizard extends Character{
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void upgradeDamage(double upgrade) {
+        game.announceReward("Your damage has been upgraded!");
         DEFAULT_DAMAGE += upgrade;
     }
 
     public void upgradeHP(double upgrade) {
-        DEFAULT_HP += upgrade;
+        game.announceReward("Your HP has been upgraded!");
+        MAX_HP += upgrade;
     }
 
     public void upgradeAccuracy(double upgrade) {
+        game.announceReward("Your accuracy has been upgraded!");
         DEFAULT_ACCURACY += upgrade;
     }
 
     public void upgradeResistance(double upgrade) {
+        game.announceReward("Your resistance has been upgraded!");
         DEFAULT_DAMAGE_RESISTANCE += upgrade;
     }
 
@@ -118,7 +131,12 @@ public class Wizard extends Character{
 
     @Override
     public void die() {
-        game.fail();
+        game.getCurrentLevel().fail();
         game.getCurrentLevel().start();
+    }
+
+    @Override
+    public double getMAX_HP() {
+        return MAX_HP;
     }
 }

@@ -21,6 +21,7 @@ public class ProjectTools {
 
                 }
             } catch(InputMismatchException e) {
+
             }
 
         } while (!validInput);

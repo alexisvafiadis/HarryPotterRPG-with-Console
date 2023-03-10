@@ -5,31 +5,33 @@ import Characters.Wizard;
 import Extra.Item;
 import Game.Game;
 
-public class Level1 extends Level{
+public class Level2 extends Level{
     Wizard player;
     Troll troll;
-    final String place = "Toilets of the Dungeon";
+    final String place = "Chamber of Secrets";
     Game game;
 
-    public Level1(Game game) {
+    public Level2(Game game) {
         super(game);
-        this.game = game;
-        player = game.getPlayer();
     }
 
     public void start() {
-        System.out.println("In this level, you have to beat the Troll.");
-        System.out.println("In order to do that, you have to use the Wingardium Leviosa spell to throw items on the Troll's head");
-        player.spawn(2, 2, 2);
-        game.announceReward("Therefore, you have learned Wingardium Leviosa!");
+        introduce(player);
+        if (player.getHouse().toString().equals("Gryffindor")) {
+            System.out.println("In order to do that, you have to use the Gryffindor sword. Here it is.");
+            game.announceReward("Therefore, you have been given the Gryffindor sword");
+        }
+        else {
+            System.out.println("In order to do that, you have to use the spell Accio to ");
+            game.announceReward("Therefore, you have learned the Accio spell");
+        }
         Troll troll = new Troll(game, 0, 0, 0);
-        Item item = new Item(1,1,0);
         game.getSc().nextInt();
     }
 
     @Override
     public void conclude(Wizard wizard) {
-        System.out.println("Well done, you have killed the Troll");
+        System.out.println("Well done, you have killed the Basilic");
         askForUpgrade();
     }
 
