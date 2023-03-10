@@ -1,6 +1,6 @@
 package Characters;
 
-import Extra.Pet;
+import Extras.Pet;
 import Game.Game;
 import Houses.Gryffindor;
 import Houses.House;
@@ -22,6 +22,7 @@ public class Wizard extends Character{
     double DEFAULT_DAMAGE = 10;
     double MAX_HP = 100;
     double DEFAULT_ACCURACY;
+
     double DEFAULT_DAMAGE_RESISTANCE;
     String name;
 
@@ -112,6 +113,18 @@ public class Wizard extends Character{
     public void upgradeResistance(double upgrade) {
         game.announceReward("Your resistance has been upgraded!");
         DEFAULT_DAMAGE_RESISTANCE += upgrade;
+    }
+
+    public double getDamage() {
+        return DEFAULT_DAMAGE;
+    }
+
+    public double getAccuracy() {
+        return DEFAULT_ACCURACY;
+    }
+
+    public double getResistance() {
+        return DEFAULT_DAMAGE_RESISTANCE;
     }
 
     public void consumePotion(Potion potion) {

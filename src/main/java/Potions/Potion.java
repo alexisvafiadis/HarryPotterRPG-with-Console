@@ -6,8 +6,8 @@ public class Potion {
     double HP_RESTORE;
     Wizard owner;
 
-    public Potion(Wizard wizard) {
-        this.owner = wizard;
+    public Potion(Wizard wizard, double HP_RESTORE) {
+        owner = wizard;
         this.HP_RESTORE = HP_RESTORE;
     }
 

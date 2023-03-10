@@ -1,4 +1,4 @@
-package Extra;
+package Game;
 
 import java.util.HashMap;
 import java.util.Scanner;

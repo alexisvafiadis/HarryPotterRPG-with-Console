@@ -1,7 +1,6 @@
 package Game;
 
 import Characters.Wizard;
-import Extra.SortingHat;
 import Levels.Level;
 import Levels.Level1;
 
@@ -14,6 +13,15 @@ public class Game {
     int currentLevelIndex;
     Scanner sc;
     List<Level> levels;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public Game() {
         sc = new Scanner(System.in);
@@ -28,7 +36,9 @@ public class Game {
     }
 
     public void introduce(Scanner sc, Wizard wizard) {
-        System.out.println("Welcome to Hogwarts, " + player.getName());
+        displayInfo("Welcome to Hogwarts, " + player.getName());
+        displayInfo("Now let's get some things sorted.");
+        WizardMaker wizardmaker = new WizardMaker(this);
         SortingHat sortingHat = new SortingHat();
         sortingHat.askHouse(sc, wizard);
     }
@@ -37,6 +47,14 @@ public class Game {
         System.out.println("Hello, what would you like your wizard name to be?");
         player.setName(sc.nextLine());
     }
+
+    public void announceReward(String announcement) {
+        System.out.println(ANSI_YELLOW + announcement);
+    }
+
+    public void displayInfo(String information) { System.out.println(ANSI_BLUE + information); }
+
+    public void congratulate(String congratulations) { System.out.println(ANSI_GREEN + congratulations); }
     public Wizard getPlayer() {
         return player;
     }
@@ -49,11 +67,7 @@ public class Game {
         return sc;
     }
 
-    public void setCurrentLevel(Level currentLevel) {
+    public void setCurrentLevel(int currentLevelIndex) {
         this.currentLevelIndex = currentLevelIndex;
-    }
-
-    public void announceReward(String announcement) {
-        System.out.println(announcement);
     }
 }

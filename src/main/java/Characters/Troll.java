@@ -1,6 +1,6 @@
 package Characters;
 
-import Extra.Item;
+import Extras.Item;
 import Game.Game;
 
 import java.util.concurrent.Executors;
