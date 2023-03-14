@@ -7,8 +7,11 @@ import Houses.House;
 import Houses.Slytherin;
 import Potions.Potion;
 import Spells.Spell;
+import Tools.ProjectTools;
 import Wands.Wand;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Wizard extends Character{
@@ -19,15 +22,15 @@ public class Wizard extends Character{
     List<Potion> potions;
     double HP;
     Game game;
-    double DEFAULT_DAMAGE = 10;
-    double MAX_HP = 100;
-    double DEFAULT_ACCURACY;
-
-    double DEFAULT_DAMAGE_RESISTANCE;
+    double damage = 10;
+    double maxHP = 100;
+    double accuracy = 0.8;
+    double resistance;
     String name;
 
     public Wizard(Game game) {
         this.game = game;
+        this.knownSpells = new ArrayList<>();
     }
 
     public void attack(Character character, Spell spell) {
@@ -75,7 +78,7 @@ public class Wizard extends Character{
         return knownSpells;
     }
 
-    public void addSpell(Spell spell) {
+    public void learnSpell(Spell spell) {
         this.knownSpells.add(spell);
     }
 
@@ -84,6 +87,36 @@ public class Wizard extends Character{
     public void addPotions(Potion potion, int amount) {
         for (int i = 0; i < amount; i++) {
             this.potions.add(potion);
+        }
+    }
+
+    public void choosePotion() {
+        HashMap<Integer, String> validInputs = new HashMap<>();
+        int i = 0;
+        for (Potion potion : potions) {
+            validInputs.put(i, potion.getName());
+            i += 1;
+        }
+        validInputs.put(1, "Look around");
+        validInputs.put(2, "Attack");
+        validInputs.put(3, "Hide");
+        String choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to do?", validInputs, "to");
+        switch (choice) {
+            case "Look around":
+                double random = Math.random();
+                if (random < 0.3) {
+                    game.displayInfo("Good job, you have found a potion!");
+
+
+                } else if (random < 0.6) {
+                    game.displayInfo("Good job, you have found an item. It looks like a ");
+
+                } else if (random < 0.9) {
+                    game.displayInfo("");
+                } else {
+                    game.displayInfo("Unfortunately, you haven't found anything.");
+                }
+                break;
         }
     }
 
@@ -97,40 +130,44 @@ public class Wizard extends Character{
 
     public void upgradeDamage(double upgrade) {
         game.announceReward("Your damage has been upgraded!");
-        DEFAULT_DAMAGE += upgrade;
+        damage += upgrade;
     }
 
     public void upgradeHP(double upgrade) {
         game.announceReward("Your HP has been upgraded!");
-        MAX_HP += upgrade;
+        maxHP += upgrade;
     }
 
     public void upgradeAccuracy(double upgrade) {
         game.announceReward("Your accuracy has been upgraded!");
-        DEFAULT_ACCURACY += upgrade;
+        accuracy += upgrade;
     }
 
     public void upgradeResistance(double upgrade) {
-        game.announceReward("Your resistance has been upgraded!");
-        DEFAULT_DAMAGE_RESISTANCE += upgrade;
+        game.announceReward("Your damage resistance has been upgraded!");
+        resistance += upgrade;
     }
 
     public double getDamage() {
-        return DEFAULT_DAMAGE;
+        return damage;
     }
 
     public double getAccuracy() {
-        return DEFAULT_ACCURACY;
+        return accuracy;
     }
 
     public double getResistance() {
-        return DEFAULT_DAMAGE_RESISTANCE;
+        return resistance;
     }
 
     public void consumePotion(Potion potion) {
         int potionIndex = potions.indexOf(potion);
         potions.get(potionIndex).use();
         potions.remove(potion);
+    }
+
+    public boolean hasAnyPotion() {
+        return (potions.isEmpty());
     }
 
     public void heal(double hp_restore) {
@@ -150,6 +187,6 @@ public class Wizard extends Character{
 
     @Override
     public double getMAX_HP() {
-        return MAX_HP;
+        return maxHP;
     }
 }

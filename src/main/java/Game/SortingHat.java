@@ -18,7 +18,7 @@ public class SortingHat{
         validInputs.put(3, "Ravenclaw");
         validInputs.put(4, "Slytherin");
 
-        String houseName = ProjectTools.getNumberToStringInput(sc, "It's time to choose your house.'", validInputs);
+        String houseName = ProjectTools.getNumberToStringInput(sc, "It's time to choose your house.'", validInputs, "for");
         System.out.println("You chose the house " + houseName + ". Have fun!");
         switch (houseName) {
             case "Gryffindor":

@@ -25,7 +25,7 @@ public class WizardMaker {
         validInputs.put(3, "Rat");
         validInputs.put(4, "Toad");
 
-        String houseName = ProjectTools.getNumberToStringInput(game.getSc(), "Choose your pet.'", validInputs);
+        String houseName = ProjectTools.getNumberToStringInput(game.getSc(), "Choose your pet.'", validInputs, "for");
         System.out.println("You chose the house " + houseName + ". Have fun!");
         switch (houseName) {
             case "Owl":

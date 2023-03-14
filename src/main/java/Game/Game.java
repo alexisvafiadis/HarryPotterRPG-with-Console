@@ -52,6 +52,10 @@ public class Game {
         System.out.println(ANSI_YELLOW + announcement);
     }
 
+    public void announceDiscovery(String finding) { System.out.println(ANSI_CYAN + finding); }
+
+    public void announceFail(String fail) { System.out.println(ANSI_RED + fail); }
+
     public void displayInfo(String information) { System.out.println(ANSI_BLUE + information); }
 
     public void congratulate(String congratulations) { System.out.println(ANSI_GREEN + congratulations); }

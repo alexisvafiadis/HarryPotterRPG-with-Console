@@ -6,11 +6,11 @@ import java.util.Scanner;
 
 public class ProjectTools {
 
-    public static String getNumberToStringInput(Scanner sc, String request, HashMap<Integer, String> validInputs) {
+    public static String getNumberToStringInput(Scanner sc, String request, HashMap<Integer, String> validInputs, String linkword) {
         boolean validInput = false;
         do {
             System.out.println(request);
-            askForNumberToStringInput(sc, validInputs);
+            askForNumberToStringInput(sc, validInputs, linkword);
             try{
                 sc.next();
                 int input = sc.nextInt();
@@ -28,10 +28,10 @@ public class ProjectTools {
         return "";
     }
 
-    public static void askForNumberToStringInput(Scanner sc, HashMap<Integer, String> validInputs) {
+    public static void askForNumberToStringInput(Scanner sc, HashMap<Integer, String> validInputs, String linkword) {
         System.out.println("Please enter : ");
         for (int key : validInputs.keySet()) {
-            System.out.println(key + " for " + validInputs.get(key));
+            System.out.println(key + linkword + validInputs.get(key));
         }
     }
 }
