@@ -12,6 +12,7 @@ public abstract class Character {
     double positionX;
     double positionY;
     double positionZ;
+    double maxHP;
 
     public abstract void attack(Character victim) ;
 
@@ -24,18 +25,24 @@ public abstract class Character {
         else { HP = HP - damage; }
     }
 
-    public abstract double getMAX_HP();
-
     public void spawn(double positionX, double positionY, double positionZ) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.positionZ = positionZ;
         alive = true;
-        HP = getMAX_HP();
+        HP = maxHP;
     }
 
     public double getHP() {
         return HP;
+    }
+
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
     }
 
     public boolean isAlive() {

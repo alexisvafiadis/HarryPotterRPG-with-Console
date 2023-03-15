@@ -89,7 +89,13 @@ public abstract class Level {
 
     public void initiateItemChances() {
         if (outdoors) {
-            itemTypeWeights.put(ItemType.BIG_ROCK, 2);
+            itemTypeWeights.put(ItemType.BIG_ROCK, 3);
+            itemTypeWeights.put(ItemType.SMALL_ROCK, 1);
+            itemTypeWeights.put(ItemType.MEDIUM_ROCK, 2);
+            itemTypeWeights.put(ItemType.SMALL_STICK, 2);
+            itemTypeWeights.put(ItemType.MEDIUM_STICK, 2);
+            itemTypeWeights.put(ItemType.BIG_STICK, 3);
+            itemTypeWeights.put(ItemType.NETTLE, 4);
         }
         else {
             itemTypeWeights.put(ItemType.BOOK, 4);

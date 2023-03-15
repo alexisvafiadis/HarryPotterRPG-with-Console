@@ -15,10 +15,10 @@ public class Troll extends Boss{
     double positionX;
     double positionY;
     double positionZ;
-    final double MAX_HP = 300;
 
     public Troll(Game game, double positionX, double positionY, double positionZ) {
         this.game = game;
+        setMaxHP(300);
         spawn(positionX, positionY, positionZ);
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(new Runnable() {
@@ -27,11 +27,6 @@ public class Troll extends Boss{
                 act();
             }
         }, 0, 4, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public double getMAX_HP() {
-        return MAX_HP;
     }
 
     public void act() {
@@ -56,4 +51,6 @@ public class Troll extends Boss{
     public boolean getsHitBy(Item item) {
         return (item.getPositionX() == positionX && item.getPositionY() == positionY && item.getPositionZ() == positionZ);
     }
+
+
 }

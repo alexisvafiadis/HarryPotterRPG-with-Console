@@ -5,6 +5,7 @@ import Characters.Wizard;
 import Extras.Item;
 import Extras.ItemType;
 import Game.Game;
+import Spells.Spell;
 import Tools.ProjectTools;
 
 import java.util.ArrayList;
@@ -28,14 +29,16 @@ public class Level1 extends Level{
         game.displayInfo("In this level, you have to beat the Troll.");
         game.displayInfo("In order to do that, you have to use the Wingardium Leviosa spell to throw items on the Troll's head");
         player.spawn(2, 2, 2);
-        game.announceReward("Therefore, you have learned Wingardium Leviosa!");
+        player.learnSpell(new Spell("Wingardium Leviosa", 20, 30, 1, 3, 0.35));
         mainAction();
     }
 
     public void mainAction() {
         Troll troll = new Troll(game, 0, 0, 0);
+        boolean hiding;
         int i = 1;
         while (troll.isAlive()) {
+            hiding = false;
             HashMap<Integer, String> validInputs = new HashMap<>();
             validInputs.put(1, "Look around");
             validInputs.put(2, "Attack");
@@ -47,17 +50,14 @@ public class Level1 extends Level{
             switch (choice) {
                 case "Look around":
                     double random = Math.random();
-                    if (random < 0.3) {
+                    if (random < 0.4) {
                         game.announceDiscovery("Good job, you have found a potion!");
                         double potionRandom = Math.random();
                     }
-                    else if (random < 0.6) {
+                    else if (random < 0.8) {
                         ItemType randomItemType = generateItemType();
                         game.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
                         addItem(new Item(randomItemType, 0, 0, 0));
-                    }
-                    else if (random < 0.9) {
-                        game.displayInfo("");
                     }
                     else {
                         game.announceFail("Unfortunately, you haven't found anything.");
@@ -66,12 +66,19 @@ public class Level1 extends Level{
                 case "Attack":
                     break;
                 case "Hide":
+                    hiding = true;
+                    game.displayInfo("You are now hiding");
                     break;
                 case "Use a potion":
 
             }
             if (i % 2 == 0) {
-                troll.act();
+                if (!hiding || Math.random() > 0.75) {
+                    troll.act();
+                }
+                else {
+                    game.announceSuccess("Well done, the troll couldn't find you!");
+                }
             }
             i += 1;
         }

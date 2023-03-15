@@ -56,9 +56,12 @@ public class Game {
 
     public void announceFail(String fail) { System.out.println(ANSI_RED + fail); }
 
-    public void displayInfo(String information) { System.out.println(ANSI_BLUE + information); }
+    public void announceSuccess(String success) { System.out.println(ANSI_GREEN + success); }
+
+    public void displayInfo(String information) { System.out.println(information); }
 
     public void congratulate(String congratulations) { System.out.println(ANSI_GREEN + congratulations); }
+
     public Wizard getPlayer() {
         return player;
     }

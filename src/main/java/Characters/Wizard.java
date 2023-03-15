@@ -26,6 +26,12 @@ public class Wizard extends Character{
     double maxHP = 100;
     double accuracy = 0.8;
     double resistance;
+    boolean strengthEffect = false;
+    double STRENGTH_MULTIPLIER = 1.25;
+    boolean invisibilityEffect = false;
+    boolean resistanceEffect = false;
+    double RESISTANCE_MULTIPLIER = 0.75;
+    boolean speedEffect = false;
     String name;
 
     public Wizard(Game game) {
@@ -33,21 +39,24 @@ public class Wizard extends Character{
         this.knownSpells = new ArrayList<>();
     }
 
-    public void attack(Character character, Spell spell) {
-        double damage = 0;
+    public double amplifyDamage(double damage) {
         if (house instanceof Slytherin) {
             damage = damage * ((Slytherin) house).getDamageMultiplier();
         }
-        character.damage(damage);
+        if (strengthEffect) {
+            damage = damage * STRENGTH_MULTIPLIER;
+        }
+        return damage;
     }
 
-    public double defend(double damage) {
+    public double defendDamage(double damage) {
         if (house instanceof Gryffindor) {
-            return damage * ((Gryffindor) house).getDamageResistance();
+            damage = damage * ((Gryffindor) house).getDamageResistance();
         }
-        else {
-            return damage;
+        if (resistanceEffect) {
+            damage = damage * RESISTANCE_MULTIPLIER;
         }
+        return damage;
     }
 
     public Pet getPet() {
@@ -97,27 +106,8 @@ public class Wizard extends Character{
             validInputs.put(i, potion.getName());
             i += 1;
         }
-        validInputs.put(1, "Look around");
-        validInputs.put(2, "Attack");
-        validInputs.put(3, "Hide");
-        String choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to do?", validInputs, "to");
-        switch (choice) {
-            case "Look around":
-                double random = Math.random();
-                if (random < 0.3) {
-                    game.displayInfo("Good job, you have found a potion!");
-
-
-                } else if (random < 0.6) {
-                    game.displayInfo("Good job, you have found an item. It looks like a ");
-
-                } else if (random < 0.9) {
-                    game.displayInfo("");
-                } else {
-                    game.displayInfo("Unfortunately, you haven't found anything.");
-                }
-                break;
-        }
+        int choice = ProjectTools.getNumberInput(game.getSc(), "Which potion do you want to use?", validInputs, "for");
+        potions.get(choice).use();
     }
 
     public String getName() {
@@ -185,8 +175,4 @@ public class Wizard extends Character{
         game.getCurrentLevel().start();
     }
 
-    @Override
-    public double getMAX_HP() {
-        return maxHP;
-    }
 }
