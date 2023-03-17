@@ -22,6 +22,7 @@ public class Wand {
         nbOfUses = 0;
     }
 
+    /*
     public boolean cast(Spell spell, Character victim) {
         if (random() < owner.getAccuracy() * spell.getMasteryScore()) {
         }
@@ -29,4 +30,5 @@ public class Wand {
 
         }
     }
+     */
 }

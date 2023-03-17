@@ -18,7 +18,7 @@ public class Wizard extends Character{
     Pet pet;
     Wand wand;
     House house;
-    List<Spell> knownSpells;
+    HashMap<String, Spell> knownSpells;
     List<Potion> potions;
     double HP;
     Game game;
@@ -36,7 +36,7 @@ public class Wizard extends Character{
 
     public Wizard(Game game) {
         this.game = game;
-        this.knownSpells = new ArrayList<>();
+        this.knownSpells = new HashMap<>();
     }
 
     public double amplifyDamage(double damage) {
@@ -83,12 +83,12 @@ public class Wizard extends Character{
         this.house = house;
     }
 
-    public List<Spell> getKnownSpells() {
+    public HashMap<String, Spell> getKnownSpells() {
         return knownSpells;
     }
 
     public void learnSpell(Spell spell) {
-        this.knownSpells.add(spell);
+        this.knownSpells.put(spell.getName(), spell);
     }
 
     public void addPotion(Potion potion) { this.potions.add(potion); }

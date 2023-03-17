@@ -76,7 +76,7 @@ public class Item {
         return damageMultiplier;
     }
 
-    public void amplifyDamageMultiplier(double coefficient) {damageMultiplier = damageMultiplier * coefficient; }
+    public void enlarge(double coefficient) {damageMultiplier = damageMultiplier * coefficient; }
 
     public double getPositionX() {
         return positionX;

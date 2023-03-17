@@ -48,4 +48,6 @@ public abstract class Character {
     public boolean isAlive() {
         return alive;
     }
+
+    public abstract String getName();
 }

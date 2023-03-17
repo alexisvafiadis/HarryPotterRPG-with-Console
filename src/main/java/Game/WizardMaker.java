@@ -51,7 +51,7 @@ public class WizardMaker {
                 "If the spell is successful, the object should become larger and more cumbersome.\n" +
                 "This spell can be useful for enlarging objects to block an opponent's path or to create a barrier.\n" +
                 "Be careful not to overuse this spell, as it can also make objects too big to control or to move around easily.", game.getSc());
-        game.announceReward("You have learned the spell Lumos");
+        game.announceReward("You have learned the spell Engorgio!");
 
         /*
         ProjectTools.waitForYes("First, hold your wand in front of you and say \"Lumos\" clearly.\n" +
@@ -68,14 +68,14 @@ public class WizardMaker {
                 "This spell can be useful for confusing opponents and creating an opportunity to attack or escape.\n" +
                 "Be careful not to use it too much, as it can cause unintended consequences or lead to a loss of points." +
                 "Understood?", game.getSc());
-        game.announceReward("You have learned the spell Confundus");
+        game.announceReward("You have learned the spell Confundus!");
 
         game.displayInfo("Another spell that you may need in combat is Expelliarmus");
         ProjectTools.waitForYes("To cast this spell, point your wand at your opponent and say \"Expelliarmus\" clearly.\n" +
                 "If the spell is successful, your opponent's weapon should be knocked out of their hand.\n" +
                 "This spell can be useful for disarming opponents and leaving them vulnerable to attack."
         + "Understood?", game.getSc());
-        game.announceReward("You have learned the spell Expelliarmus");
+        game.announceReward("You have learned the spell Expelliarmus!");
 
         game.displayInfo("Nice, this should be enough to get you started.");
         game.displayInfo("Remember, you may not be able to cast them successfully or perfectly the first few times you use them, but don't worry, the more you use a spell and get familiar with your wand, the easier it will get.");

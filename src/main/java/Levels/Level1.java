@@ -6,6 +6,7 @@ import Extras.Item;
 import Extras.ItemType;
 import Game.Game;
 import Spells.Spell;
+import Spells.WingardiumLeviosa;
 import Tools.ProjectTools;
 
 import java.util.ArrayList;
@@ -29,59 +30,12 @@ public class Level1 extends Level{
         game.displayInfo("In this level, you have to beat the Troll.");
         game.displayInfo("In order to do that, you have to use the Wingardium Leviosa spell to throw items on the Troll's head");
         player.spawn(2, 2, 2);
-        player.learnSpell(new Spell("Wingardium Leviosa", 20, 30, 1, 3, 0.35));
+        player.learnSpell(new WingardiumLeviosa(game, player));
         mainAction();
     }
 
     public void mainAction() {
         Troll troll = new Troll(game, 0, 0, 0);
-        boolean hiding;
-        int i = 1;
-        while (troll.isAlive()) {
-            hiding = false;
-            HashMap<Integer, String> validInputs = new HashMap<>();
-            validInputs.put(1, "Look around");
-            validInputs.put(2, "Attack");
-            validInputs.put(3, "Hide");
-            if (player.hasAnyPotion()) {
-                validInputs.put(4, "Use a potion");
-            }
-            String choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to do?", validInputs, "to");
-            switch (choice) {
-                case "Look around":
-                    double random = Math.random();
-                    if (random < 0.4) {
-                        game.announceDiscovery("Good job, you have found a potion!");
-                        double potionRandom = Math.random();
-                    }
-                    else if (random < 0.8) {
-                        ItemType randomItemType = generateItemType();
-                        game.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
-                        addItem(new Item(randomItemType, 0, 0, 0));
-                    }
-                    else {
-                        game.announceFail("Unfortunately, you haven't found anything.");
-                    }
-                    break;
-                case "Attack":
-                    break;
-                case "Hide":
-                    hiding = true;
-                    game.displayInfo("You are now hiding");
-                    break;
-                case "Use a potion":
-
-            }
-            if (i % 2 == 0) {
-                if (!hiding || Math.random() > 0.75) {
-                    troll.act();
-                }
-                else {
-                    game.announceSuccess("Well done, the troll couldn't find you!");
-                }
-            }
-            i += 1;
-        }
     }
 
     public void learnWingardiumLeviosa(int step) {

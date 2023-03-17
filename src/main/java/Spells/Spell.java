@@ -1,16 +1,21 @@
 package Spells;
 
+import Characters.Wizard;
+import Game.Game;
+
 public class Spell {
     String name;
     int range;
     float cooldown;
     int nbOfUses;
-    double defaultDamage;
     double learningExponent;
     double defaultMasteryScore;
+    Game game;
+    Wizard wizard;
 
-    public Spell(String name, double defaultDamage, int range, float cooldown, double learningExponent, double defaultMasteryScore) {
-        this.defaultDamage = defaultDamage;
+    public Spell(Game game, Wizard wizard, String name, int range, float cooldown, double learningExponent, double defaultMasteryScore) {
+        this.game = game;
+        this.wizard = wizard;
         this.name = name;
         this.range = range;
         this.cooldown = cooldown;
@@ -57,6 +62,12 @@ public class Spell {
              */
     }
 
+    public boolean isCastSuccessful(Wizard wizard) {
+        boolean b = (Math.random() < getMasteryScore() * wizard.getAccuracy());
+        if (!b) { game.announceFail("Nice try. Unfortunately, you failed to cast the spell " + getName()); }
+        return b;
+    }
+
     public String getName() {
         return name;
     }
@@ -67,5 +78,9 @@ public class Spell {
 
     public float getCooldown() {
         return cooldown;
+    }
+
+    public Wizard getWizard() {
+        return wizard;
     }
 }

@@ -1,9 +1,12 @@
 package Levels;
 
+import Characters.Boss;
 import Characters.Wizard;
 import Extras.Item;
 import Extras.ItemType;
 import Game.Game;
+import Spells.Spell;
+import Spells.WingardiumLeviosa;
 import Tools.ProjectTools;
 
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public abstract class Level {
 
     public Level(Game game) {
         this.game = game;
-        player = game.getPlayer();
+        this.player = game.getPlayer();
         items = new ArrayList<>();
         initiateItemChances();
     }
@@ -85,6 +88,85 @@ public abstract class Level {
                 game.getPlayer().upgradeAccuracy(ACCURACY_UPGRADE);
                 break;
         }
+    }
+
+    public void mainAction(Boss boss, boolean canAttack) {
+        boolean hiding;
+        HashMap<Integer, String> optionInputs = new HashMap<>();
+        optionInputs.put(1, "Look around");
+        optionInputs.put(2, "Cast a spell");
+        optionInputs.put(3, "Hide");
+        HashMap<Integer, String> spellInputs = getSpellInputs();
+        HashMap<Integer, String> itemInputs = getItemInputs();
+        int roundNumber = 1;
+        while (boss.isAlive()) {
+            hiding = false;
+            if (player.hasAnyPotion() && !optionInputs.containsKey(4)) {
+                optionInputs.put(4, "Use a potion");
+            }
+            String choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to do?", optionInputs, "to");
+            switch (choice) {
+                case "Look around":
+                    double random = Math.random();
+                    if (random < 0.4) {
+                        game.announceDiscovery("Good job, you have found a potion!");
+                        double potionRandom = Math.random();
+                    }
+                    else if (random < 0.8) {
+                        ItemType randomItemType = generateItemType();
+                        game.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
+                        addItem(new Item(randomItemType, 0, 0, 0));
+                    }
+                    else {
+                        game.announceFail("Unfortunately, you haven't found anything.");
+                    }
+                    break;
+                case "Cast a spell":
+                    String spellChoice = ProjectTools.getNumberToStringInput(game.getSc(), "What spell do you want to use", spellInputs, "for");
+                    switch(spellChoice) {
+                        case "Wingardium Leviosa":
+                            int itemIndex = ProjectTools.getNumberInput(game.getSc(), "Choose an item", itemInputs, "for");
+                            Item item = items.get(itemIndex);
+                            ((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, boss);
+                            break;
+                    }
+                    break;
+                case "Hide":
+                    hiding = true;
+                    game.displayInfo("You are now hiding");
+                    break;
+                case "Use a potion":
+
+            }
+            if (roundNumber % 2 == 0) {
+                if (!hiding || Math.random() > 0.75) {
+                    boss.act();
+                }
+                else {
+                    game.announceSuccess("Well done, the troll couldn't find you!");
+                }
+            }
+            roundNumber += 1;
+        }
+    }
+
+    public HashMap<Integer, String> getSpellInputs() {
+        HashMap<Integer, String> spellInputs = new HashMap<>();
+        int i = 0;
+        HashMap<String, Spell> playerKnownSpells = player.getKnownSpells();
+        for (String spellName : playerKnownSpells.keySet()) {
+            spellInputs.put(i, spellName);
+            i++;
+        }
+        return spellInputs;
+    }
+
+    public HashMap<Integer, String> getItemInputs() {
+        HashMap<Integer, String> itemInputs = new HashMap<>();
+        for (int itemIndex = 0; itemIndex < items.size() - 1 ; itemIndex++) {
+            itemInputs.put(itemIndex, items.get(itemIndex).getItemType().toString());
+        }
+        return itemInputs;
     }
 
     public void initiateItemChances() {

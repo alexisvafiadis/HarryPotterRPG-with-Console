@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class Troll extends Boss{
     boolean alive;
     Game game;
-    float ATTACK_DAMAGE = 2;
+    float ATTACK_DAMAGE = 10;
     final ScheduledExecutorService executorService;
     double positionX;
     double positionY;
@@ -52,5 +52,11 @@ public class Troll extends Boss{
         return (item.getPositionX() == positionX && item.getPositionY() == positionY && item.getPositionZ() == positionZ);
     }
 
+    public String getName() {
+        return "Troll";
+    }
 
+    public boolean tryExpelliarmus() {
+
+    }
 }
