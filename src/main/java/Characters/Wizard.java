@@ -1,5 +1,7 @@
 package Characters;
 
+import Console.Display;
+import Console.InputParser;
 import Extras.Pet;
 import Game.Game;
 import Houses.Gryffindor;
@@ -7,7 +9,6 @@ import Houses.House;
 import Houses.Slytherin;
 import Potions.Potion;
 import Spells.Spell;
-import Tools.ProjectTools;
 import Wands.Wand;
 
 import java.util.ArrayList;
@@ -15,28 +16,54 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Wizard extends Character{
+    //Global attributes
+    Game game;
+    Display display;
+    InputParser inputParser;
+
+    //Specific attributes
+    String name;
     Pet pet;
     Wand wand;
     House house;
     HashMap<String, Spell> knownSpells;
     List<Potion> potions;
-    double HP;
-    Game game;
-    double damage = 10;
-    double maxHP = 100;
+
+    //Stats
+    final double DEFAULT_MAX_HP = 100;
+    double damageMultiplier = 1;
     double accuracy = 0.8;
-    double resistance;
-    boolean strengthEffect = false;
-    double STRENGTH_MULTIPLIER = 1.25;
-    boolean invisibilityEffect = false;
-    boolean resistanceEffect = false;
-    double RESISTANCE_MULTIPLIER = 0.75;
-    boolean speedEffect = false;
-    String name;
+    double resistance = 1;
+
+    //Potion effects
+    boolean strengthEffect;
+    double strengthMultiplier;
+    int nbOfStrengthRoundsLeft;
+    boolean resistanceEffect;
+    double resistanceMultiplier;
+    int nbOfResistanceRoundsLeft;
+    boolean invisibilityEffect;
+    boolean speedEffect;
 
     public Wizard(Game game) {
         this.game = game;
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
+        Display display;
+        InputParser inputParser;
         this.knownSpells = new HashMap<>();
+        this.potions = new ArrayList<>();
+        setMaxHP(DEFAULT_MAX_HP);
+        setPhysicalDamage(5);
+    }
+
+    @Override
+    public void spawn(double positionX, double positionY, double positionZ) {
+        super.spawn(positionX, positionY, positionZ);
+        strengthEffect = false;
+        resistanceEffect = false;
+        invisibilityEffect = false;
+        speedEffect = false;
     }
 
     public double amplifyDamage(double damage) {
@@ -44,7 +71,7 @@ public class Wizard extends Character{
             damage = damage * ((Slytherin) house).getDamageMultiplier();
         }
         if (strengthEffect) {
-            damage = damage * STRENGTH_MULTIPLIER;
+            damage = damage * strengthMultiplier;
         }
         return damage;
     }
@@ -54,7 +81,7 @@ public class Wizard extends Character{
             damage = damage * ((Gryffindor) house).getDamageResistance();
         }
         if (resistanceEffect) {
-            damage = damage * RESISTANCE_MULTIPLIER;
+            damage = damage * resistanceMultiplier;
         }
         return damage;
     }
@@ -91,6 +118,8 @@ public class Wizard extends Character{
         this.knownSpells.put(spell.getName(), spell);
     }
 
+    public boolean knowsSpell(String spellName) { return knownSpells.containsKey(spellName); }
+
     public void addPotion(Potion potion) { this.potions.add(potion); }
 
     public void addPotions(Potion potion, int amount) {
@@ -99,15 +128,15 @@ public class Wizard extends Character{
         }
     }
 
-    public void choosePotion() {
-        HashMap<Integer, String> validInputs = new HashMap<>();
+    public void chooseAndConsumePotion() {
+        HashMap<Integer, String> potionInputs = new HashMap<>();
         int i = 0;
         for (Potion potion : potions) {
-            validInputs.put(i, potion.getName());
+            potionInputs.put(i, potion.getPotionType().toString());
             i += 1;
         }
-        int choice = ProjectTools.getNumberInput(game.getSc(), "Which potion do you want to use?", validInputs, "for");
-        potions.get(choice).use();
+        int choice = inputParser.getNumberInput("Which potion do you want to use?", potionInputs, "for");
+        consumePotion(potions.get(choice));
     }
 
     public String getName() {
@@ -119,27 +148,27 @@ public class Wizard extends Character{
     }
 
     public void upgradeDamage(double upgrade) {
-        game.announceReward("Your damage has been upgraded!");
-        damage += upgrade;
+        display.announceReward("Your damage has been upgraded!");
+        damageMultiplier *= upgrade;
     }
 
     public void upgradeHP(double upgrade) {
-        game.announceReward("Your HP has been upgraded!");
-        maxHP += upgrade;
+        display.announceReward("Your HP has been upgraded!");
+        setMaxHP(getMaxHP() + upgrade);
     }
 
     public void upgradeAccuracy(double upgrade) {
-        game.announceReward("Your accuracy has been upgraded!");
+        display.announceReward("Your accuracy has been upgraded!");
         accuracy += upgrade;
     }
 
     public void upgradeResistance(double upgrade) {
-        game.announceReward("Your damage resistance has been upgraded!");
+        display.announceReward("Your damage resistance has been upgraded!");
         resistance += upgrade;
     }
 
-    public double getDamage() {
-        return damage;
+    public double getDamageMultiplier() {
+        return damageMultiplier;
     }
 
     public double getAccuracy() {
@@ -160,8 +189,16 @@ public class Wizard extends Character{
         return (potions.isEmpty());
     }
 
-    public void heal(double hp_restore) {
-        HP = HP + hp_restore;
+    public void boostStrength(int duration, double amplifier) {
+        nbOfStrengthRoundsLeft = duration;
+        strengthMultiplier = amplifier;
+        strengthEffect = true;
+    }
+
+    public void boostResistance(int duration, double amplifier) {
+        nbOfResistanceRoundsLeft = duration;
+        resistanceMultiplier = amplifier;
+        resistanceEffect = true;
     }
 
     @Override
@@ -175,4 +212,15 @@ public class Wizard extends Character{
         game.getCurrentLevel().start();
     }
 
+    @Override
+    public void attackedByExpelliarmus() {
+
+    }
+
+    @Override
+    public void finishRound() {
+        super.finishRound();
+        if (strengthEffect) {nbOfStrengthRoundsLeft -= 1;}
+        if (resistanceEffect) {nbOfResistanceRoundsLeft -= 1; }
+    }
 }

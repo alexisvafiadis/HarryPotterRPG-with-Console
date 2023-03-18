@@ -13,9 +13,13 @@ public class Engorgio extends Spell{
 
     public void cast(Item item) {
         if (isCastSuccessful(getWizard())) {
-            game.announceSuccess("You have enlarged this " + item.getItemType().toString());
+            game.getDisplay().announceSuccess("You have enlarged this " + item.getItemType().toString());
             item.enlarge(ENLARGE_COEFFICIENT);
         }
     }
 
+    @Override
+    public void tryForFirstTime() {
+
+    }
 }

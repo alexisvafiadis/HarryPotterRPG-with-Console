@@ -1,38 +1,43 @@
 package Potions;
 
 import Characters.Wizard;
+import Console.Display;
+import Console.InputParser;
 import Game.Game;
 
 public class Potion {
-    double effectValue;
-    Wizard owner;
-    String name;
-    Effect effect;
     Game game;
+    Display display;
+    InputParser inputParser;
+    Wizard owner;
+    PotionType potionType;
 
-    public Potion(Game game, Wizard wizard, String name, Effect effect, double effectValue, double duration) {
+    public Potion(Game game, Wizard wizard, PotionType potionType) {
         this.game = game;
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
         owner = wizard;
-        this.name = name;
-        this.effect = effect;
-        this.effectValue = effectValue;
+        this.potionType = potionType;
     }
 
     public void use() {
-        switch (effect) {
+        String effectAnnouncement = "";
+        switch (potionType.getEffect()) {
             case HEAL:
-                owner.heal(effectValue);
-                String effectAnnouncement = "been healed by " + effectValue + " HP";
+                owner.heal(potionType.getEffectValue());
+                effectAnnouncement = "been healed by " + potionType.getEffectValue() + " HP";
                 break;
+            case STRENGTH:
+                owner.strengthen(potionType.getDuration(), potionType.getEffectValue());
+                effectAnnouncement = "become stronger by " + potionType.getEffectValue() + "x for " + potionType.getDuration() + " seconds";
+                break;
+            default:
+                display.displayInfo("The potion effect has not been found");
         }
-        game.announceSuccess("You have consumed your " + name + "potion and have ");
+        display.announceSuccess("You have consumed your " + potionType.toString() + " and have " + effectAnnouncement);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Effect getEffect() {
-        return effect;
+    public PotionType getPotionType() {
+        return potionType;
     }
 }

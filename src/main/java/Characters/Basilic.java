@@ -4,16 +4,21 @@ import Extras.Item;
 import Extras.Weapon;
 import Game.Game;
 
-public class Troll extends Boss{
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Basilic extends Boss{
     double positionX;
     double positionY;
     double positionZ;
 
-    public Troll(Game game) {
+    public Basilic(Game game) {
         setGame(game);
-        setMaxHP(300);
-        setWeapon(Weapon.CLUB);
-        setAttackDelay(2);
+        setMaxHP(250);
+        setPhysicalDamage(12);
+        setAttackDelay(1);
+        setWeapon(null);
         spawn(positionX, positionY, positionZ);
     }
 

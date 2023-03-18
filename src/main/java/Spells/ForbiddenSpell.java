@@ -1,4 +1,4 @@
 package Spells;
 
-public class ForbiddenSpell {
+public abstract class ForbiddenSpell {
 }

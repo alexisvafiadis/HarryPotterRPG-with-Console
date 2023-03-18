@@ -12,24 +12,26 @@ public class Level3 extends Level{
 
     public Level3(Game game) {
         super(game);
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
     }
 
     public void start() {
-        introduce(player);
+        introduce();
     }
 
     @Override
-    public void conclude(Wizard wizard) {
-        game.congratulate("Well done, you have killed scared the Dementors away!");
+    public void conclude() {
+        display.congratulate("Well done, you have killed scared the Dementors away!");
         askForUpgrade();
     }
 
     @Override
-    public void introduce(Wizard wizard) {
-        game.displayInfo("For this level, you have to scare the Dementors away.");
-        game.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus");
-        game.announceReward("You have learned the spell Expecto Patronum");
-        game.displayInfo("Good luck!");
+    public void introduce() {
+        display.displayInfo("For this level, you have to scare the Dementors away.");
+        display.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus");
+        display.announceReward("You have learned the spell Expecto Patronum");
+        display.displayInfo("Good luck!");
     }
 
     @Override

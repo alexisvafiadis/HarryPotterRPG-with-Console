@@ -10,28 +10,30 @@ public class Level5 extends Level{
 
     public Level5(Game game) {
         super(game);
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
     }
 
     public void start() {
-        introduce(player);
+        introduce();
 
     }
 
     @Override
-    public void conclude(Wizard wizard) {
-        game.congratulate("Well done, you have defeated Dolores Ombrage!");
+    public void conclude() {
+        display.congratulate("Well done, you have defeated Dolores Ombrage!");
         askForUpgrade();
     }
 
     @Override
-    public void introduce(Wizard wizard) {
-        game.displayInfo("You have to fight ");
-        game.displayInfo("In order to do that, you have to use the spell Accio.");
+    public void introduce() {
+        display.displayInfo("You have to fight ");
+        display.displayInfo("In order to do that, you have to use the spell Accio.");
         if (player.getHouse().toString().equals("Gryffindor")) {
-            game.announceReward("You have been given the spell Accio.");
+            display.announceReward("You have been given the spell Accio.");
             //player.addSpell();
         }
-        game.displayInfo("Good luck!");
+        display.displayInfo("Good luck!");
     }
 
     @Override

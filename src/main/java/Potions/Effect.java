@@ -1,6 +1,6 @@
 package Potions;
 
 public enum Effect {
-    HEAL, INVISIBILITY, STRENGTH, SPEED, RESISTANCE
-    //Regeneration, spell cast speed?
+    HEAL, STRENGTH, RESISTANCE
+    //INVISIBILITY, SPEED, REGENERATION, SPELL_CAST_SPEED
 }

@@ -1,3 +1,5 @@
+package Console;
+
 import Game.Game;
 
 public class Main {

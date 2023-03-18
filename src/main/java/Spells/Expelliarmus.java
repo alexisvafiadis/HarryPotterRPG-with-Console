@@ -13,7 +13,12 @@ public class Expelliarmus extends Spell{
 
     public void cast(Character target) {
         if (isCastSuccessful(getWizard())) {
-            game.announceSuccess("You have successfully thrown away " + target.getName() + " 's weapon!");
+            game.getDisplay().announceSuccess("You have successfully thrown away " + target.getName() + " 's weapon!");
         }
+    }
+
+    @Override
+    public void tryForFirstTime() {
+
     }
 }

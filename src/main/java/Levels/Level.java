@@ -1,13 +1,19 @@
 package Levels;
 
+import Characters.AbstractEnemy;
 import Characters.Boss;
 import Characters.Wizard;
+import Console.Display;
+import Console.InputParser;
 import Extras.Item;
 import Extras.ItemType;
 import Game.Game;
+import Potions.Potion;
+import Potions.PotionType;
+import Spells.Confundus;
+import Spells.Engorgio;
 import Spells.Spell;
 import Spells.WingardiumLeviosa;
-import Tools.ProjectTools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,39 +21,41 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class Level {
+    Game game;
+    Display display;
+    InputParser inputParser;
     int number;
     String place;
     boolean outdoors;
-    Game game;
     final double HP_UPGRADE = 10;
     final double ATTACK_DAMAGE_UPGRADE = 10;
     final double DAMAGE_RESISTANCE_UPGRADE = 10;
     final double ACCURACY_UPGRADE = 10;
     Wizard player;
     List<Item> items;
-    HashMap<ItemType, Integer> itemTypeWeights;
+    HashMap<ItemType, Integer> itemTypeWeights = new HashMap<>();
 
     public Level(Game game) {
         this.game = game;
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
         this.player = game.getPlayer();
         items = new ArrayList<>();
         initiateItemChances();
     }
 
 
-    public abstract void introduce(Wizard wizard);
+    public abstract void introduce();
 
     public abstract void start();
 
-    public abstract void conclude(Wizard wizard);
+    public abstract void conclude();
 
-    public void fail() {
-        System.out.println("You failed this level. Try again!");
-    }
+    public void fail() { display.announceFail("You failed this level. Try again!"); }
 
-    public void finish(Wizard wizard) {
-        System.out.println("Congratulations, you have completed this level");
-        conclude(wizard);
+    public void finish() {
+        conclude();
+        display.announceSuccess("Congratulations, you have completed this level!");
         askForUpgrade();
     }
 
@@ -73,7 +81,7 @@ public abstract class Level {
         validInputs.put(2, "Attack Damage");
         validInputs.put(3, "Damage Resistance");
         validInputs.put(4, "Accuracy");
-        String upgrade_choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to upgrade?", validInputs, "for");
+        String upgrade_choice = inputParser.getNumberToStringInput("What do you want to upgrade?", validInputs, "for");
         switch (upgrade_choice) {
             case "Hitpoints":
                 game.getPlayer().upgradeHP(HP_UPGRADE);
@@ -90,60 +98,93 @@ public abstract class Level {
         }
     }
 
-    public void mainAction(Boss boss, boolean canAttack) {
+    public void fight(AbstractEnemy enemy) {
         boolean hiding;
         HashMap<Integer, String> optionInputs = new HashMap<>();
         optionInputs.put(1, "Look around");
         optionInputs.put(2, "Cast a spell");
         optionInputs.put(3, "Hide");
         HashMap<Integer, String> spellInputs = getSpellInputs();
-        HashMap<Integer, String> itemInputs = getItemInputs();
         int roundNumber = 1;
-        while (boss.isAlive()) {
+        while (enemy.isAlive()) {
+            display.displayHP(player, true);
+            display.displayHP(enemy, false);
             hiding = false;
             if (player.hasAnyPotion() && !optionInputs.containsKey(4)) {
                 optionInputs.put(4, "Use a potion");
             }
-            String choice = ProjectTools.getNumberToStringInput(game.getSc(), "What do you want to do?", optionInputs, "to");
+            String choice = inputParser.getNumberToStringInput("What do you want to do?", optionInputs, "to");
             switch (choice) {
                 case "Look around":
                     double random = Math.random();
-                    if (random < 0.4) {
-                        game.announceDiscovery("Good job, you have found a potion!");
-                        double potionRandom = Math.random();
+                    if (random < 0.5) {
+                        PotionType potionType =  generatePotionType();
+                        display.announceDiscovery("Good job, you have found a " + potionType.toString() + "!");
+                        player.addPotion(new Potion(game, player, potionType));
                     }
-                    else if (random < 0.8) {
+                    else if (random < 0.9) {
                         ItemType randomItemType = generateItemType();
-                        game.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
+                        display.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
                         addItem(new Item(randomItemType, 0, 0, 0));
                     }
                     else {
-                        game.announceFail("Unfortunately, you haven't found anything.");
+                        display.announceFail("Unfortunately, you haven't found anything.");
                     }
                     break;
                 case "Cast a spell":
-                    String spellChoice = ProjectTools.getNumberToStringInput(game.getSc(), "What spell do you want to use", spellInputs, "for");
+                    String spellChoice = inputParser.getNumberToStringInput("What spell do you want to use?", spellInputs, "for");
                     switch(spellChoice) {
                         case "Wingardium Leviosa":
-                            int itemIndex = ProjectTools.getNumberInput(game.getSc(), "Choose an item", itemInputs, "for");
-                            Item item = items.get(itemIndex);
-                            ((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, boss);
+                            if (getItems().isEmpty()) {
+                                display.announceFail("You haven't found any item to levitate. Try looking around.");
+                            } else {
+                                HashMap<Integer, String> itemInputs = getItemInputs();
+                                int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for");
+                                Item item = items.get(itemIndex);
+                                ((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy);
+                            }
                             break;
+                        case "Expelliarmus":
+                            if (enemy.getWeapon() == null) {
+                                display.announceFail("The " + enemy.getName() + " doesn't have a weapon");
+                            } else if (enemy.isDisarmed()) {
+                                display.announceFail("You have already disarmed the " + enemy.getName() + ", so this was uneffective");
+                            } else {
+                                enemy.setDisarmed(true);
+                                enemy.attackedByExpelliarmus();
+                                display.announceSuccess("You disarmed the " + enemy.getName());
+                            }
+                            break;
+                        case "Engorgio":
+                            if (getItems().isEmpty()) {
+                                display.announceFail("You haven't found any item to engorge. Try looking around.");
+                            } else {
+                                HashMap<Integer, String> itemInputs = getItemInputs();
+                                int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for");
+                                Item item = items.get(itemIndex);
+                                ((Engorgio) player.getKnownSpells().get(spellChoice)).cast(item);
+                            }
+                            break;
+                        case "Confundus":
+                            ((Confundus) player.getKnownSpells().get(spellChoice)).cast(enemy);
                     }
                     break;
                 case "Hide":
                     hiding = true;
-                    game.displayInfo("You are now hiding");
+                    display.displayInfo("You are now hiding");
                     break;
                 case "Use a potion":
-
+                    player.chooseAndConsumePotion();
+                    break;
             }
-            if (roundNumber % 2 == 0) {
-                if (!hiding || Math.random() > 0.75) {
-                    boss.act();
+            enemy.finishRound();
+            player.finishRound();
+            if (roundNumber % enemy.getAttackDelay() == 0) {
+                if (!hiding || Math.random() > 0.7) {
+                    enemy.act();
                 }
                 else {
-                    game.announceSuccess("Well done, the troll couldn't find you!");
+                    display.announceSuccess("Well done, " + enemy.getName() + " couldn't find you!");
                 }
             }
             roundNumber += 1;
@@ -213,6 +254,22 @@ public abstract class Level {
             }
         }
         return itemType;
+    }
+
+    public PotionType generatePotionType() {
+        PotionType[] potionTypes = PotionType.values();
+
+        double totalWeight = 0.0;
+        for (PotionType pt : potionTypes) {
+            totalWeight += pt.getWeight();
+        }
+
+        int idx = 0;
+        for (double r = Math.random() * totalWeight; idx < potionTypes.length - 1; ++idx) {
+            r -= potionTypes[idx].getWeight();
+            if (r <= 0.0) break;
+        }
+        return potionTypes[idx];
     }
 
     public void addItem(Item item) {

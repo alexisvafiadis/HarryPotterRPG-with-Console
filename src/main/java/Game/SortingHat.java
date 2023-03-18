@@ -8,18 +8,17 @@ import Houses.Gryffindor;
 import Houses.Hufflepuff;
 import Houses.Ravenclaw;
 import Houses.Slytherin;
-import Tools.ProjectTools;
 
 public class SortingHat{
-    public void askHouse(Scanner sc, Wizard wizard) {
+    public void askHouse(Game game, Wizard wizard) {
         HashMap<Integer, String> validInputs = new HashMap<>();
         validInputs.put(1, "Gryffindor");
         validInputs.put(2, "Hufflepuff");
         validInputs.put(3, "Ravenclaw");
         validInputs.put(4, "Slytherin");
 
-        String houseName = ProjectTools.getNumberToStringInput(sc, "It's time to choose your house.'", validInputs, "for");
-        System.out.println("You chose the house " + houseName + ". Have fun!");
+        String houseName = game.getInputParser().getNumberToStringInput("It's time to choose your house.", validInputs, "for");
+        game.getDisplay().displayInfo("You chose the house " + houseName + ". Have fun!");
         switch (houseName) {
             case "Gryffindor":
                 wizard.setHouse(new Gryffindor());

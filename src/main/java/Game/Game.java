@@ -1,8 +1,9 @@
 package Game;
 
 import Characters.Wizard;
-import Levels.Level;
-import Levels.Level1;
+import Console.Display;
+import Console.InputParser;
+import Levels.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ public class Game {
     int currentLevelIndex;
     Scanner sc;
     List<Level> levels;
+    Display display;
+    InputParser inputParser;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -24,43 +27,26 @@ public class Game {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public Game() {
-        sc = new Scanner(System.in);
+        display = new Display(this);
+        inputParser = new InputParser(this, new Scanner(System.in));
         player = new Wizard(this);
-        askForName();
         introduce(sc, player);
         levels = new ArrayList<Level>();
         levels.add(new Level1(this));
+        levels.add(new Level2(this));
+        levels.add(new Level3(this));
+        levels.add(new Level4(this));
+        levels.add(new Level5(this));
         for (Level level : levels) {
             level.start();
         }
     }
 
     public void introduce(Scanner sc, Wizard wizard) {
-        displayInfo("Welcome to Hogwarts, " + player.getName());
-        displayInfo("Now let's get some things sorted.");
         WizardMaker wizardmaker = new WizardMaker(this);
         SortingHat sortingHat = new SortingHat();
-        sortingHat.askHouse(sc, wizard);
+        sortingHat.askHouse(this, wizard);
     }
-
-    public void askForName() {
-        System.out.println("Hello, what would you like your wizard name to be?");
-        player.setName(sc.nextLine());
-    }
-
-    public void announceReward(String announcement) {
-        System.out.println(ANSI_YELLOW + announcement);
-    }
-
-    public void announceDiscovery(String finding) { System.out.println(ANSI_CYAN + finding); }
-
-    public void announceFail(String fail) { System.out.println(ANSI_RED + fail); }
-
-    public void announceSuccess(String success) { System.out.println(ANSI_GREEN + success); }
-
-    public void displayInfo(String information) { System.out.println(information); }
-
-    public void congratulate(String congratulations) { System.out.println(ANSI_GREEN + congratulations); }
 
     public Wizard getPlayer() {
         return player;
@@ -70,11 +56,15 @@ public class Game {
         return levels.get(currentLevelIndex);
     }
 
-    public Scanner getSc() {
-        return sc;
-    }
-
     public void setCurrentLevel(int currentLevelIndex) {
         this.currentLevelIndex = currentLevelIndex;
+    }
+
+    public Display getDisplay() {
+        return display;
+    }
+
+    public InputParser getInputParser() {
+        return inputParser;
     }
 }

@@ -10,28 +10,30 @@ public class Level4 extends Level{
 
     public Level4(Game game) {
         super(game);
+        display = game.getDisplay();
+        inputParser = game.getInputParser();
     }
 
     public void start() {
-        introduce(player);
+        introduce();
 
     }
 
     @Override
-    public void conclude(Wizard wizard) {
-        game.congratulate("Well done, you have gotten away!");
+    public void conclude() {
+        display.congratulate("Well done, you have gotten away!");
         askForUpgrade();
     }
 
     @Override
-    public void introduce(Wizard wizard) {
-        game.displayInfo("You have to get close to Portolion, attract him to you then get away.");
-        game.displayInfo("In order to do that, you have to use the spell Accio.");
+    public void introduce() {
+        display.displayInfo("You have to get close to Portolion, attract him to you then get away.");
+        display.displayInfo("In order to do that, you have to use the spell Accio.");
         if (player.getHouse().toString().equals("Gryffindor")) {
-            game.announceReward("You have been given the spell Accio.");
+            display.announceReward("You have been given the spell Accio.");
             //player.addSpell();
         }
-        game.displayInfo("Good luck!");
+        display.displayInfo("Good luck!");
     }
 
     @Override
