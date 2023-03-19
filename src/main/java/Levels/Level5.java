@@ -36,14 +36,4 @@ public class Level5 extends Level{
         }
         wishGoodLuck();
     }
-
-    @Override
-    public String getPlace() {
-        return place;
-    }
-
-    @Override
-    public int getNumber() {
-        return number;
-    }
 }

@@ -61,14 +61,4 @@ public class Level2 extends Level{
             player.learnSpell(new Accio(game, player));
         }
     }
-
-    @Override
-    public String getPlace() {
-        return place;
-    }
-
-    @Override
-    public int getNumber() {
-        return number;
-    }
 }

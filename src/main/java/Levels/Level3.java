@@ -31,14 +31,4 @@ public class Level3 extends Level{
         display.announceReward("You have learned the spell Expecto Patronum");
         wishGoodLuck();
     }
-
-    @Override
-    public String getPlace() {
-        return place;
-    }
-
-    @Override
-    public int getNumber() {
-        return number;
-    }
 }

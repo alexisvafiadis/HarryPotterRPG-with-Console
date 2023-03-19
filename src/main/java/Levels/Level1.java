@@ -17,8 +17,8 @@ public class Level1 extends Level{
 
     @Override
     public void start() {
-        super.start();
         player.spawn(2, 2, 2);
+        super.start();
         Troll troll = new Troll(game);
         troll.spawn(0, 0, 0);
         fight(troll);

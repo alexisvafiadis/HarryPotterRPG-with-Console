@@ -3,16 +3,16 @@ package Characters;
 import Items.Item;
 import Game.Game;
 
-public class Basilisk extends Boss{
+public class Dementor extends Boss{
     double positionX;
     double positionY;
     double positionZ;
 
-    public Basilisk(Game game) {
+    public Dementor(Game game) {
         setGame(game);
-        setMaxHP(80);
-        setPhysicalDamage(25);
-        setAttackDelay(1);
+        setMaxHP(20);
+        setPhysicalDamage(5);
+        setAttackDelay(2);
         setVulnerabilityToMagic(1);
         setWeapon(null);
         spawn(positionX, positionY, positionZ);
@@ -23,6 +23,6 @@ public class Basilisk extends Boss{
     }
 
     public String getName() {
-        return "The Basilisk";
+        return "a Dementor";
     }
 }

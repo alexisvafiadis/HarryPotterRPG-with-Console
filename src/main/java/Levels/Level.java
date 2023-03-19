@@ -98,7 +98,7 @@ public abstract class Level {
         boolean hiding = false;
         HashMap<Integer, String> spellInputs = getSpellInputs();
         int roundNumber = 1;
-        while (enemy.isAlive()) {
+        while (enemy.isAlive() && player.isAlive()) {
             display.displayHP(player, true);
             display.displayHP(enemy, false);
             if (hiding) {

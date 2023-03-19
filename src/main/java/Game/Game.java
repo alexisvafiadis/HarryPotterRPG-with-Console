@@ -15,7 +15,7 @@ public class Game {
     Display display;
     InputParser inputParser;
 
-    int currentLevelIndex;
+    int currentLevelNumber;
     boolean DEBUG_MODE = true;
 
     public Game() {
@@ -29,9 +29,9 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
-        levels.get(1).start();
-        for (Level level : levels) {
-            level.start();
+        startLevel(2);
+        for (int i = 1; i < 8 ; i++) {
+            startLevel(i);
         }
     }
 
@@ -46,11 +46,12 @@ public class Game {
     }
 
     public Level getCurrentLevel() {
-        return levels.get(currentLevelIndex);
+        return levels.get(currentLevelNumber - 1);
     }
 
-    public void setCurrentLevel(int currentLevelIndex) {
-        this.currentLevelIndex = currentLevelIndex;
+    public void startLevel(int levelNumber) {
+        this.currentLevelNumber = levelNumber;
+        levels.get(currentLevelNumber - 1).start();
     }
 
     public Display getDisplay() {
