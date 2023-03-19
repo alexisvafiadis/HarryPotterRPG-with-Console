@@ -1,7 +1,7 @@
 package Characters;
 
-import Extras.Item;
-import Extras.Weapon;
+import Items.Item;
+import Items.Weapon;
 import Game.Game;
 
 public class Troll extends Boss{
@@ -12,8 +12,10 @@ public class Troll extends Boss{
     public Troll(Game game) {
         setGame(game);
         setMaxHP(300);
+        setPhysicalDamage(14);
         setWeapon(Weapon.CLUB);
         setAttackDelay(2);
+        setVulnerabilityToMagic(1);
         spawn(positionX, positionY, positionZ);
     }
 

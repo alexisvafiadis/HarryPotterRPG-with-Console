@@ -9,12 +9,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Display {
     Game game;
-    final int DEFAULT_WRITING_DELAY = 1;
+    int DEFAULT_WRITING_DELAY = 18;
     final int FAST_WRITING_DELAY = 5;
     final int SLOW_WRITING_DELAY = 30;
 
     public Display(Game game) {
         this.game = game;
+        if (game.isInDebugMode()) { DEFAULT_WRITING_DELAY = 1; }
     }
 
     // Reset

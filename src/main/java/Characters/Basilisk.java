@@ -1,23 +1,19 @@
 package Characters;
 
-import Extras.Item;
-import Extras.Weapon;
+import Items.Item;
 import Game.Game;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-public class Basilic extends Boss{
+public class Basilisk extends Boss{
     double positionX;
     double positionY;
     double positionZ;
 
-    public Basilic(Game game) {
+    public Basilisk(Game game) {
         setGame(game);
-        setMaxHP(250);
-        setPhysicalDamage(12);
+        setMaxHP(80);
+        setPhysicalDamage(35);
         setAttackDelay(1);
+        setVulnerabilityToMagic(1);
         setWeapon(null);
         spawn(positionX, positionY, positionZ);
     }
@@ -31,6 +27,6 @@ public class Basilic extends Boss{
     }
 
     public String getName() {
-        return "The Troll";
+        return "The Basilisk";
     }
 }

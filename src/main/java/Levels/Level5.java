@@ -5,15 +5,15 @@ import Game.Game;
 
 public class Level5 extends Level{
     Wizard player;
-    final String place = "Chamber of Secrets";
     Game game;
 
     public Level5(Game game) {
-        super(game);
+        super(game, "Great Hall", 5, false);
         display = game.getDisplay();
         inputParser = game.getInputParser();
     }
 
+    @Override
     public void start() {
         introduce();
 
@@ -27,13 +27,14 @@ public class Level5 extends Level{
 
     @Override
     public void introduce() {
+        giveLevelInfo();
         display.displayInfo("You have to fight ");
         display.displayInfo("In order to do that, you have to use the spell Accio.");
         if (player.getHouse().toString().equals("Gryffindor")) {
             display.announceReward("You have been given the spell Accio.");
             //player.addSpell();
         }
-        display.displayInfo("Good luck!");
+        wishGoodLuck();
     }
 
     @Override

@@ -1,10 +1,6 @@
-package Wands;
+package Items;
 
 import Characters.Wizard;
-import Game.Game;
-import Spells.Spell;
-
-import static java.lang.Math.random;
 
 public class Wand {
     Core core;

@@ -2,21 +2,24 @@ package Spells;
 
 import Characters.Character;
 import Characters.Wizard;
-import Extras.Item;
+import Items.Item;
 import Game.Game;
+import Items.ItemType;
 
 public class WingardiumLeviosa extends Spell{
-    double defaultDamage = 15;
+    final double DEFAULT_DAMAGE = 15;
 
     public WingardiumLeviosa(Game game, Wizard wizard) {
-        super(game, wizard, "Wingardium Leviosa", 5, 10, 0.3, 0.5);
+        super(game, wizard, "Wingardium Leviosa", 5, 1, 0.3, 0.5);
     }
 
-    public void cast(Item item, Character target) {
+    public boolean cast(Item item, Character target) {
         if (isCastSuccessful(getWizard())) {
-            game.getDisplay().announceSuccess("You have used Wingardium Leviosa to throw this " + item.getItemType().toString() + " on " + target.getName());
-            target.damage(wizard.amplifyDamage(defaultDamage * item.getDamageMultiplier()));
+            display.announceSuccess("You have used Wingardium Leviosa to throw this " + item.getItemType().toString() + " on " + target.getName());
+            target.damage(wizard.amplifySpellDamage(DEFAULT_DAMAGE * item.getItemType().getDamageMultiplier()));
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package Wands;
+package Items;
 
 public enum Wood {
     ACACIA, ALDER, APPLE, ASH, ASPEN, BEECH, BLACKTHORN, BLACK_WALNUT,

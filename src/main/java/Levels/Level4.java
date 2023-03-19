@@ -5,18 +5,16 @@ import Game.Game;
 
 public class Level4 extends Level{
     Wizard player;
-    final String place = "Chamber of Secrets";
-    Game game;
 
     public Level4(Game game) {
-        super(game);
+        super(game, "Little Hangleton graveyard", 4, true);
         display = game.getDisplay();
         inputParser = game.getInputParser();
     }
 
+    @Override
     public void start() {
-        introduce();
-
+        super.start();
     }
 
     @Override
@@ -27,13 +25,14 @@ public class Level4 extends Level{
 
     @Override
     public void introduce() {
+        giveLevelInfo();
         display.displayInfo("You have to get close to Portolion, attract him to you then get away.");
         display.displayInfo("In order to do that, you have to use the spell Accio.");
         if (player.getHouse().toString().equals("Gryffindor")) {
             display.announceReward("You have been given the spell Accio.");
             //player.addSpell();
         }
-        display.displayInfo("Good luck!");
+        wishGoodLuck();
     }
 
     @Override

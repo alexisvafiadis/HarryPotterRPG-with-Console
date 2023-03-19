@@ -3,16 +3,11 @@ package Game;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
-import Extras.Pet;
-import Houses.Gryffindor;
-import Houses.Hufflepuff;
-import Houses.Ravenclaw;
-import Houses.Slytherin;
+import Characteristics.Pet;
 import Spells.Engorgio;
 import Spells.Expelliarmus;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class WizardMaker {
     Game game;

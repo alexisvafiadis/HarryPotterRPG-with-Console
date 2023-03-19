@@ -1,25 +1,19 @@
 package Characters;
 
+import Characteristics.Pet;
 import Console.Display;
 import Console.InputParser;
-import Extras.Pet;
 import Game.Game;
-import Houses.Gryffindor;
-import Houses.House;
-import Houses.Slytherin;
+import Characteristics.House;
 import Potions.Potion;
 import Spells.Spell;
-import Wands.Wand;
+import Items.Wand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Wizard extends Character{
-    //Global attributes
-    Game game;
-    Display display;
-    InputParser inputParser;
 
     //Specific attributes
     String name;
@@ -31,6 +25,8 @@ public class Wizard extends Character{
 
     //Stats
     final double DEFAULT_MAX_HP = 100;
+    final double PHYSICAL_DAMAGE = 5;
+    final double VULNERABILITY_TO_MAGIC = 0.95;
     double damageMultiplier = 1;
     double accuracy = 0.8;
     double resistance = 1;
@@ -46,15 +42,12 @@ public class Wizard extends Character{
     boolean speedEffect;
 
     public Wizard(Game game) {
-        this.game = game;
-        display = game.getDisplay();
-        inputParser = game.getInputParser();
-        Display display;
-        InputParser inputParser;
         this.knownSpells = new HashMap<>();
         this.potions = new ArrayList<>();
         setMaxHP(DEFAULT_MAX_HP);
-        setPhysicalDamage(5);
+        setPhysicalDamage(PHYSICAL_DAMAGE);
+        setGame(game);
+        setVulnerabilityToMagic(VULNERABILITY_TO_MAGIC);
     }
 
     @Override
@@ -64,25 +57,27 @@ public class Wizard extends Character{
         resistanceEffect = false;
         invisibilityEffect = false;
         speedEffect = false;
+        setWeapon(null);
     }
 
     public double amplifyDamage(double damage) {
-        if (house instanceof Slytherin) {
-            damage = damage * ((Slytherin) house).getDamageMultiplier();
-        }
         if (strengthEffect) {
             damage = damage * strengthMultiplier;
         }
         return damage;
     }
 
+    public double amplifySpellDamage(double damage) {
+        damage = damage * house.getSPELL_DAMAGE_MULTIPLIER();
+        display.displayInfo("damage amplifier : " + house.getSPELL_DAMAGE_MULTIPLIER());
+        return damage;
+    }
+
     public double defendDamage(double damage) {
-        if (house instanceof Gryffindor) {
-            damage = damage * ((Gryffindor) house).getDamageResistance();
-        }
         if (resistanceEffect) {
             damage = damage * resistanceMultiplier;
         }
+        damage = damage * house.getDAMAGE_VULNERABILITY();
         return damage;
     }
 
@@ -167,16 +162,8 @@ public class Wizard extends Character{
         resistance += upgrade;
     }
 
-    public double getDamageMultiplier() {
-        return damageMultiplier;
-    }
-
     public double getAccuracy() {
-        return accuracy;
-    }
-
-    public double getResistance() {
-        return resistance;
+        return accuracy * house.getACCURACY_MULTIPLIER();
     }
 
     public void consumePotion(Potion potion) {
@@ -186,7 +173,7 @@ public class Wizard extends Character{
     }
 
     public boolean hasAnyPotion() {
-        return (potions.isEmpty());
+        return (!potions.isEmpty());
     }
 
     public void boostStrength(int duration, double amplifier) {
@@ -199,11 +186,6 @@ public class Wizard extends Character{
         nbOfResistanceRoundsLeft = duration;
         resistanceMultiplier = amplifier;
         resistanceEffect = true;
-    }
-
-    @Override
-    public void attack(Character victim) {
-
     }
 
     @Override

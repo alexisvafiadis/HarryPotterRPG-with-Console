@@ -1,20 +1,20 @@
 package Spells;
 
-import Characters.Character;
 import Characters.Wizard;
-import Extras.Item;
+import Items.Item;
 import Game.Game;
+import Items.Weapon;
 
 public class Accio extends Spell{
 
     public Accio(Game game, Wizard wizard) {
-        super(game, wizard, "Accio", 5, 10, 0.55, 0.68);
+        super(game, wizard, "Accio", 5, 1, 0.5, 0.56);
     }
 
-    public void cast(Character victim) {
+    public void cast(Weapon weapon) {
         if (isCastSuccessful(getWizard())) {
-            game.getDisplay().announceSuccess("You have confused " + victim.getName());
-            victim.setConfused(true);
+            getWizard().setWeapon(weapon);
+            getDisplay().announceSuccess("You have successfuly summoned a " + weapon.toString());
         }
     }
 
@@ -22,4 +22,6 @@ public class Accio extends Spell{
     public void tryForFirstTime() {
 
     }
+
+
 }

@@ -2,31 +2,59 @@ package Characters;
 
 import Console.Display;
 import Console.InputParser;
-import Extras.Weapon;
+import Items.Weapon;
 import Game.Game;
-import Houses.Gryffindor;
-import Houses.House;
-import Houses.Hufflepuff;
-import Houses.Slytherin;
-import Spells.Spell;
 
 public abstract class Character {
-    Game game;
-    Display display;
-    InputParser inputParser;
-    double HP;
-    boolean alive;
-    double positionX;
-    double positionY;
-    double positionZ;
-    double maxHP;
-    boolean disarmed;
-    double physicalDamage;
-    Weapon weapon;
-    boolean confused;
-    int nbOfConfusionRoundsLeft;
+    //Global attributes
+    protected Game game;
+    protected Display display;
+    protected InputParser inputParser;
 
-    public abstract void attack(Character victim) ;
+    //Specific attributes (need to set!)
+    protected double maxHP;
+    protected double physicalDamage;
+    protected double vulnerabilityToMagic;//A coefficient that represents how likely a wizard can successfully cast a spell on the person
+    protected Weapon weapon;
+
+    //Live attributes
+    protected double positionX;
+    protected double positionY;
+    protected double positionZ;
+    protected double HP;
+    protected boolean alive;
+    protected boolean disarmed;
+    protected boolean confused;
+    protected int nbOfConfusionRoundsLeft;
+
+    public void spawn(double positionX, double positionY, double positionZ) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.positionZ = positionZ;
+        HP = maxHP;
+        alive = true;
+        confused = false;
+        disarmed = false;
+    }
+
+    public void attack(Character victim) {
+        if (canAttack()) {
+            double damage = getPhysicalDamage();
+            display.displayInfo(String.valueOf(damage));
+            if (hasWeapon()) {
+                damage += weapon.getAttackDamage();
+            }
+            if (this instanceof Wizard) {
+                damage = ((Wizard) this).amplifyDamage(damage);
+                display.displayInfo("You have damaged " + victim.getName());
+            }
+            if (victim instanceof Wizard) {
+                damage = ((Wizard) victim).defendDamage(damage);
+                display.displayInfo("You have been attacked by " + getName());
+            }
+            victim.damage(damage);
+        }
+    }
 
     public void die() {
         if (this instanceof Wizard) {
@@ -38,16 +66,6 @@ public abstract class Character {
     public void damage(double damage) {
         if (HP <= damage) { die();}
         else { HP = HP - damage; }
-    }
-
-    public void spawn(double positionX, double positionY, double positionZ) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.positionZ = positionZ;
-        HP = maxHP;
-        alive = true;
-        confused = false;
-        disarmed = false;
     }
 
     public double getHP() {
@@ -68,6 +86,14 @@ public abstract class Character {
 
     public void setPhysicalDamage(double physicalDamage) {
         this.physicalDamage = physicalDamage;
+    }
+
+    public double getVulnerabilityToMagic() {
+        return vulnerabilityToMagic;
+    }
+
+    public void setVulnerabilityToMagic(double vulnerabilityToMagic) {
+        this.vulnerabilityToMagic = vulnerabilityToMagic;
     }
 
     public void heal(double hp_restore) {
@@ -95,6 +121,8 @@ public abstract class Character {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
+
+    public boolean hasWeapon() { return (weapon != null); }
 
     public abstract void attackedByExpelliarmus();
 

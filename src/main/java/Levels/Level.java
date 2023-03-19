@@ -1,79 +1,75 @@
 package Levels;
 
 import Characters.AbstractEnemy;
-import Characters.Boss;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
-import Extras.Item;
-import Extras.ItemType;
+import Items.Item;
+import Items.ItemType;
 import Game.Game;
+import Items.Weapon;
 import Potions.Potion;
 import Potions.PotionType;
-import Spells.Confundus;
-import Spells.Engorgio;
-import Spells.Spell;
-import Spells.WingardiumLeviosa;
+import Spells.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public abstract class Level {
-    Game game;
-    Display display;
-    InputParser inputParser;
-    int number;
-    String place;
-    boolean outdoors;
-    final double HP_UPGRADE = 10;
-    final double ATTACK_DAMAGE_UPGRADE = 10;
-    final double DAMAGE_RESISTANCE_UPGRADE = 10;
-    final double ACCURACY_UPGRADE = 10;
-    Wizard player;
-    List<Item> items;
-    HashMap<ItemType, Integer> itemTypeWeights = new HashMap<>();
+    //Global attributes
+    protected Game game;
+    protected Display display;
+    protected InputParser inputParser;
+    protected Wizard player;
 
-    public Level(Game game) {
+    //Level specific attributes
+    protected int number;
+    protected String place;
+    protected boolean outdoors;
+    protected final double HP_UPGRADE = 10;
+    protected final double ATTACK_DAMAGE_UPGRADE = 10;
+    protected final double DAMAGE_RESISTANCE_UPGRADE = 10;
+    protected final double ACCURACY_UPGRADE = 10;
+    protected List<Item> items;
+    protected List<ItemType> possibleItemTypes;
+
+    public Level(Game game, String place, int number, boolean outdoors) {
         this.game = game;
         display = game.getDisplay();
         inputParser = game.getInputParser();
         this.player = game.getPlayer();
-        items = new ArrayList<>();
-        initiateItemChances();
-    }
 
+        this.place = place;
+        this.number = number;
+        this.outdoors = outdoors;
+    }
 
     public abstract void introduce();
 
-    public abstract void start();
+    public void start() {
+        items = new ArrayList<>();
+        setPossibleItemTypes();
+        introduce();
+    }
 
     public abstract void conclude();
 
-    public void fail() { display.announceFail("You failed this level. Try again!"); }
+    public void fail() {
+        display.announceFail("You failed this level. Try again!");
+        start();
+    }
 
     public void finish() {
         conclude();
-        display.announceSuccess("Congratulations, you have completed this level!");
+        display.announceSuccess("Congratulations, you have completed the level " + number + "!");
         askForUpgrade();
     }
 
-    public String getPlace() {
-        return place;
-    }
+    public void wishGoodLuck() {display.displayInfo("Good luck!"); }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public boolean isOutdoors() {
-        return outdoors;
-    }
-
-    public void setOutdoors(boolean outdoors) {
-        this.outdoors = outdoors;
-    }
+    public void giveLevelInfo() {display.displayInfo("--- Level " + number + " : " + "the " + place + " ---");}
 
     public void askForUpgrade() {
         HashMap<Integer, String> validInputs = new HashMap<>();
@@ -99,19 +95,27 @@ public abstract class Level {
     }
 
     public void fight(AbstractEnemy enemy) {
-        boolean hiding;
-        HashMap<Integer, String> optionInputs = new HashMap<>();
-        optionInputs.put(1, "Look around");
-        optionInputs.put(2, "Cast a spell");
-        optionInputs.put(3, "Hide");
+        boolean hiding = false;
         HashMap<Integer, String> spellInputs = getSpellInputs();
         int roundNumber = 1;
         while (enemy.isAlive()) {
             display.displayHP(player, true);
             display.displayHP(enemy, false);
-            hiding = false;
-            if (player.hasAnyPotion() && !optionInputs.containsKey(4)) {
+            if (hiding) {
+                hiding = false;
+                display.displayInfo("You are no longer hiding.");
+            }
+            HashMap<Integer, String> optionInputs = new HashMap<>();
+            optionInputs.put(1, "Look around");
+            optionInputs.put(2, "Cast a spell");
+            optionInputs.put(3, "Hide");
+            if (player.hasAnyPotion()) {
                 optionInputs.put(4, "Use a potion");
+            }
+            if (player.hasWeapon()) {
+                int choiceNumber = 4;
+                if (player.hasAnyPotion())  { choiceNumber = 5;}
+                optionInputs.put(choiceNumber, "Attack with your weapon");
             }
             String choice = inputParser.getNumberToStringInput("What do you want to do?", optionInputs, "to");
             switch (choice) {
@@ -137,18 +141,23 @@ public abstract class Level {
                         case "Wingardium Leviosa":
                             if (getItems().isEmpty()) {
                                 display.announceFail("You haven't found any item to levitate. Try looking around.");
+                                //gotta be careful here, continue could cause problems in the round system
+                                continue;
                             } else {
+                                display.displayInfo(items.toString());
                                 HashMap<Integer, String> itemInputs = getItemInputs();
                                 int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for");
                                 Item item = items.get(itemIndex);
-                                ((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy);
+                                if (((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy)) {
+                                    items.remove(item);
+                                }
                             }
                             break;
                         case "Expelliarmus":
-                            if (enemy.getWeapon() == null) {
-                                display.announceFail("The " + enemy.getName() + " doesn't have a weapon");
-                            } else if (enemy.isDisarmed()) {
+                            if (enemy.isDisarmed()) {
                                 display.announceFail("You have already disarmed the " + enemy.getName() + ", so this was uneffective");
+                            } else if (!enemy.hasWeapon()) {
+                                display.announceFail(enemy.getName() + " doesn't have a weapon");
                             } else {
                                 enemy.setDisarmed(true);
                                 enemy.attackedByExpelliarmus();
@@ -158,6 +167,8 @@ public abstract class Level {
                         case "Engorgio":
                             if (getItems().isEmpty()) {
                                 display.announceFail("You haven't found any item to engorge. Try looking around.");
+                                //gotta be careful here, continue could cause problems in the round system
+                                continue;
                             } else {
                                 HashMap<Integer, String> itemInputs = getItemInputs();
                                 int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for");
@@ -167,6 +178,10 @@ public abstract class Level {
                             break;
                         case "Confundus":
                             ((Confundus) player.getKnownSpells().get(spellChoice)).cast(enemy);
+                            break;
+                        case "Accio":
+                            ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
+                            break;
                     }
                     break;
                 case "Hide":
@@ -175,6 +190,9 @@ public abstract class Level {
                     break;
                 case "Use a potion":
                     player.chooseAndConsumePotion();
+                    break;
+                case "Attack with your weapon":
+                    player.attack(enemy);
                     break;
             }
             enemy.finishRound();
@@ -204,56 +222,34 @@ public abstract class Level {
 
     public HashMap<Integer, String> getItemInputs() {
         HashMap<Integer, String> itemInputs = new HashMap<>();
-        for (int itemIndex = 0; itemIndex < items.size() - 1 ; itemIndex++) {
+        for (int itemIndex = 0; itemIndex < items.size() ; itemIndex++) {
             itemInputs.put(itemIndex, items.get(itemIndex).getItemType().toString());
         }
         return itemInputs;
     }
 
-    public void initiateItemChances() {
-        if (outdoors) {
-            itemTypeWeights.put(ItemType.BIG_ROCK, 3);
-            itemTypeWeights.put(ItemType.SMALL_ROCK, 1);
-            itemTypeWeights.put(ItemType.MEDIUM_ROCK, 2);
-            itemTypeWeights.put(ItemType.SMALL_STICK, 2);
-            itemTypeWeights.put(ItemType.MEDIUM_STICK, 2);
-            itemTypeWeights.put(ItemType.BIG_STICK, 3);
-            itemTypeWeights.put(ItemType.NETTLE, 4);
-        }
-        else {
-            itemTypeWeights.put(ItemType.BOOK, 4);
-            itemTypeWeights.put(ItemType.BOTTLE, 2);
-            itemTypeWeights.put(ItemType.FORK, 1);
-            itemTypeWeights.put(ItemType.KNIFE, 1);
-            itemTypeWeights.put(ItemType.GLASS, 2);
-            itemTypeWeights.put(ItemType.PAINTING, 3);
-            itemTypeWeights.put(ItemType.VASE, 3);
-            itemTypeWeights.put(ItemType.LAMP, 4);
-            itemTypeWeights.put(ItemType.TABLE, 2);
-            itemTypeWeights.put(ItemType.CHAIR, 3);
-        }
-
+    public void setPossibleItemTypes() {
+        possibleItemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
+        if (outdoors) { possibleItemTypes.removeIf(it -> (it.getWhere() == 0)); }
+        else { possibleItemTypes.removeIf(it -> (it.getWhere() == 1)); }
     }
 
     public ItemType generateItemType() {
         // I used weighted randomness instead of generating a random number from 0 to 1 and using a lot of ifs so that if I add an item I don't need to
         // change the other numbers
         // Inspired from https://stackoverflow.com/questions/6737283/weighted-randomness-in-java
-        ItemType itemType = null;
+
         double totalWeight = 0.0;
-        for (int w : itemTypeWeights.values()) {
-            totalWeight += w;
+        for (ItemType pt : possibleItemTypes) {
+            totalWeight += pt.getWeight();
         }
 
-        double r = Math.random() * totalWeight;
-        for (ItemType it : itemTypeWeights.keySet()) {
-            r -= itemTypeWeights.get(it);
-            if (r <= 0.0) {
-                itemType = it;
-                break;
-            }
+        int idx = 0;
+        for (double r = Math.random() * totalWeight; idx < possibleItemTypes.size() - 1; ++idx) {
+            r -= possibleItemTypes.get(idx).getWeight();
+            if (r <= 0.0) break;
         }
-        return itemType;
+        return possibleItemTypes.get(idx);
     }
 
     public PotionType generatePotionType() {
@@ -278,6 +274,22 @@ public abstract class Level {
 
     public List<Item> getItems() {
         return items;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public boolean isOutdoors() {
+        return outdoors;
     }
 
 }

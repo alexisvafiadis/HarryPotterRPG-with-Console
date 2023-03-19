@@ -5,19 +5,16 @@ import Characters.Wizard;
 import Game.Game;
 
 public class Level3 extends Level{
-    Wizard player;
-    Troll troll;
-    final String place = "Chamber of Secrets";
-    Game game;
 
     public Level3(Game game) {
-        super(game);
+        super(game, "Great Lake", 3, true);
         display = game.getDisplay();
         inputParser = game.getInputParser();
     }
 
+    @Override
     public void start() {
-        introduce();
+        super.start();
     }
 
     @Override
@@ -28,10 +25,11 @@ public class Level3 extends Level{
 
     @Override
     public void introduce() {
+        giveLevelInfo();
         display.displayInfo("For this level, you have to scare the Dementors away.");
         display.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus");
         display.announceReward("You have learned the spell Expecto Patronum");
-        display.displayInfo("Good luck!");
+        wishGoodLuck();
     }
 
     @Override

@@ -1,8 +1,9 @@
-package Extras;
+package Items;
 
 public enum Weapon {
     CLUB(6),
-    SWORD_OF_GRYFFINDOR(20),;
+    SWORD_OF_GRYFFINDOR(25),
+    BASILISK_FANG(25);
 
     double attackDamage;
 
