@@ -16,7 +16,7 @@ public class Game {
     InputParser inputParser;
 
     int currentLevelNumber;
-    boolean DEBUG_MODE = true;
+    final boolean DEBUG_MODE = true;
 
     public Game() {
         display = new Display(this);
@@ -29,7 +29,6 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
-        startLevel(2);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }

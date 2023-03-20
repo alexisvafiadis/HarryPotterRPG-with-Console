@@ -21,25 +21,22 @@ public class Potion {
     }
 
     public void use() {
-        String effectAnnouncement = "";
         double potionValue = potionType.getEffectValue() * owner.getHouse().getPOTION_EFFICIENCY_MULTIPLIER();
-        String durationString = "x for " + potionType.getDuration() + " rounds";
+        String message = "You have consumed your " + potionType.toString() + " and are " + potionType.getEffect().getStartMessage();
         switch (potionType.getEffect()) {
             case HEAL:
                 owner.heal(potionValue);
-                effectAnnouncement = "been healed by " + potionValue + " HP";
+                message = message + potionValue + " HP";
                 break;
             case STRENGTH:
-                owner.boostStrength(potionType.getDuration(), potionValue);
-                effectAnnouncement = "become stronger by " + potionValue + durationString;
+                owner.giveEffect(potionType.getEffect(), new ActiveEffect(potionType.getDuration(), potionValue));
                 break;
             case RESISTANCE:
-                owner.boostResistance(potionType.getDuration(), potionValue);
-                effectAnnouncement = "become more resistant by " + potionValue + durationString;
+                owner.giveEffect(potionType.getEffect(), new ActiveEffect(potionType.getDuration(), potionValue));
             default:
                 display.displayInfo("The potion effect has not been found");
         }
-        display.announceSuccess("You have consumed your " + potionType.toString() + " and have " + effectAnnouncement);
+        display.announceSuccess(message);
     }
 
     public PotionType getPotionType() {

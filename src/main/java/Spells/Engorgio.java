@@ -5,6 +5,7 @@ import Items.Item;
 import Game.Game;
 
 public class Engorgio extends Spell{
+    //WILL NEED TO IMPLEMENT A MAXIMUM SIZE THAT THE ITEM CAN REACH OTHERWISE THE SPELL IS OVERPOWERED
     final double ENLARGE_COEFFICIENT = 2.25;
 
     public Engorgio(Game game, Wizard wizard) {

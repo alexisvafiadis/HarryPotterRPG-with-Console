@@ -6,7 +6,6 @@ public class Wand {
     Core core;
     Wood wood;
     int size;
-    String name;
     Wizard owner;
     int nbOfUses;
 
@@ -18,13 +17,23 @@ public class Wand {
         nbOfUses = 0;
     }
 
-    /*
-    public boolean cast(Spell spell, Character victim) {
-        if (random() < owner.getAccuracy() * spell.getMasteryScore()) {
-        }
-        else {
-
-        }
+    public Core getCore() {
+        return core;
     }
-     */
+
+    public Wood getWood() {
+        return wood;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Wizard getOwner() {
+        return owner;
+    }
+
+    public int getNbOfUses() {
+        return nbOfUses;
+    }
 }

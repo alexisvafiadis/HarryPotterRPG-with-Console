@@ -1,8 +1,7 @@
 package Characters;
 
+import Potions.EffectType;
 import Characteristics.Pet;
-import Console.Display;
-import Console.InputParser;
 import Game.Game;
 import Characteristics.House;
 import Potions.Potion;
@@ -61,8 +60,8 @@ public class Wizard extends Character{
     }
 
     public double amplifyDamage(double damage) {
-        if (strengthEffect) {
-            damage = damage * strengthMultiplier;
+        if (hasEffect(EffectType.STRENGTH)) {
+            damage = damage * activeEffects.get(EffectType.STRENGTH).getValue();
         }
         return damage;
     }
@@ -74,8 +73,8 @@ public class Wizard extends Character{
     }
 
     public double defendDamage(double damage) {
-        if (resistanceEffect) {
-            damage = damage * resistanceMultiplier;
+        if (hasEffect(EffectType.RESISTANCE)) {
+            damage = damage * activeEffects.get(EffectType.RESISTANCE).getValue();
         }
         damage = damage * house.getDAMAGE_VULNERABILITY();
         return damage;

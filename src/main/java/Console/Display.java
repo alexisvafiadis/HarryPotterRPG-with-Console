@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Display {
     Game game;
-    int DEFAULT_WRITING_DELAY = 18;
+    int DEFAULT_WRITING_DELAY = 15;
     final int FAST_WRITING_DELAY = 5;
     final int SLOW_WRITING_DELAY = 30;
 

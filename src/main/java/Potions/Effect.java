@@ -1,6 +1,0 @@
-package Potions;
-
-public enum Effect {
-    HEAL, STRENGTH, RESISTANCE
-    //INVISIBILITY, SPEED, REGENERATION, SPELL_CAST_SPEED
-}

@@ -8,6 +8,8 @@ import Items.Item;
 import Items.ItemType;
 import Game.Game;
 import Items.Weapon;
+import Potions.ActiveEffect;
+import Potions.EffectType;
 import Potions.Potion;
 import Potions.PotionType;
 import Spells.*;
@@ -180,12 +182,14 @@ public abstract class Level {
                             ((Confundus) player.getKnownSpells().get(spellChoice)).cast(enemy);
                             break;
                         case "Accio":
-                            ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
+                            if (this instanceof Level2) {
+                                ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
+                            }
                             break;
                     }
                     break;
                 case "Hide":
-                    hiding = true;
+                    player.giveEffect(EffectType.HIDE, new ActiveEffect(1, 0.75));
                     display.displayInfo("You are now hiding");
                     break;
                 case "Use a potion":
@@ -198,12 +202,7 @@ public abstract class Level {
             enemy.finishRound();
             player.finishRound();
             if (roundNumber % enemy.getAttackDelay() == 0) {
-                if (!hiding || Math.random() > 0.7) {
-                    enemy.act();
-                }
-                else {
-                    display.announceSuccess("Well done, " + enemy.getName() + " couldn't find you!");
-                }
+                enemy.act();
             }
             roundNumber += 1;
         }

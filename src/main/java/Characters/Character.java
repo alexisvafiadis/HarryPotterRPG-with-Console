@@ -1,9 +1,14 @@
 package Characters;
 
+import Potions.EffectType;
 import Console.Display;
 import Console.InputParser;
 import Items.Weapon;
 import Game.Game;
+import Potions.ActiveEffect;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Character {
     //Global attributes
@@ -25,7 +30,11 @@ public abstract class Character {
     protected boolean alive;
     protected boolean disarmed;
     protected boolean confused;
+    protected boolean laughing;
+    protected int nbOfLaughingRoundsLeft;
     protected int nbOfConfusionRoundsLeft;
+    Map<EffectType, ActiveEffect> activeEffects;
+    protected int nbOfDisarmedRoundsLeft;
 
     public void spawn(double positionX, double positionY, double positionZ) {
         this.positionX = positionX;
@@ -33,26 +42,26 @@ public abstract class Character {
         this.positionZ = positionZ;
         HP = maxHP;
         alive = true;
+        activeEffects = new HashMap<>();
         confused = false;
         disarmed = false;
     }
 
-    public void attack(Character victim) {
-        if (canAttack()) {
+    public void attack(Character target) {
+        if (canAttack(target)) {
             double damage = getPhysicalDamage();
-            display.displayInfo(String.valueOf(damage));
             if (hasWeapon()) {
                 damage += weapon.getAttackDamage();
             }
             if (this instanceof Wizard) {
                 damage = ((Wizard) this).amplifyDamage(damage);
-                display.displayInfo("You have damaged " + victim.getName());
+                display.displayInfo("You have damaged " + target.getName());
             }
-            if (victim instanceof Wizard) {
-                damage = ((Wizard) victim).defendDamage(damage);
+            if (target instanceof Wizard) {
+                damage = ((Wizard) target).defendDamage(damage);
                 display.displayInfo("You have been attacked by " + getName());
             }
-            victim.damage(damage);
+            target.damage(damage);
         }
     }
 
@@ -114,6 +123,14 @@ public abstract class Character {
         this.disarmed = disarmed;
     }
 
+    public boolean hasEffect(EffectType et) {return (activeEffects.containsKey(et));}
+
+    public void giveEffect(EffectType effectType, ActiveEffect activeEffect) {
+        activeEffects.put(effectType, activeEffect);
+    }
+
+    public void removeEffect(EffectType et) { activeEffects.remove(et); }
+
     public Weapon getWeapon() {
         return weapon;
     }
@@ -126,28 +143,38 @@ public abstract class Character {
 
     public abstract void attackedByExpelliarmus();
 
-    public boolean canAttack() {
-        if (!isConfused()) { return true;}
-        if (Math.random() < 0.5) {
+    public boolean canAttack(Character target) {
+        if (getEffectProbability(EffectType.LAUGH)) {
+            display.displayInfo(getName() + " couldn't attack because they are laughing");
+            return false;
+        }
+        if (getEffectProbability(EffectType.CONFUSION)) {
             display.displayInfo(getName() + " couldn't attack because they are confused.");
             return false;
         }
-        else {
-            display.displayInfo(getName() + " managed to attack despite being confused.");
-            return true;
+        if (target.getEffectProbability(EffectType.HIDE)) {
+            display.announceSuccess("Well done, " + getName() + " couldn't find you!");
+            return false;
         }
+        return true;
     }
 
-    public boolean isConfused() {
-        return confused;
-    }
-
-    public void setConfused(boolean confused) {
-        this.confused = confused;
+    public boolean getEffectProbability(EffectType et) {
+        return (activeEffects.containsKey(et) && Math.random() < activeEffects.get(et).getValue());
     }
 
     public void finishRound() {
-        if (confused) { nbOfConfusionRoundsLeft -= -1; }
+        for (EffectType effectType : activeEffects.keySet()) {
+            if (activeEffects.get(effectType).getNbOfRoundsLeft() == 1) {
+                String start;
+                if (this instanceof Wizard) {start = "You are"; } else { start = "He is ";}
+                display.displayInfo(start + effectType.getEndMessage());
+                activeEffects.remove(effectType);
+            }
+            else {
+                activeEffects.get(effectType).reduceNbOfRounds();
+            }
+        }
     }
 
     public Game getGame() {

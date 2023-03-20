@@ -3,18 +3,20 @@ package Spells;
 import Characters.Character;
 import Characters.Wizard;
 import Game.Game;
+import Potions.ActiveEffect;
+import Potions.EffectType;
 
 public class Confundus extends Spell{
-    final double CONFUSION_DURATION = 4;
+    final int EFFECT_DURATION = 4;
 
     public Confundus(Game game, Wizard wizard) {
         super(game, wizard, "Confundus", 5, 1, 0.4, 0.5);
     }
 
-    public void cast(Character victim) {
+    public void cast(Character target) {
         if (isCastSuccessful(getWizard())) {
-            game.getDisplay().announceSuccess("You have confused " + victim.getName());
-            victim.setConfused(true);
+            target.giveEffect(EffectType.CONFUSION, new ActiveEffect(EFFECT_DURATION, 0.6));
+            getDisplay().announceSuccess(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
         }
     }
 
