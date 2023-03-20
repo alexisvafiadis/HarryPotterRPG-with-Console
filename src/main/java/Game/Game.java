@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Game {
-    Wizard player;
-    List<Level> levels;
-    Display display;
-    InputParser inputParser;
+    private List<Level> levels;
+    private Display display;
+    private InputParser inputParser;
+    private Wizard player;
 
     int currentLevelNumber;
     final boolean DEBUG_MODE = true;
@@ -23,12 +23,13 @@ public class Game {
         inputParser = new InputParser(this, new Scanner(System.in));
         player = new Wizard(this);
         introduce(player);
-        levels = new ArrayList<Level>();
+        levels = new ArrayList<>();
         levels.add(new Level1(this));
         levels.add(new Level2(this));
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
+        startLevel(2);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }
@@ -50,7 +51,7 @@ public class Game {
 
     public void startLevel(int levelNumber) {
         this.currentLevelNumber = levelNumber;
-        levels.get(currentLevelNumber - 1).start();
+        levels.get(levelNumber - 1).start();
     }
 
     public Display getDisplay() {

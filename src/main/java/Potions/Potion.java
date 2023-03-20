@@ -26,7 +26,7 @@ public class Potion {
         switch (potionType.getEffect()) {
             case HEAL:
                 owner.heal(potionValue);
-                message = message + potionValue + " HP";
+                message = message + " " + potionValue + " HP";
                 break;
             case STRENGTH:
                 owner.giveEffect(potionType.getEffect(), new ActiveEffect(potionType.getDuration(), potionValue));

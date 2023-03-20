@@ -6,15 +6,11 @@ import Game.Game;
 public class Expectopatronum extends Spell{
 
     public Expectopatronum(Game game, Wizard wizard) {
-        super(game, wizard, "Expecto Patronum", 5, 1, 0.25, 0.3);
+        super(game, wizard, "Expecto Patronum", 5, 1, 0.15, 0.08);
     }
 
     public boolean cast() {
-        if (isCastSuccessful(getWizard())) {
-            getDisplay().announceSuccess("You have successfully summoned a protector!");
-            return true;
-        }
-        return false;
+        return (isCastSuccessful(getWizard()));
     }
 
     @Override

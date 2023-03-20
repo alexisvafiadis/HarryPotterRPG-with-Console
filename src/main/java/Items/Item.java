@@ -1,10 +1,10 @@
 package Items;
 
 public class Item {
-    double positionX;
-    double positionY;
-    double positionZ;
-    ItemType itemType;
+    private double positionX;
+    private double positionY;
+    private double positionZ;
+    private ItemType itemType;
 
     public Item(ItemType itemType, double positionX, double positionY, double positionZ) {
         this.itemType = itemType;

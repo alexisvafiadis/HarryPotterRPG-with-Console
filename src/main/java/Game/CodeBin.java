@@ -8,6 +8,18 @@ public class CodeBin {
     /*
     //just to put code that I replaced for a better one but could be useful later
 
+    public void boostStrength(int duration, double amplifier) {
+        nbOfStrengthRoundsLeft = duration;
+        strengthMultiplier = amplifier;
+        strengthEffect = true;
+    }
+
+    public void boostResistance(int duration, double amplifier) {
+        nbOfResistanceRoundsLeft = duration;
+        resistanceMultiplier = amplifier;
+        resistanceEffect = true;
+    }
+
     HashMap<ItemType, Integer> itemTypeWeights = new HashMap<>();
 
     public ItemType generateItemType() {

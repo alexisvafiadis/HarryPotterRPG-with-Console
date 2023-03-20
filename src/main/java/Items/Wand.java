@@ -3,11 +3,11 @@ package Items;
 import Characters.Wizard;
 
 public class Wand {
-    Core core;
-    Wood wood;
-    int size;
-    Wizard owner;
-    int nbOfUses;
+    private Core core;
+    private Wood wood;
+    private int size;
+    private Wizard owner;
+    private int nbOfUses;
 
     public Wand(Core core, Wood wood, int size, Wizard owner) {
         this.core = core;

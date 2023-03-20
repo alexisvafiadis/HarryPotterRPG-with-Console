@@ -28,21 +28,25 @@ public abstract class Level {
 
     //Level specific attributes
     protected int number;
+    protected String name;
     protected String place;
     protected boolean outdoors;
-    protected final double HP_UPGRADE = 10;
-    protected final double ATTACK_DAMAGE_UPGRADE = 10;
+    protected final double HP_UPGRADE = 1.25;
+    protected final double SPELL_DAMAGE_UPGRADE = 1.3;
     protected final double DAMAGE_RESISTANCE_UPGRADE = 10;
-    protected final double ACCURACY_UPGRADE = 10;
+    protected final double ACCURACY_UPGRADE = 1.25;
     protected List<Item> items;
     protected List<ItemType> possibleItemTypes;
+    protected int roundNumber;
 
-    public Level(Game game, String place, int number, boolean outdoors) {
+
+    public Level(Game game, String name, String place, int number, boolean outdoors) {
         this.game = game;
         display = game.getDisplay();
         inputParser = game.getInputParser();
         this.player = game.getPlayer();
 
+        this.name = name;
         this.place = place;
         this.number = number;
         this.outdoors = outdoors;
@@ -71,7 +75,10 @@ public abstract class Level {
 
     public void wishGoodLuck() {display.displayInfo("Good luck!"); }
 
-    public void giveLevelInfo() {display.displayInfo("--- Level " + number + " : " + "the " + place + " ---");}
+    public void giveLevelInfo() {
+        display.displayInfo("--- Level " + number + " : " + name + " ---");
+        display.displayInfo("You arrive at " + place);
+    }
 
     public void askForUpgrade() {
         HashMap<Integer, String> validInputs = new HashMap<>();
@@ -85,7 +92,7 @@ public abstract class Level {
                 game.getPlayer().upgradeHP(HP_UPGRADE);
                 break;
             case "Attack Damage":
-                game.getPlayer().upgradeDamage(ATTACK_DAMAGE_UPGRADE);
+                game.getPlayer().upgradeDamage(SPELL_DAMAGE_UPGRADE);
                 break;
             case "Damage Resistance":
                 game.getPlayer().upgradeResistance(DAMAGE_RESISTANCE_UPGRADE);
@@ -97,16 +104,11 @@ public abstract class Level {
     }
 
     public void fight(AbstractEnemy enemy) {
-        boolean hiding = false;
+        roundNumber = 1;
         HashMap<Integer, String> spellInputs = getSpellInputs();
-        int roundNumber = 1;
         while (enemy.isAlive() && player.isAlive()) {
             display.displayHP(player, true);
             display.displayHP(enemy, false);
-            if (hiding) {
-                hiding = false;
-                display.displayInfo("You are no longer hiding.");
-            }
             HashMap<Integer, String> optionInputs = new HashMap<>();
             optionInputs.put(1, "Look around");
             optionInputs.put(2, "Cast a spell");
@@ -122,20 +124,7 @@ public abstract class Level {
             String choice = inputParser.getNumberToStringInput("What do you want to do?", optionInputs, "to");
             switch (choice) {
                 case "Look around":
-                    double random = Math.random();
-                    if (random < 0.5) {
-                        PotionType potionType =  generatePotionType();
-                        display.announceDiscovery("Good job, you have found a " + potionType.toString() + "!");
-                        player.addPotion(new Potion(game, player, potionType));
-                    }
-                    else if (random < 0.9) {
-                        ItemType randomItemType = generateItemType();
-                        display.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
-                        addItem(new Item(randomItemType, 0, 0, 0));
-                    }
-                    else {
-                        display.announceFail("Unfortunately, you haven't found anything.");
-                    }
+                    lookAround();
                     break;
                 case "Cast a spell":
                     String spellChoice = inputParser.getNumberToStringInput("What spell do you want to use?", spellInputs, "for");
@@ -186,11 +175,16 @@ public abstract class Level {
                                 ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
                             }
                             break;
+                        case "Expecto Patronum":
+                            if (this instanceof Level3) {
+                                ((Expectopatronum) player.getKnownSpells().get(spellChoice)).cast();
+                                //change boolean to true
+                            }
+                            else { display.displayInfo("This spell is useless here."); }
                     }
                     break;
                 case "Hide":
                     player.giveEffect(EffectType.HIDE, new ActiveEffect(1, 0.75));
-                    display.displayInfo("You are now hiding");
                     break;
                 case "Use a potion":
                     player.chooseAndConsumePotion();
@@ -205,6 +199,23 @@ public abstract class Level {
                 enemy.act();
             }
             roundNumber += 1;
+        }
+    }
+
+    public void lookAround() {
+        double random = Math.random();
+        if (random < 0.5) {
+            PotionType potionType =  generatePotionType();
+            display.announceDiscovery("Good job, you have found a " + potionType.toString() + "!");
+            player.addPotion(new Potion(game, player, potionType));
+        }
+        else if (random < 0.9) {
+            ItemType randomItemType = generateItemType();
+            display.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
+            addItem(new Item(randomItemType, 0, 0, 0));
+        }
+        else {
+            display.announceFail("Unfortunately, you haven't found anything.");
         }
     }
 

@@ -9,7 +9,7 @@ public class Level1 extends Level{
     Wizard player;
 
     public Level1(Game game) {
-        super(game, "Toilets of the Dungeon", 1, false);
+        super(game, "The Philosopher’s Stone", "Toilets of the Dungeon", 1, false);
         player = game.getPlayer();
         display = game.getDisplay();
         inputParser = game.getInputParser();

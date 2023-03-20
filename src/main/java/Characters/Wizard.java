@@ -26,19 +26,9 @@ public class Wizard extends Character{
     final double DEFAULT_MAX_HP = 100;
     final double PHYSICAL_DAMAGE = 5;
     final double VULNERABILITY_TO_MAGIC = 0.95;
-    double damageMultiplier = 1;
+    double spellDamageMultiplier = 1;
     double accuracy = 0.8;
     double resistance = 1;
-
-    //Potion effects
-    boolean strengthEffect;
-    double strengthMultiplier;
-    int nbOfStrengthRoundsLeft;
-    boolean resistanceEffect;
-    double resistanceMultiplier;
-    int nbOfResistanceRoundsLeft;
-    boolean invisibilityEffect;
-    boolean speedEffect;
 
     public Wizard(Game game) {
         this.knownSpells = new HashMap<>();
@@ -52,10 +42,6 @@ public class Wizard extends Character{
     @Override
     public void spawn(double positionX, double positionY, double positionZ) {
         super.spawn(positionX, positionY, positionZ);
-        strengthEffect = false;
-        resistanceEffect = false;
-        invisibilityEffect = false;
-        speedEffect = false;
         setWeapon(null);
     }
 
@@ -67,7 +53,7 @@ public class Wizard extends Character{
     }
 
     public double amplifySpellDamage(double damage) {
-        damage = damage * house.getSPELL_DAMAGE_MULTIPLIER();
+        damage = damage * spellDamageMultiplier * house.getSPELL_DAMAGE_MULTIPLIER();
         display.displayInfo("damage amplifier : " + house.getSPELL_DAMAGE_MULTIPLIER());
         return damage;
     }
@@ -143,17 +129,17 @@ public class Wizard extends Character{
 
     public void upgradeDamage(double upgrade) {
         display.announceReward("Your damage has been upgraded!");
-        damageMultiplier *= upgrade;
+        spellDamageMultiplier *= upgrade;
     }
 
     public void upgradeHP(double upgrade) {
         display.announceReward("Your HP has been upgraded!");
-        setMaxHP(getMaxHP() + upgrade);
+        setMaxHP(getMaxHP() * upgrade);
     }
 
     public void upgradeAccuracy(double upgrade) {
         display.announceReward("Your accuracy has been upgraded!");
-        accuracy += upgrade;
+        accuracy *= upgrade;
     }
 
     public void upgradeResistance(double upgrade) {
@@ -175,18 +161,6 @@ public class Wizard extends Character{
         return (!potions.isEmpty());
     }
 
-    public void boostStrength(int duration, double amplifier) {
-        nbOfStrengthRoundsLeft = duration;
-        strengthMultiplier = amplifier;
-        strengthEffect = true;
-    }
-
-    public void boostResistance(int duration, double amplifier) {
-        nbOfResistanceRoundsLeft = duration;
-        resistanceMultiplier = amplifier;
-        resistanceEffect = true;
-    }
-
     @Override
     public void die() {
         game.getCurrentLevel().fail();
@@ -201,7 +175,5 @@ public class Wizard extends Character{
     @Override
     public void finishRound() {
         super.finishRound();
-        if (strengthEffect) {nbOfStrengthRoundsLeft -= 1;}
-        if (resistanceEffect) {nbOfResistanceRoundsLeft -= 1; }
     }
 }

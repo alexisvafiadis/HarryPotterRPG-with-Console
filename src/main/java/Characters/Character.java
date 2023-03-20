@@ -167,7 +167,7 @@ public abstract class Character {
         for (EffectType effectType : activeEffects.keySet()) {
             if (activeEffects.get(effectType).getNbOfRoundsLeft() == 1) {
                 String start;
-                if (this instanceof Wizard) {start = "You are"; } else { start = "He is ";}
+                if (this instanceof Wizard) {start = "You are "; } else { start = "He is ";}
                 display.displayInfo(start + effectType.getEndMessage());
                 activeEffects.remove(effectType);
             }
@@ -185,5 +185,17 @@ public abstract class Character {
         this.game = game;
         this.inputParser = game.getInputParser();
         this.display = game.getDisplay();
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public double getPositionZ() {
+        return positionZ;
     }
 }

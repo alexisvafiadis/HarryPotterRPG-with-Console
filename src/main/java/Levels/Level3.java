@@ -1,5 +1,6 @@
 package Levels;
 
+import Characters.Dementor;
 import Characters.Troll;
 import Characters.Wizard;
 import Game.Game;
@@ -7,14 +8,20 @@ import Game.Game;
 public class Level3 extends Level{
 
     public Level3(Game game) {
-        super(game, "Great Lake", 3, true);
+        super(game, "The Prisoner of Azkaban","the Great Lake", 3, true);
         display = game.getDisplay();
         inputParser = game.getInputParser();
     }
 
     @Override
     public void start() {
+        player.spawn(0,0,0);
         super.start();
+        boolean expectoPatronumUsed = false;
+        while (!expectoPatronumUsed) {
+            fight(new Dementor(game));
+        }
+        finish();
     }
 
     @Override
@@ -27,7 +34,8 @@ public class Level3 extends Level{
     public void introduce() {
         giveLevelInfo();
         display.displayInfo("For this level, you have to scare the Dementors away.");
-        display.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus");
+        display.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus.");
+        display.displayInfo("It is a very difficult spell to cast,, so it may take some time to use it successfully.");
         display.announceReward("You have learned the spell Expecto Patronum");
         wishGoodLuck();
     }

@@ -10,9 +10,9 @@ public class Dementor extends Boss{
 
     public Dementor(Game game) {
         setGame(game);
-        setMaxHP(20);
-        setPhysicalDamage(5);
-        setAttackDelay(2);
+        setMaxHP(40);
+        setPhysicalDamage(12);
+        setAttackDelay(1);
         setVulnerabilityToMagic(1);
         setWeapon(null);
         spawn(positionX, positionY, positionZ);

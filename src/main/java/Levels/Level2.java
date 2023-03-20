@@ -12,7 +12,7 @@ import Spells.WingardiumLeviosa;
 public class Level2 extends Level{
 
     public Level2(Game game) {
-        super(game, "Chamber of Secrets", 2, false);
+        super(game, "The Chamber of Secrets","the Chamber of Secrets", 2, false);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Level2 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have killed the Basilic");
+        display.congratulate("Well done, you have killed the Basilisk");
         if (!player.knowsSpell("Accio")) {
             display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
             teachAccio();
@@ -37,14 +37,14 @@ public class Level2 extends Level{
     @Override
     public void introduce() {
         giveLevelInfo();
-        display.displayInfo("For this level, you have to defeat the Basilic. It is a very venomous snake that kills anyone that makes eye contact with it.");
+        display.displayInfo("For this level, you have to defeat the Basilisk. It is a very venomous snake that kills anyone that makes eye contact with it.");
         if (player.getHouse().toString().equals("Gryffindor")) {
             display.displayInfo("In order to do that, you have to use the Gryffindor sword. Here it is.");
             display.announceReward("You have been given the Gryffindor sword");
             player.setWeapon(Weapon.SWORD_OF_GRYFFINDOR);
         }
         else {
-            display.displayInfo("In order to do that, you will probably need the Accio spell to summon a Basilic's fang and use it against itself.");
+            display.displayInfo("In order to do that, you will probably need the Accio spell to summon a Basilisk's fang and use it against itself.");
             teachAccio();
         }
         wishGoodLuck();
