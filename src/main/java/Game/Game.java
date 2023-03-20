@@ -29,7 +29,6 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
-        startLevel(2);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }

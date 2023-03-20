@@ -129,17 +129,17 @@ public class Wizard extends Character{
 
     public void upgradeDamage(double upgrade) {
         display.announceReward("Your damage has been upgraded!");
-        spellDamageMultiplier *= upgrade;
+        spellDamageMultiplier += upgrade;
     }
 
     public void upgradeHP(double upgrade) {
         display.announceReward("Your HP has been upgraded!");
-        setMaxHP(getMaxHP() * upgrade);
+        setMaxHP(getMaxHP() + upgrade);
     }
 
     public void upgradeAccuracy(double upgrade) {
         display.announceReward("Your accuracy has been upgraded!");
-        accuracy *= upgrade;
+        accuracy += upgrade;
     }
 
     public void upgradeResistance(double upgrade) {

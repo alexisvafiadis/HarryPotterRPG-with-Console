@@ -21,7 +21,7 @@ public class Level1 extends Level{
         super.start();
         Troll troll = new Troll(game);
         troll.spawn(0, 0, 0);
-        fight(troll);
+        new Battle(game, this, player, troll);
         finish();
     }
 

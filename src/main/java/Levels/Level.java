@@ -31,13 +31,14 @@ public abstract class Level {
     protected String name;
     protected String place;
     protected boolean outdoors;
-    protected final double HP_UPGRADE = 1.25;
-    protected final double SPELL_DAMAGE_UPGRADE = 1.3;
-    protected final double DAMAGE_RESISTANCE_UPGRADE = 10;
-    protected final double ACCURACY_UPGRADE = 1.25;
     protected List<Item> items;
     protected List<ItemType> possibleItemTypes;
-    protected int roundNumber;
+
+    //Constants
+    protected final double HP_UPGRADE = 20;
+    protected final double SPELL_DAMAGE_UPGRADE = 0.2;
+    protected final double DAMAGE_RESISTANCE_UPGRADE = 0.2;
+    protected final double ACCURACY_UPGRADE = 0.25;
 
 
     public Level(Game game, String name, String place, int number, boolean outdoors) {
@@ -55,8 +56,8 @@ public abstract class Level {
     public abstract void introduce();
 
     public void start() {
-        items = new ArrayList<>();
         setPossibleItemTypes();
+        items = new ArrayList<>();
         introduce();
     }
 
@@ -103,179 +104,14 @@ public abstract class Level {
         }
     }
 
-    public void fight(AbstractEnemy enemy) {
-        roundNumber = 1;
-        HashMap<Integer, String> spellInputs = getSpellInputs();
-        while (enemy.isAlive() && player.isAlive()) {
-            display.displayHP(player, true);
-            display.displayHP(enemy, false);
-            HashMap<Integer, String> optionInputs = new HashMap<>();
-            optionInputs.put(1, "Look around");
-            optionInputs.put(2, "Cast a spell");
-            optionInputs.put(3, "Hide");
-            if (player.hasAnyPotion()) {
-                optionInputs.put(4, "Use a potion");
-            }
-            if (player.hasWeapon()) {
-                int choiceNumber = 4;
-                if (player.hasAnyPotion())  { choiceNumber = 5;}
-                optionInputs.put(choiceNumber, "Attack with your weapon");
-            }
-            String choice = inputParser.getNumberToStringInput("What do you want to do?", optionInputs, "to");
-            switch (choice) {
-                case "Look around":
-                    lookAround();
-                    break;
-                case "Cast a spell":
-                    String spellChoice = inputParser.getNumberToStringInput("What spell do you want to use?", spellInputs, "for");
-                    switch(spellChoice) {
-                        case "Wingardium Leviosa":
-                            if (getItems().isEmpty()) {
-                                display.announceFail("You haven't found any item to levitate. Try looking around.");
-                                //gotta be careful here, continue could cause problems in the round system
-                                continue;
-                            } else {
-                                display.displayInfo(items.toString());
-                                HashMap<Integer, String> itemInputs = getItemInputs();
-                                int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for");
-                                Item item = items.get(itemIndex);
-                                if (((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy)) {
-                                    items.remove(item);
-                                }
-                            }
-                            break;
-                        case "Expelliarmus":
-                            if (enemy.isDisarmed()) {
-                                display.announceFail("You have already disarmed the " + enemy.getName() + ", so this was uneffective");
-                            } else if (!enemy.hasWeapon()) {
-                                display.announceFail(enemy.getName() + " doesn't have a weapon");
-                            } else {
-                                enemy.setDisarmed(true);
-                                enemy.attackedByExpelliarmus();
-                                display.announceSuccess("You disarmed the " + enemy.getName());
-                            }
-                            break;
-                        case "Engorgio":
-                            if (getItems().isEmpty()) {
-                                display.announceFail("You haven't found any item to engorge. Try looking around.");
-                                //gotta be careful here, continue could cause problems in the round system
-                                continue;
-                            } else {
-                                HashMap<Integer, String> itemInputs = getItemInputs();
-                                int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for");
-                                Item item = items.get(itemIndex);
-                                ((Engorgio) player.getKnownSpells().get(spellChoice)).cast(item);
-                            }
-                            break;
-                        case "Confundus":
-                            ((Confundus) player.getKnownSpells().get(spellChoice)).cast(enemy);
-                            break;
-                        case "Accio":
-                            if (this instanceof Level2) {
-                                ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
-                            }
-                            break;
-                        case "Expecto Patronum":
-                            if (this instanceof Level3) {
-                                ((Expectopatronum) player.getKnownSpells().get(spellChoice)).cast();
-                                //change boolean to true
-                            }
-                            else { display.displayInfo("This spell is useless here."); }
-                    }
-                    break;
-                case "Hide":
-                    player.giveEffect(EffectType.HIDE, new ActiveEffect(1, 0.75));
-                    break;
-                case "Use a potion":
-                    player.chooseAndConsumePotion();
-                    break;
-                case "Attack with your weapon":
-                    player.attack(enemy);
-                    break;
-            }
-            enemy.finishRound();
-            player.finishRound();
-            if (roundNumber % enemy.getAttackDelay() == 0) {
-                enemy.act();
-            }
-            roundNumber += 1;
-        }
-    }
-
-    public void lookAround() {
-        double random = Math.random();
-        if (random < 0.5) {
-            PotionType potionType =  generatePotionType();
-            display.announceDiscovery("Good job, you have found a " + potionType.toString() + "!");
-            player.addPotion(new Potion(game, player, potionType));
-        }
-        else if (random < 0.9) {
-            ItemType randomItemType = generateItemType();
-            display.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
-            addItem(new Item(randomItemType, 0, 0, 0));
-        }
-        else {
-            display.announceFail("Unfortunately, you haven't found anything.");
-        }
-    }
-
-    public HashMap<Integer, String> getSpellInputs() {
-        HashMap<Integer, String> spellInputs = new HashMap<>();
-        int i = 0;
-        HashMap<String, Spell> playerKnownSpells = player.getKnownSpells();
-        for (String spellName : playerKnownSpells.keySet()) {
-            spellInputs.put(i, spellName);
-            i++;
-        }
-        return spellInputs;
-    }
-
-    public HashMap<Integer, String> getItemInputs() {
-        HashMap<Integer, String> itemInputs = new HashMap<>();
-        for (int itemIndex = 0; itemIndex < items.size() ; itemIndex++) {
-            itemInputs.put(itemIndex, items.get(itemIndex).getItemType().toString());
-        }
-        return itemInputs;
+    public List<ItemType> getPossibleItemTypes() {
+        return possibleItemTypes;
     }
 
     public void setPossibleItemTypes() {
         possibleItemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
         if (outdoors) { possibleItemTypes.removeIf(it -> (it.getWhere() == 0)); }
         else { possibleItemTypes.removeIf(it -> (it.getWhere() == 1)); }
-    }
-
-    public ItemType generateItemType() {
-        // I used weighted randomness instead of generating a random number from 0 to 1 and using a lot of ifs so that if I add an item I don't need to
-        // change the other numbers
-        // Inspired from https://stackoverflow.com/questions/6737283/weighted-randomness-in-java
-
-        double totalWeight = 0.0;
-        for (ItemType pt : possibleItemTypes) {
-            totalWeight += pt.getWeight();
-        }
-
-        int idx = 0;
-        for (double r = Math.random() * totalWeight; idx < possibleItemTypes.size() - 1; ++idx) {
-            r -= possibleItemTypes.get(idx).getWeight();
-            if (r <= 0.0) break;
-        }
-        return possibleItemTypes.get(idx);
-    }
-
-    public PotionType generatePotionType() {
-        PotionType[] potionTypes = PotionType.values();
-
-        double totalWeight = 0.0;
-        for (PotionType pt : potionTypes) {
-            totalWeight += pt.getWeight();
-        }
-
-        int idx = 0;
-        for (double r = Math.random() * totalWeight; idx < potionTypes.length - 1; ++idx) {
-            r -= potionTypes[idx].getWeight();
-            if (r <= 0.0) break;
-        }
-        return potionTypes[idx];
     }
 
     public void addItem(Item item) {

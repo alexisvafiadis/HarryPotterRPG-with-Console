@@ -11,7 +11,7 @@ public class Troll extends Boss{
 
     public Troll(Game game) {
         setGame(game);
-        setMaxHP(300);
+        setMaxHP(3);
         setPhysicalDamage(14);
         setWeapon(Weapon.CLUB);
         setAttackDelay(2);

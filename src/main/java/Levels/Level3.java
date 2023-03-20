@@ -6,6 +6,7 @@ import Characters.Wizard;
 import Game.Game;
 
 public class Level3 extends Level{
+    boolean expectoPatronumUsed;
 
     public Level3(Game game) {
         super(game, "The Prisoner of Azkaban","the Great Lake", 3, true);
@@ -17,9 +18,9 @@ public class Level3 extends Level{
     public void start() {
         player.spawn(0,0,0);
         super.start();
-        boolean expectoPatronumUsed = false;
+        expectoPatronumUsed = false;
         while (!expectoPatronumUsed) {
-            fight(new Dementor(game));
+            new Battle(game, this, player, new Dementor(game));
         }
         finish();
     }
@@ -38,5 +39,9 @@ public class Level3 extends Level{
         display.displayInfo("It is a very difficult spell to cast,, so it may take some time to use it successfully.");
         display.announceReward("You have learned the spell Expecto Patronum");
         wishGoodLuck();
+    }
+
+    public void setExpectoPatronumUsed() {
+        this.expectoPatronumUsed = true;
     }
 }

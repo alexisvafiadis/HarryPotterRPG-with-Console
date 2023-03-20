@@ -21,8 +21,7 @@ public class Level2 extends Level{
         super.start();
         Basilisk basilisk = new Basilisk(game);
         basilisk.spawn(1,1,1);
-        fight(basilisk);
-    }
+        new Battle(game, this, player, basilisk);}
 
     @Override
     public void conclude() {
