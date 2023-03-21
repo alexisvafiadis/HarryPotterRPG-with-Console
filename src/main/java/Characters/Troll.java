@@ -5,18 +5,14 @@ import Items.Weapon;
 import Game.Game;
 
 public class Troll extends Boss{
-    double positionX;
-    double positionY;
-    double positionZ;
 
     public Troll(Game game) {
         setGame(game);
-        setMaxHP(3);
-        setPhysicalDamage(14);
+        setMaxHP(100);
+        setPhysicalDamage(16);
         setWeapon(Weapon.CLUB);
         setAttackDelay(2);
         setVulnerabilityToMagic(1);
-        spawn(positionX, positionY, positionZ);
     }
 
     public void act() {

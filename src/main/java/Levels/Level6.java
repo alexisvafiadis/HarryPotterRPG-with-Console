@@ -1,6 +1,8 @@
 package Levels;
 
+import Characteristics.House;
 import Characters.Basilisk;
+import Characters.DeathEater;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -9,20 +11,25 @@ import Game.Game;
 import Spells.Accio;
 import Spells.WingardiumLeviosa;
 
-public class Level2 extends Level{
+public class Level6 extends Level{
 
-    public Level2(Game game) {
-        super(game, "The Chamber of Secrets","the Chamber of Secrets", 2, false);
+    public Level6(Game game) {
+        super(game, "The Half-blood Prince","Astronomy Tower", 6, true);
     }
 
     @Override
     public void start() {
         player.spawn(0,0,0);
         super.start();
-        Basilisk basilisk = new Basilisk(game);
-        basilisk.spawn(1,1,1);
-        new Battle(game, this, player, basilisk);
-        finish();
+        if (player.getHouse().equals(House.SLYTHERIN)) {
+
+        }
+        else {
+            DeathEater deathEater = new DeathEater(game);
+            deathEater.spawn(1, 1, 1);
+            new Battle(game, this, player, deathEater);
+            finish();
+        }
     }
 
     @Override

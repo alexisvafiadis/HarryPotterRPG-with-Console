@@ -110,8 +110,8 @@ public abstract class Level {
 
     public void setPossibleItemTypes() {
         possibleItemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
-        if (outdoors) { possibleItemTypes.removeIf(it -> (it.getWhere() == 0)); }
-        else { possibleItemTypes.removeIf(it -> (it.getWhere() == 1)); }
+        if (outdoors) { possibleItemTypes.removeIf(it -> (it.getWhere() != 1)); }
+        else { possibleItemTypes.removeIf(it -> (it.getWhere() != 0)); }
     }
 
     public void addItem(Item item) {

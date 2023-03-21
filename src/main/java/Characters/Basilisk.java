@@ -15,7 +15,6 @@ public class Basilisk extends Boss{
         setAttackDelay(1);
         setVulnerabilityToMagic(1);
         setWeapon(null);
-        spawn(positionX, positionY, positionZ);
     }
 
     public void act() {

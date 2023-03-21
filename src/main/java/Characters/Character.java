@@ -77,6 +77,10 @@ public abstract class Character {
         else { HP = HP - damage; }
     }
 
+    public void speak(String quote) {
+        display.displayQuote(getName(), quote);
+    }
+
     public double getHP() {
         return HP;
     }

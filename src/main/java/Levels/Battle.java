@@ -1,6 +1,7 @@
 package Levels;
 
 import Characters.AbstractEnemy;
+import Characters.DoloresUmbridge;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -39,7 +40,8 @@ public class Battle {
         roundNumber = 1;
         spellInputs = getSpellInputs();
 
-        while (getFightEndCondition()) {
+        while (getFightContinueCondition()) {
+            displayFightStartMessage();
             display.displayHP(player, true);
             display.displayHP(enemy, false);
             askPlayerForAction();
@@ -81,8 +83,9 @@ public class Battle {
         }
     }
 
-    public boolean getFightEndCondition() {
-        return (player.isAlive() && enemy.isAlive());
+    public boolean getFightContinueCondition() {
+        boolean bothFightersAlive = (player.isAlive() && enemy.isAlive());
+        return bothFightersAlive;
     }
 
     public void enemyAttack() {
@@ -176,7 +179,7 @@ public class Battle {
 
     public HashMap<Integer, String> getSpellInputs() {
         HashMap<Integer, String> spellInputs = new HashMap<>();
-        int i = 0;
+        int i = 1;
         HashMap<String, Spell> playerKnownSpells = player.getKnownSpells();
         for (String spellName : playerKnownSpells.keySet()) {
             spellInputs.put(i, spellName);
@@ -188,8 +191,8 @@ public class Battle {
     public HashMap<Integer, String> getItemInputs() {
         List<Item> items = level.getItems();
         HashMap<Integer, String> itemInputs = new HashMap<>();
-        for (int itemIndex = 0; itemIndex < items.size() ; itemIndex++) {
-            itemInputs.put(itemIndex, items.get(itemIndex).getItemType().toString());
+        for (int itemIndex = 1; itemIndex < items.size() ; itemIndex++) {
+            itemInputs.put(itemIndex, items.get(itemIndex - 1).getItemType().toString());
         }
         return itemInputs;
     }
@@ -228,5 +231,9 @@ public class Battle {
             if (r <= 0.0) break;
         }
         return potionTypes[idx];
+    }
+
+    public void displayFightStartMessage() {
+        display.displayInfo("You have started a battle against " + enemy.getName());
     }
 }

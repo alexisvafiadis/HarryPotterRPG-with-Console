@@ -51,6 +51,8 @@ public class Display {
 
     public void displayRequest(String request) { slowPrint(request, ConsoleColors.BLUE); }
 
+    public void displayQuote(String name, String quote) { slowPrint(name + " : " + quote, ConsoleColors.RESET) ;}
+
     public void congratulate(String congratulations) { slowPrint(congratulations, ConsoleColors.YELLOW_BRIGHT); }
 
     public void displayHP(Character character, boolean own) {

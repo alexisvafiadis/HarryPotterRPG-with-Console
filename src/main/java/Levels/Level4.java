@@ -21,6 +21,7 @@ public class Level4 extends Level{
         super.start();
         //spawn(voldemort)
         //fight(voldemort)
+        finish();
     }
 
     @Override
