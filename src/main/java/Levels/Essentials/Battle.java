@@ -1,4 +1,4 @@
-package Levels;
+package Levels.Essentials;
 
 import Characters.AbstractEnemy;
 import Characters.DoloresUmbridge;
@@ -9,6 +9,9 @@ import Game.Game;
 import Items.Item;
 import Items.ItemType;
 import Items.Weapon;
+import Levels.Level;
+import Levels.Level2;
+import Levels.Level3;
 import Potions.ActiveEffect;
 import Potions.EffectType;
 import Potions.Potion;

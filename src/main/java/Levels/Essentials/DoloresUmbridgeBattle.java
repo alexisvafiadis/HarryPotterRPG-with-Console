@@ -1,11 +1,13 @@
-package Levels;
+package Levels.Essentials;
 
 import Characters.AbstractEnemy;
 import Characters.DoloresUmbridge;
 import Characters.Wizard;
 import Game.Game;
+import Levels.Essentials.Battle;
+import Levels.Level;
 
-public class DoloresUmbridgeBattle extends Battle{
+public class DoloresUmbridgeBattle extends Battle {
     final int NB_OF_ROUNDS_BEFORE_WIN = 12;
 
     public DoloresUmbridgeBattle(Game game, Level level, Wizard player, AbstractEnemy enemy) {

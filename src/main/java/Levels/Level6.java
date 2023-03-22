@@ -1,15 +1,11 @@
 package Levels;
 
 import Characteristics.House;
-import Characters.Basilisk;
 import Characters.DeathEater;
-import Characters.Wizard;
-import Console.Display;
-import Console.InputParser;
 import Items.Weapon;
 import Game.Game;
+import Levels.Essentials.Battle;
 import Spells.Accio;
-import Spells.WingardiumLeviosa;
 
 public class Level6 extends Level{
 
@@ -19,14 +15,14 @@ public class Level6 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0,0);
+        player.spawn(0,0);
         super.start();
         if (player.getHouse().equals(House.SLYTHERIN)) {
 
         }
         else {
             DeathEater deathEater = new DeathEater(game);
-            deathEater.spawn(1, 1, 1);
+            deathEater.spawn(1, 1);
             new Battle(game, this, player, deathEater);
             finish();
         }

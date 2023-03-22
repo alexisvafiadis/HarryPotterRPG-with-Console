@@ -3,6 +3,7 @@ package Levels;
 import Characters.Troll;
 import Characters.Wizard;
 import Game.Game;
+import Levels.Essentials.Battle;
 import Spells.WingardiumLeviosa;
 
 public class Level1 extends Level{
@@ -17,10 +18,10 @@ public class Level1 extends Level{
 
     @Override
     public void start() {
-        player.spawn(2, 2, 2);
+        player.spawn(2, 2);
         super.start();
         Troll troll = new Troll(game);
-        troll.spawn(0, 0, 0);
+        troll.spawn(0, 0);
         new Battle(game, this, player, troll);
         finish();
     }
@@ -28,7 +29,6 @@ public class Level1 extends Level{
     public void teachWingardiumLeviosa() {
         if (!player.knowsSpell("Wingardium Leviosa")) {
             display.displayInfo("To cast the Wingardium Leviosa spell, hold your wand out in front of you and say the incantation clearly: Wingardium Leviosa.");
-            //check the user says wing
             display.displayInfo("Next, you need to make the wand movement for the spell. With your wand in your hand, make a swishing motion upward, as if you are lifting something up into the air.");
             try {
                 Thread.sleep(2000);

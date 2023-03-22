@@ -13,8 +13,4 @@ public class Expectopatronum extends Spell{
         return (isCastSuccessful(getWizard()));
     }
 
-    @Override
-    public void tryForFirstTime() {
-
-    }
 }

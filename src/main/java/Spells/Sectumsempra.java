@@ -18,8 +18,4 @@ public class Sectumsempra extends Spell{
         }
     }
 
-    @Override
-    public void tryForFirstTime() {
-
-    }
 }

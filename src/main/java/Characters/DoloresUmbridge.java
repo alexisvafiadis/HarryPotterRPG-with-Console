@@ -8,16 +8,12 @@ public class DoloresUmbridge extends Boss{
     int distractionLevel;
 
     public DoloresUmbridge(Game game) {
-        setGame(game);
-        setMaxHP(1);
-        setPhysicalDamage(14);
-        setAttackDelay(2);
-        setVulnerabilityToMagic(1);
+        super(game, 1, 0, 0.9,null,'D',1,1);
     }
 
     @Override
-    public void spawn(double positionX, double positionY, double positionZ) {
-        super.spawn(positionX, positionY, positionZ);
+    public void spawn(int positionX, int positionY) {
+        super.spawn(positionX, positionY);
         distractionLevel = 2;
     }
 

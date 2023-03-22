@@ -1,24 +1,19 @@
 package Characters;
 
-public class Enemy extends AbstractEnemy{
+public class Voldemort extends EnemyWizard{
 
     @Override
-    public void attack(Character victim) {
+    public void act() {
 
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Voldemort";
     }
 
     @Override
     public void attackedByExpelliarmus() {
-
-    }
-
-    @Override
-    public void act() {
 
     }
 }

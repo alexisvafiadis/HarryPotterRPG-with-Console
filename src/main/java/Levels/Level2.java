@@ -1,13 +1,10 @@
 package Levels;
 
 import Characters.Basilisk;
-import Characters.Wizard;
-import Console.Display;
-import Console.InputParser;
 import Items.Weapon;
 import Game.Game;
+import Levels.Essentials.Battle;
 import Spells.Accio;
-import Spells.WingardiumLeviosa;
 
 public class Level2 extends Level{
 
@@ -17,10 +14,10 @@ public class Level2 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0,0);
+        player.spawn(0,0);
         super.start();
         Basilisk basilisk = new Basilisk(game);
-        basilisk.spawn(1,1,1);
+        basilisk.spawn(1,1);
         new Battle(game, this, player, basilisk);
         finish();
     }

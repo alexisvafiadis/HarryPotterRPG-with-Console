@@ -1,10 +1,10 @@
 package Levels;
 
 import Characters.Dementor;
-import Characters.Troll;
-import Characters.Wizard;
 import Game.Game;
+import Levels.Essentials.Battle;
 import Spells.Expectopatronum;
+import Spells.Lumos;
 
 public class Level3 extends Level{
     boolean expectoPatronumUsed;
@@ -17,7 +17,7 @@ public class Level3 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0,0);
+        player.spawn(0,0);
         super.start();
         expectoPatronumUsed = false;
         while (!expectoPatronumUsed) {
@@ -29,6 +29,7 @@ public class Level3 extends Level{
     @Override
     public void conclude() {
         display.congratulate("Well done, you have killed scared the Dementors away!");
+        teachLumos();
         askForUpgrade();
     }
 
@@ -50,5 +51,15 @@ public class Level3 extends Level{
 
     public void setExpectoPatronumUsed() {
         this.expectoPatronumUsed = true;
+    }
+
+    public void teachLumos() {
+        display.displayInfo("Now let me teach you a spell that you'll probably need soon.");
+        inputParser.waitForYes("Hold your wand tightly in your hand.\n" +
+                "Focus on the tip of your wand and visualize a bright light appearing there.\n" +
+                "Say Lumos in a clear and firm voice while pointing your wand upward.\n" +
+                "A bright light should appear at the tip of your wand, illuminating the area around you.\n" +
+                "To turn off the light, simply say Nox while pointing your wand downward.");
+        player.learnSpell(new Lumos(game, player));
     }
 }

@@ -4,15 +4,10 @@ import Items.Item;
 import Items.Weapon;
 import Game.Game;
 
-public class DeathEater extends Boss{
+public class DeathEater extends AbstractEnemy{
 
     public DeathEater(Game game) {
-        setGame(game);
-        setMaxHP(80);
-        setPhysicalDamage(30);
-        setWeapon(null);
-        setAttackDelay(1);
-        setVulnerabilityToMagic(0.9);
+        super(game, 30.0, 80.0, 0.9,null,'D',1,1);
     }
 
     public void act() {
@@ -21,5 +16,10 @@ public class DeathEater extends Boss{
 
     public String getName() {
         return "The Troll";
+    }
+
+    @Override
+    public void attackedByExpelliarmus() {
+
     }
 }

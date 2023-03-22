@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Wizard extends Character{
-
     //Specific attributes
     String name;
     Pet pet;
@@ -23,25 +22,17 @@ public class Wizard extends Character{
     List<Potion> potions;
 
     //Stats
-    final double DEFAULT_MAX_HP = 100;
-    final double PHYSICAL_DAMAGE = 5;
-    final double VULNERABILITY_TO_MAGIC = 0.95;
     double spellDamageMultiplier = 1;
     double accuracy = 0.8;
     double resistance = 1;
 
     public Wizard(Game game) {
-        this.knownSpells = new HashMap<>();
-        this.potions = new ArrayList<>();
-        setMaxHP(DEFAULT_MAX_HP);
-        setPhysicalDamage(PHYSICAL_DAMAGE);
-        setGame(game);
-        setVulnerabilityToMagic(VULNERABILITY_TO_MAGIC);
+        super(game, 100, 5, 0.95,null,'B',1);
     }
 
     @Override
-    public void spawn(double positionX, double positionY, double positionZ) {
-        super.spawn(positionX, positionY, positionZ);
+    public void spawn(int positionX, int positionY) {
+        super.spawn(positionX, positionY);
         setWeapon(null);
     }
 
@@ -170,10 +161,5 @@ public class Wizard extends Character{
     @Override
     public void attackedByExpelliarmus() {
 
-    }
-
-    @Override
-    public void finishRound() {
-        super.finishRound();
     }
 }

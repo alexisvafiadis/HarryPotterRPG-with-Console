@@ -6,11 +6,11 @@ import Game.Game;
 import Potions.ActiveEffect;
 import Potions.EffectType;
 
-public class Confundus extends Spell{
+public class Tarantallegra extends Spell{
     final int EFFECT_DURATION = 4;
 
-    public Confundus(Game game, Wizard wizard) {
-        super(game, wizard, "Confundus", 5, 1, 0.4, 0.);
+    public Tarantallegra(Game game, Wizard wizard) {
+        super(game, wizard, "Tarantallegra", 5, 1, 0.4, 0.6);
     }
 
     public void cast(Character target) {
@@ -19,5 +19,4 @@ public class Confundus extends Spell{
             getDisplay().announceSuccess(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
         }
     }
-
 }

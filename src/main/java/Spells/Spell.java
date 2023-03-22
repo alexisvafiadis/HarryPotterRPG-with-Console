@@ -11,8 +11,8 @@ public abstract class Spell {
     protected int range;
     protected float cooldown;
     protected int nbOfUses;
-    double learningExponent;
-    double defaultMasteryScore;
+    private double learningExponent;
+    private double defaultMasteryScore;
     protected Game game;
     protected Display display;
     protected InputParser inputParser;
@@ -55,7 +55,6 @@ public abstract class Spell {
         return isCastSuccessful(wizard, null);
     }
 
-
     public String getName() {
         return name;
     }
@@ -88,5 +87,4 @@ public abstract class Spell {
         return inputParser;
     }
 
-    public abstract void tryForFirstTime();
 }

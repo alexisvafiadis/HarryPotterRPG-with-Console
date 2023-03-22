@@ -5,14 +5,8 @@ import Items.Weapon;
 import Game.Game;
 
 public class Troll extends Boss{
-
     public Troll(Game game) {
-        setGame(game);
-        setMaxHP(100);
-        setPhysicalDamage(16);
-        setWeapon(Weapon.CLUB);
-        setAttackDelay(2);
-        setVulnerabilityToMagic(1);
+        super(game, 100.0, 16.0, 1, Weapon.CLUB,'T',1,2);
     }
 
     public void act() {
@@ -20,7 +14,7 @@ public class Troll extends Boss{
     }
 
     public boolean getsHitBy(Item item) {
-        return (item.getPositionX() == positionX && item.getPositionY() == positionY && item.getPositionZ() == positionZ);
+        return (item.getPositionX() == positionX && item.getPositionY() == positionY);
     }
 
     public String getName() {

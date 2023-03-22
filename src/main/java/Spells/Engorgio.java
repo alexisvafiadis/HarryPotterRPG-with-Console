@@ -19,8 +19,4 @@ public class Engorgio extends Spell{
         }
     }
 
-    @Override
-    public void tryForFirstTime() {
-
-    }
 }

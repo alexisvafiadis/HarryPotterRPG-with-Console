@@ -10,7 +10,7 @@ public class Rictumsempra extends Spell{
     final int EFFECT_DURATION = 3;
 
     public Rictumsempra(Game game, Wizard wizard) {
-        super(game, wizard, "Rictumsempra", 5, 1, 0.32, 0.58);
+        super(game, wizard, "Rictumsempra", 5, 1, 0.4, 0.6);
     }
 
     public void cast(Character target) {
@@ -21,8 +21,4 @@ public class Rictumsempra extends Spell{
         }
     }
 
-    @Override
-    public void tryForFirstTime() {
-
-    }
 }

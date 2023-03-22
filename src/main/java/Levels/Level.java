@@ -138,4 +138,34 @@ public abstract class Level {
         return outdoors;
     }
 
-}
+    public void askForDirections(Wizard player) {
+        HashMap<Integer, String> directionInputs = new HashMap<>();
+        directionInputs.put(1, "move forwards");
+        directionInputs.put(2, "move backwards");
+        directionInputs.put(3, "move to the left");
+        directionInputs.put(4, "move to the right");
+        String directionChoice = inputParser.getNumberToStringInput("Where do you want to go?", directionInputs, "to");
+        boolean canMove = false;
+        switch (directionChoice) {
+            case "move forwards":
+                canMove = player.moveForwards();
+                break;
+            case "move backwards":
+                canMove = player.moveBackwards();
+                break;
+            case "move to the left":
+                canMove = player.moveLeft();
+                break;
+            case "move to the right":
+                canMove = player.moveRight();
+                break;
+        }
+        if (canMove) {
+            display.displayInfo("You successfully " + directionChoice);
+        } else {
+            display.announceFail("You cannot move there, sorry. Choose another direction");
+        }
+    }
+
+
+    }

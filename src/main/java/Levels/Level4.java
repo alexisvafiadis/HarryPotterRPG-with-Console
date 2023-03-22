@@ -1,13 +1,23 @@
 package Levels;
 
-import Characters.Basilisk;
+import Characters.Voldemort;
 import Characters.Wizard;
 import Game.Game;
-import Spells.Lumos;
-import Spells.Rictumsempra;
+import Items.Item;
+import Items.ItemType;
+import Levels.Essentials.Battle;
+import Levels.Essentials.LevelMap;
+import Spells.*;
+
+import java.util.HashMap;
 
 public class Level4 extends Level{
     Wizard player;
+    final int MIN_POTTER_VOLDEMORT_DISTANCE = 10;
+    boolean hasPortkey;
+    Item portkey;
+    LevelMap map;
+    Voldemort voldemort;
 
     public Level4(Game game) {
         super(game, "The Goblet of Fire","Little Hangleton graveyard", 4, true);
@@ -17,10 +27,20 @@ public class Level4 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0,0);
+        map = new LevelMap(20,20);
+        player.spawn(10,0);
+        portkey = new Item(ItemType.PORTKEY, 10,10,3);
+        hasPortkey = false;
         super.start();
-        //spawn(voldemort)
-        //fight(voldemort)
+        voldemort = new Voldemort();
+        voldemort.spawn(14,12);
+        while (!seenByVoldemort() && !hasPortkey) {
+            askForAction();
+        }
+        if (seenByVoldemort()) {
+            voldemort.speak("What are you doing here, mister Potter? Thanks for visiting me!");
+            new Battle(game, this, player, voldemort);
+        }
         finish();
     }
 
@@ -45,16 +65,43 @@ public class Level4 extends Level{
         inputParser.waitForYes("First, make sure you have your wand at the ready and choose your target carefully.\n" +
                 "The Rictumsempra spell is a jinx that causes your target to experience a tickling sensation, so it's a harmless spell that wouldn't be useful in a dangerous situation.\n" +
                 "Point your wand at your target and clearly enunciate Rictumsempra while flicking your wand in a zig-zag motion.\n" +
-                "If successful, your target should start to experience an uncontrollable tickling sensation, causing them to double over with laughter.\n" +
-                "Keep in mind that this spell should only be used in a controlled and safe environment. It's important to always consider the consequences of using magic and to use it responsibly.\n");
+                "If successful, your target should start to experience an uncontrollable tickling sensation, causing them to double over with laughter.\n");
         player.learnSpell(new Rictumsempra(game, player));
-        display.displayInfo("There's also Lumos");
-        inputParser.waitForYes("Hold your wand tightly in your hand.\n" +
-                "Focus on the tip of your wand and visualize a bright light appearing there.\n" +
-                "Say Lumos in a clear and firm voice while pointing your wand upward.\n" +
-                "A bright light should appear at the tip of your wand, illuminating the area around you.\n" +
-                "To turn off the light, simply say Nox while pointing your wand downward.");
-        player.learnSpell(new Lumos(game, player));
+
+        display.displayInfo("There's also Slugulus Erecto, a spell that causes the target to vomit slugs for a short period");
+        inputParser.waitForYes("To begin casting the Slug-vomiting Charm, visualize your target being overcome with the uncontrollable urge to vomit slugs.\n" +
+                "Firmly grasp your wand and prepare to perform a smooth, circular motion while keeping your focus on the target.\n" +
+                "As you execute the circular motion with your wand, confidently and clearly enunciate the incantation Slugulus Eructo.\n" +
+                "The effectiveness of the Slug-vomiting Charm relies on the caster's ability to concentrate on their target and deliver the incantation with precision and confidence.");
+        player.learnSpell(new SlugulusErecto(game, player));
+
+        display.displayInfo("You can learn Tarantallegra as well.");
+        inputParser.waitForYes("To cast Tarantallegra, first focus your mind on the target and imagine their feet moving uncontrollably in a dance.\n" +
+                "While concentrating on your target, hold your wand firmly and perform a swift, upward flicking motion.\n" +
+                "As you flick your wand, confidently and clearly pronounce the incantation Tarantallegra.\n" +
+                "Remember, the key to a successful Tarantallegra spell is maintaining a strong mental image of the target dancing and delivering the incantation with confidence.");
+        player.learnSpell(new Tarantallegra(game, player));
+
+    }
+
+    public boolean seenByVoldemort() {
+        return (map.calculateDistance(player, voldemort) < MIN_POTTER_VOLDEMORT_DISTANCE);
+    }
+
+    public void askForAction() {
+        HashMap<Integer, String> actionInputs = new HashMap<>();
+        actionInputs.put(1,"Move");
+        actionInputs.put(2,"Try to use Accio on the Portkey");
+        actionInputs.put(3,"Use Lumos");
+        String actionChoice = inputParser.getNumberToStringInput("What do you want to do?", actionInputs,"to");
+        switch(actionChoice) {
+            case "Try to use Accio on the Portkey":
+                if ((((Accio) player.getKnownSpells().get("Accio")).cast(portkey))) {
+                    hasPortkey = true;
+                }
+                break;
+            case "Use Lumos":
+        }
     }
 
 }

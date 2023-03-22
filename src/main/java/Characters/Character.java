@@ -1,5 +1,6 @@
 package Characters;
 
+import Levels.Essentials.LevelMap;
 import Potions.EffectType;
 import Console.Display;
 import Console.InputParser;
@@ -15,35 +16,42 @@ public abstract class Character {
     protected Game game;
     protected Display display;
     protected InputParser inputParser;
+    protected LevelMap map;
 
     //Specific attributes (need to set!)
     protected double maxHP;
     protected double physicalDamage;
     protected double vulnerabilityToMagic;//A coefficient that represents how likely a wizard can successfully cast a spell on the person
     protected Weapon weapon;
+    protected char charTile;
+    protected int moveStep;
 
     //Live attributes
-    protected double positionX;
-    protected double positionY;
-    protected double positionZ;
+    protected int positionX;
+    protected int positionY;
     protected double HP;
     protected boolean alive;
     protected boolean disarmed;
-    protected boolean confused;
-    protected boolean laughing;
-    protected int nbOfLaughingRoundsLeft;
-    protected int nbOfConfusionRoundsLeft;
     Map<EffectType, ActiveEffect> activeEffects;
-    protected int nbOfDisarmedRoundsLeft;
 
-    public void spawn(double positionX, double positionY, double positionZ) {
+    public Character(Game game, double maxHP, double physicalDamage, double vulnerabilityToMagic, Weapon weapon, char charTile, int moveStep) {
+        this.game = game;
+        this.display = game.getDisplay();
+        this.inputParser = game.getInputParser();
+        this.maxHP = maxHP;
+        this.physicalDamage = physicalDamage;
+        this.vulnerabilityToMagic = vulnerabilityToMagic;
+        this.weapon = weapon;
+        this.charTile = charTile;
+        this.moveStep = moveStep;
+    }
+
+    public void spawn(int positionX, int positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
-        this.positionZ = positionZ;
         HP = maxHP;
         alive = true;
         activeEffects = new HashMap<>();
-        confused = false;
         disarmed = false;
     }
 
@@ -191,6 +199,10 @@ public abstract class Character {
         this.display = game.getDisplay();
     }
 
+    public LevelMap getMap() {
+        return map;
+    }
+
     public double getPositionX() {
         return positionX;
     }
@@ -199,7 +211,23 @@ public abstract class Character {
         return positionY;
     }
 
-    public double getPositionZ() {
-        return positionZ;
+    public boolean moveForwards() { return moveTo(positionX, positionY + moveStep); }
+
+    public boolean moveBackwards() {  return moveTo(positionX, positionY - moveStep); }
+
+    public boolean moveRight() {  return moveTo(positionX + moveStep, positionY); }
+
+    public boolean moveLeft() { return moveTo(positionX - moveStep, positionY); }
+
+    public boolean moveTo(int positionX, int positionY) {
+        boolean isPositionPossible = map.isPositionPossible(positionX, positionY);
+        if (isPositionPossible) {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            map.setTile(positionX, positionY, charTile);
+        }
+        return isPositionPossible;
+
     }
+
 }

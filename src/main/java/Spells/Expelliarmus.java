@@ -16,8 +16,5 @@ public class Expelliarmus extends Spell{
         }
     }
 
-    @Override
-    public void tryForFirstTime() {
 
-    }
 }

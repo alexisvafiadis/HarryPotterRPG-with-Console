@@ -1,9 +1,8 @@
 package Levels;
 
-import Characters.Basilisk;
 import Characters.DoloresUmbridge;
-import Characters.Wizard;
 import Game.Game;
+import Levels.Essentials.DoloresUmbridgeBattle;
 
 public class Level5 extends Level{
 
@@ -15,10 +14,10 @@ public class Level5 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0,0);
+        player.spawn(0,0);
         super.start();
         DoloresUmbridge doloresUmbridge = new DoloresUmbridge(game);
-        doloresUmbridge.spawn(1,1,1);
+        doloresUmbridge.spawn(1,1);
         new DoloresUmbridgeBattle(game, this, player, doloresUmbridge);
         if (!doloresUmbridge.isDistracted()) {
             display.announceFail("You weren't able to distract Dolores Umbridge for enough time.");

@@ -15,9 +15,4 @@ public class Lumos extends Spell{
             getDisplay().announceSuccess("You have successfully lacerated " + target.getName() + " and caused severe haemorrhaging");
         }
     }
-
-    @Override
-    public void tryForFirstTime() {
-
-    }
 }

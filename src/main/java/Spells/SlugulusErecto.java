@@ -6,18 +6,17 @@ import Game.Game;
 import Potions.ActiveEffect;
 import Potions.EffectType;
 
-public class Confundus extends Spell{
-    final int EFFECT_DURATION = 4;
+public class SlugulusErecto extends Spell{
+    final int EFFECT_DURATION = 3;
 
-    public Confundus(Game game, Wizard wizard) {
-        super(game, wizard, "Confundus", 5, 1, 0.4, 0.);
+    public SlugulusErecto(Game game, Wizard wizard) {
+        super(game, wizard, "Slugulus Erecto", 5, 1, 0.35, 0.55);
     }
 
     public void cast(Character target) {
         if (isCastSuccessful(getWizard())) {
-            target.giveEffect(EffectType.CONFUSION, new ActiveEffect(EFFECT_DURATION, 0.6));
+            target.giveEffect(EffectType.SLUG_VOMITING, new ActiveEffect(EFFECT_DURATION, 0.72));
             getDisplay().announceSuccess(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
         }
     }
-
 }

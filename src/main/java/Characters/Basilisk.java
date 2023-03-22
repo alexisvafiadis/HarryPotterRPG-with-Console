@@ -4,17 +4,9 @@ import Items.Item;
 import Game.Game;
 
 public class Basilisk extends Boss{
-    double positionX;
-    double positionY;
-    double positionZ;
 
     public Basilisk(Game game) {
-        setGame(game);
-        setMaxHP(80);
-        setPhysicalDamage(25);
-        setAttackDelay(1);
-        setVulnerabilityToMagic(1);
-        setWeapon(null);
+        super(game, 80.0, 25.0, 1,null,'B',1,1);
     }
 
     public void act() {

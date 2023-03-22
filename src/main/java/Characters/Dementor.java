@@ -3,18 +3,10 @@ package Characters;
 import Items.Item;
 import Game.Game;
 
-public class Dementor extends Boss{
-    double positionX;
-    double positionY;
-    double positionZ;
+public class Dementor extends AbstractEnemy{
 
     public Dementor(Game game) {
-        setGame(game);
-        setMaxHP(40);
-        setPhysicalDamage(15);
-        setAttackDelay(1);
-        setVulnerabilityToMagic(1);
-        setWeapon(null);
+        super(game, 40, 15, 1,null,'D',1,1);
     }
 
     public void act() {
@@ -23,5 +15,10 @@ public class Dementor extends Boss{
 
     public String getName() {
         return "a Dementor";
+    }
+
+    @Override
+    public void attackedByExpelliarmus() {
+
     }
 }
