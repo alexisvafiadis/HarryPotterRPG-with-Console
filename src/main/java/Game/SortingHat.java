@@ -1,10 +1,8 @@
 package Game;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
-import Characteristics.House;
-import Characteristics.Pet;
+import Characters.Characteristics.House;
 import Characters.Wizard;
 
 public class SortingHat{

@@ -1,6 +1,6 @@
 package Levels;
 
-import Characters.Voldemort;
+import Characters.Enemies.Voldemort;
 import Characters.Wizard;
 import Game.Game;
 import Items.Item;

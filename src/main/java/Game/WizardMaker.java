@@ -3,7 +3,7 @@ package Game;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
-import Characteristics.Pet;
+import Characters.Characteristics.Pet;
 import Spells.Engorgio;
 import Spells.Expelliarmus;
 

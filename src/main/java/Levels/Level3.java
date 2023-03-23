@@ -1,6 +1,6 @@
 package Levels;
 
-import Characters.Dementor;
+import Characters.Enemies.Dementor;
 import Game.Game;
 import Levels.Essentials.Battle;
 import Spells.Expectopatronum;

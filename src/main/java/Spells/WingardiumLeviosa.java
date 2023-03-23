@@ -19,7 +19,7 @@ public class WingardiumLeviosa extends Spell{
         }
         if (isCastSuccessful(getWizard())) {
             display.announceSuccess("You have used Wingardium Leviosa to throw this " + item.getItemType().toString() + " on " + target.getName());
-            target.damage(wizard.amplifySpellDamage(DEFAULT_DAMAGE * item.getItemType().getDamageMultiplier()));
+            target.damage(calculateDamage(DEFAULT_DAMAGE * item.getItemType().getDamageMultiplier()));
             return true;
         }
         return false;

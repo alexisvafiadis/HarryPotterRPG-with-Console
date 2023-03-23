@@ -1,9 +1,10 @@
-package Characters;
+package Characters.Enemies;
 
+import Characters.Boss;
 import Items.Item;
 import Game.Game;
 
-public class Basilisk extends Boss{
+public class Basilisk extends Boss {
 
     public Basilisk(Game game) {
         super(game, 80.0, 25.0, 1,null,'B',1,1);

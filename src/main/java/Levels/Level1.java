@@ -1,6 +1,6 @@
 package Levels;
 
-import Characters.Troll;
+import Characters.Enemies.Troll;
 import Characters.Wizard;
 import Game.Game;
 import Levels.Essentials.Battle;

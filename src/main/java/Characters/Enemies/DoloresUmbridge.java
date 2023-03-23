@@ -1,10 +1,11 @@
-package Characters;
+package Characters.Enemies;
 
+import Characters.Boss;
 import Items.Item;
 import Items.Weapon;
 import Game.Game;
 
-public class DoloresUmbridge extends Boss{
+public class DoloresUmbridge extends Boss {
     int distractionLevel;
 
     public DoloresUmbridge(Game game) {

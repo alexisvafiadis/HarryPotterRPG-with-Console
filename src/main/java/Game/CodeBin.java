@@ -20,26 +20,6 @@ public class CodeBin {
         resistanceEffect = true;
     }
 
-    HashMap<ItemType, Integer> itemTypeWeights = new HashMap<>();
-
-    public ItemType generateItemType() {
-        ItemType itemType = null;
-        double totalWeight = 0.0;
-        for (int w : itemTypeWeights.values()) {
-            totalWeight += w;
-        }
-
-        double r = Math.random() * totalWeight;
-        for (ItemType it : itemTypeWeights.keySet()) {
-            r -= itemTypeWeights.get(it);
-            if (r <= 0.0) {
-                itemType = it;
-                break;
-            }
-        }
-        return itemType;
-    }
-
     public void initiateItemChances() {
         if (outdoors) {
             itemTypeWeights.put(ItemType.BIG_ROCK, 3);

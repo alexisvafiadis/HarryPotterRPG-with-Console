@@ -1,10 +1,9 @@
 package Levels.Essentials;
 
 import Characters.AbstractEnemy;
-import Characters.DoloresUmbridge;
+import Characters.Enemies.DoloresUmbridge;
 import Characters.Wizard;
 import Game.Game;
-import Levels.Essentials.Battle;
 import Levels.Level;
 
 public class DoloresUmbridgeBattle extends Battle {

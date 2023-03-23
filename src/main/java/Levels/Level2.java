@@ -1,6 +1,6 @@
 package Levels;
 
-import Characters.Basilisk;
+import Characters.Enemies.Basilisk;
 import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;

@@ -1,4 +1,4 @@
-package Characteristics;
+package Characters.Characteristics;
 
 public enum House {
     GRYFFINDOR("bravery", 0.75, 1, 1, 1),

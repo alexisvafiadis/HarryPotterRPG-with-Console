@@ -3,6 +3,7 @@ package Spells;
 import Characters.Character;
 import Characters.Wizard;
 import Game.Game;
+import Levels.Essentials.LevelMap;
 
 public class Lumos extends Spell{
 
@@ -10,9 +11,10 @@ public class Lumos extends Spell{
         super(game, wizard, "Lumos", 5, 1, 0.32, 0.58);
     }
 
-    public void cast(Character target) {
-        if (isCastSuccessful(getWizard(), target)) {
-            getDisplay().announceSuccess("You have successfully lacerated " + target.getName() + " and caused severe haemorrhaging");
+    public void cast(Character target, LevelMap map) {
+        if (isCastSuccessful(target)) {
+            displayCastMessage("");
+            map.display();
         }
     }
 }

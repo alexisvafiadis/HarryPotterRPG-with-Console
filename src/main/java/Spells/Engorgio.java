@@ -14,7 +14,7 @@ public class Engorgio extends Spell{
 
     public void cast(Item item) {
         if (isCastSuccessful(getWizard())) {
-            getDisplay().announceSuccess("You have enlarged this " + item.getItemType().toString());
+            displayCastMessage("enlarged this " + item.getItemType().toString());
             item.getItemType().enlarge(ENLARGE_COEFFICIENT);
         }
     }

@@ -1,6 +1,6 @@
 package Levels;
 
-import Characters.DoloresUmbridge;
+import Characters.Enemies.DoloresUmbridge;
 import Game.Game;
 import Levels.Essentials.DoloresUmbridgeBattle;
 

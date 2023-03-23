@@ -6,7 +6,7 @@ import Game.Game;
 import Potions.ActiveEffect;
 import Potions.EffectType;
 
-public class Rictumsempra extends Spell{
+public class Rictumsempra extends SimpleSpell{
     final int EFFECT_DURATION = 3;
 
     public Rictumsempra(Game game, Wizard wizard) {
@@ -14,10 +14,10 @@ public class Rictumsempra extends Spell{
     }
 
     public void cast(Character target) {
-        if (isCastSuccessful(getWizard(), target)) {
+        if (isCastSuccessful(target)) {
             //check if target is human
             target.giveEffect(EffectType.LAUGH, new ActiveEffect(EFFECT_DURATION, 0.6));
-            getDisplay().announceSuccess(target.getName() + " is " + EffectType.LAUGH.getStartMessage());
+            displayCastMessage(target.getName() + " is " + EffectType.LAUGH.getStartMessage());
         }
     }
 

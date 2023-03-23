@@ -1,7 +1,7 @@
 package Levels;
 
-import Characteristics.House;
-import Characters.DeathEater;
+import Characters.Characteristics.House;
+import Characters.Enemies.DeathEater;
 import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;

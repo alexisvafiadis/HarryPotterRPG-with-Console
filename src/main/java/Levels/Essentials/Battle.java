@@ -1,7 +1,6 @@
 package Levels.Essentials;
 
 import Characters.AbstractEnemy;
-import Characters.DoloresUmbridge;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -18,7 +17,6 @@ import Potions.Potion;
 import Potions.PotionType;
 import Spells.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

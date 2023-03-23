@@ -1,14 +1,13 @@
 package Characters;
 
 import Potions.EffectType;
-import Characteristics.Pet;
+import Characters.Characteristics.Pet;
 import Game.Game;
-import Characteristics.House;
+import Characters.Characteristics.House;
 import Potions.Potion;
 import Spells.Spell;
 import Items.Wand;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class Wizard extends Character{
 
     public double amplifySpellDamage(double damage) {
         damage = damage * spellDamageMultiplier * house.getSPELL_DAMAGE_MULTIPLIER();
-        display.displayInfo("damage amplifier : " + house.getSPELL_DAMAGE_MULTIPLIER());
         return damage;
     }
 

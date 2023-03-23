@@ -6,7 +6,7 @@ import Game.Game;
 import Potions.ActiveEffect;
 import Potions.EffectType;
 
-public class Confundus extends Spell{
+public class Confundus extends SimpleSpell{
     final int EFFECT_DURATION = 4;
 
     public Confundus(Game game, Wizard wizard) {
@@ -16,7 +16,7 @@ public class Confundus extends Spell{
     public void cast(Character target) {
         if (isCastSuccessful(getWizard())) {
             target.giveEffect(EffectType.CONFUSION, new ActiveEffect(EFFECT_DURATION, 0.6));
-            getDisplay().announceSuccess(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
+            displayCastMessage(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
         }
     }
 
