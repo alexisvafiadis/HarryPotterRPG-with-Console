@@ -7,7 +7,7 @@ import Game.Game;
 import Items.ItemType;
 
 public class WingardiumLeviosa extends Spell{
-    final double DEFAULT_DAMAGE = 15;
+    private final double DEFAULT_DAMAGE = 15;
 
     public WingardiumLeviosa(Game game, Wizard wizard) {
         super(game, wizard, "Wingardium Leviosa", 5, 1, 0.3, 0.5);
@@ -17,6 +17,7 @@ public class WingardiumLeviosa extends Spell{
         if (nbOfUses < 1) {
             tryForFirstTime();
         }
+        use();
         if (isCastSuccessful(getWizard())) {
             display.announceSuccess("You have used Wingardium Leviosa to throw this " + item.getItemType().toString() + " on " + target.getName());
             target.damage(calculateDamage(DEFAULT_DAMAGE * item.getItemType().getDamageMultiplier()));

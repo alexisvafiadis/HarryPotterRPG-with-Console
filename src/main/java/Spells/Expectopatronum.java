@@ -1,5 +1,6 @@
 package Spells;
 
+import Characters.Character;
 import Characters.Wizard;
 import Game.Game;
 
@@ -10,7 +11,12 @@ public class Expectopatronum extends Spell{
     }
 
     public boolean cast() {
-        return (isCastSuccessful(getWizard()));
+        use();
+        boolean isCastSuccessful = isCastSuccessful(getWizard());
+        if (isCastSuccessful) {
+            displayCastMessage("summoned a Patronus to repel the Dementors.");
+        }
+        return (isCastSuccessful);
     }
 
 }

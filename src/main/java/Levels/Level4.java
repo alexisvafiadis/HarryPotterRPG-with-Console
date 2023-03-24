@@ -12,8 +12,7 @@ import Spells.*;
 import java.util.HashMap;
 
 public class Level4 extends Level{
-    Wizard player;
-    final int MIN_POTTER_VOLDEMORT_DISTANCE = 10;
+    final int MIN_POTTER_VOLDEMORT_DISTANCE = 4;
     boolean hasPortkey;
     Item portkey;
     LevelMap map;
@@ -27,13 +26,13 @@ public class Level4 extends Level{
 
     @Override
     public void start() {
-        map = new LevelMap(20,20);
-        player.spawn(10,0);
-        portkey = new Item(ItemType.PORTKEY, 10,10,3);
+        map = new LevelMap(10,10);
+        player.spawn(5,0,map);
+        portkey = new Item(ItemType.PORTKEY, 7,9, map, 'P');
         hasPortkey = false;
         super.start();
-        voldemort = new Voldemort();
-        voldemort.spawn(14,12);
+        voldemort = new Voldemort(game);
+        voldemort.spawn(3,5,map);
         while (!seenByVoldemort() && !hasPortkey) {
             askForAction();
         }
@@ -48,8 +47,6 @@ public class Level4 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have gotten away!");
         teachFunnySpells();
-        askForUpgrade();
-
     }
 
     @Override
@@ -95,12 +92,18 @@ public class Level4 extends Level{
         actionInputs.put(3,"Use Lumos");
         String actionChoice = inputParser.getNumberToStringInput("What do you want to do?", actionInputs,"to");
         switch(actionChoice) {
+            case "Move":
+                askForDirections();
+                break;
             case "Try to use Accio on the Portkey":
                 if ((((Accio) player.getKnownSpells().get("Accio")).cast(portkey))) {
                     hasPortkey = true;
                 }
                 break;
             case "Use Lumos":
+                player.learnSpell(new Lumos(game, player));
+                ((Lumos) player.getKnownSpells().get("Lumos")).cast(map);
+                break;
         }
     }
 

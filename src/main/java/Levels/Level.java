@@ -138,7 +138,7 @@ public abstract class Level {
         return outdoors;
     }
 
-    public void askForDirections(Wizard player) {
+    public void askForDirections() {
         HashMap<Integer, String> directionInputs = new HashMap<>();
         directionInputs.put(1, "move forwards");
         directionInputs.put(2, "move backwards");

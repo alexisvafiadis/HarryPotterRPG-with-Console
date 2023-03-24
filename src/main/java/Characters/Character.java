@@ -24,11 +24,11 @@ public abstract class Character {
     protected double vulnerabilityToMagic;//A coefficient that represents how likely a wizard can successfully cast a spell on the person
     protected Weapon weapon;
     protected char charTile;
-    protected int moveStep;
+    protected Integer moveStep;
 
     //Live attributes
-    protected int positionX;
-    protected int positionY;
+    protected Integer positionX;
+    protected Integer positionY;
     protected double HP;
     protected boolean alive;
     protected boolean disarmed;
@@ -46,9 +46,13 @@ public abstract class Character {
         this.moveStep = moveStep;
     }
 
-    public void spawn(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public void spawn(int positionX, int positionY, LevelMap map) {
+        spawn();
+        this.map = map;
+        moveTo(positionX, positionY);
+    }
+
+    public void spawn() {
         HP = maxHP;
         alive = true;
         activeEffects = new HashMap<>();
@@ -58,7 +62,7 @@ public abstract class Character {
     public void attack(Character target) {
         if (canAttack(target)) {
             double damage = getPhysicalDamage();
-            if (hasWeapon()) {
+            if (hasWeapon() && !hasEffect(EffectType.DISARM)) {
                 damage += weapon.getAttackDamage();
             }
             if (this instanceof Wizard) {
@@ -74,9 +78,6 @@ public abstract class Character {
     }
 
     public void die() {
-        if (this instanceof Wizard) {
-            System.out.println("You have been killed.");
-        }
         alive = false;
     }
 
@@ -127,21 +128,21 @@ public abstract class Character {
 
     public abstract String getName();
 
-    public boolean isDisarmed() {
-        return disarmed;
-    }
-
-    public void setDisarmed(boolean disarmed) {
-        this.disarmed = disarmed;
-    }
-
     public boolean hasEffect(EffectType et) {return (activeEffects.containsKey(et));}
 
     public void giveEffect(EffectType effectType, ActiveEffect activeEffect) {
+        if (hasEffect(effectType)) {
+            display.displayInfo(game.getMessageStartHave(this) + " " +  effectType.getAlreadyAffectedMessage() +  ", so this was uneffective");
+        }
+        else {
+            display.displayInfo(game.getMessageStartHave((this)) + " " + effectType.getStartMessage());
+        }
         activeEffects.put(effectType, activeEffect);
     }
 
-    public void removeEffect(EffectType et) { activeEffects.remove(et); }
+    public void removeEffect(EffectType et) {
+        display.displayInfo(game.getMessageStartBe(this) + et.getEndMessage());
+        activeEffects.remove(et); }
 
     public Weapon getWeapon() {
         return weapon;
@@ -152,8 +153,6 @@ public abstract class Character {
     }
 
     public boolean hasWeapon() { return (weapon != null); }
-
-    public abstract void attackedByExpelliarmus();
 
     public boolean canAttack(Character target) {
         if (getEffectProbability(EffectType.LAUGH)) {
@@ -178,10 +177,7 @@ public abstract class Character {
     public void finishRound() {
         for (EffectType effectType : activeEffects.keySet()) {
             if (activeEffects.get(effectType).getNbOfRoundsLeft() == 1) {
-                String start;
-                if (this instanceof Wizard) {start = "You are "; } else { start = "He is ";}
-                display.displayInfo(start + effectType.getEndMessage());
-                activeEffects.remove(effectType);
+                removeEffect(effectType);
             }
             else {
                 activeEffects.get(effectType).reduceNbOfRounds();
@@ -219,7 +215,10 @@ public abstract class Character {
 
     public boolean moveLeft() { return moveTo(positionX - moveStep, positionY); }
 
-    public boolean moveTo(int positionX, int positionY) {
+    public boolean moveTo(Integer positionX, Integer positionY) {
+        if (this.positionX != null && this.positionY != null) {
+            map.setTile(this.positionX, this.positionY, '.');
+        }
         boolean isPositionPossible = map.isPositionPossible(positionX, positionY);
         if (isPositionPossible) {
             this.positionX = positionX;

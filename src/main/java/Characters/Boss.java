@@ -9,9 +9,4 @@ public abstract class Boss extends AbstractEnemy {
         super(game, maxHP, physicalDamage, vulnerabilityToMagic, weapon, charTile, moveStep, attackDelay);
     }
 
-    @Override
-    public void attackedByExpelliarmus() {
-        setWeapon(null);
-    }
-
 }

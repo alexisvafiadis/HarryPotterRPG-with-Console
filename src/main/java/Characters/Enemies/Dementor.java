@@ -11,15 +11,11 @@ public class Dementor extends AbstractEnemy {
     }
 
     public void act() {
-        attack(getGame().getPlayer());
+        attack(game.getPlayer());
     }
 
     public String getName() {
         return "a Dementor";
     }
 
-    @Override
-    public void attackedByExpelliarmus() {
-
-    }
 }

@@ -17,11 +17,13 @@ public class Level3 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0);
+        player.spawn();
         super.start();
         expectoPatronumUsed = false;
         while (!expectoPatronumUsed) {
-            new Battle(game, this, player, new Dementor(game));
+            Dementor dementor = new Dementor(game);
+            dementor.spawn();
+            Battle battle = new Battle(game, this, player, dementor);
         }
         finish();
     }
@@ -30,7 +32,6 @@ public class Level3 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have killed scared the Dementors away!");
         teachLumos();
-        askForUpgrade();
     }
 
     @Override
@@ -46,15 +47,16 @@ public class Level3 extends Level{
         display.displayInfo("");
         display.announceReward("You have learned the spell Expecto Patronum");
         player.learnSpell(new Expectopatronum(game, player));
-        display.displayInfo("It is a very difficult spell to cast,, so it may take some time to use it successfully.");
+        display.displayInfo("It is a very difficult spell to cast, so it may take some time to use it successfully.");
     }
 
     public void setExpectoPatronumUsed() {
         this.expectoPatronumUsed = true;
+        display.displayInfo("You feel a rush of warmth and positive energy as your Patronus takes shape, driving away the dark creatures and filling the air with light");
     }
 
     public void teachLumos() {
-        display.displayInfo("Now let me teach you a spell that you'll probably need soon.");
+        display.displayInfo("Now let me teach you a spell that you'll probably need soon : Lumos");
         inputParser.waitForYes("Hold your wand tightly in your hand.\n" +
                 "Focus on the tip of your wand and visualize a bright light appearing there.\n" +
                 "Say Lumos in a clear and firm voice while pointing your wand upward.\n" +

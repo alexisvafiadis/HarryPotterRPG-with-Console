@@ -14,10 +14,10 @@ public class Level2 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0);
+        player.spawn();
         super.start();
         Basilisk basilisk = new Basilisk(game);
-        basilisk.spawn(1,1);
+        basilisk.spawn();
         new Battle(game, this, player, basilisk);
         finish();
     }
@@ -29,7 +29,6 @@ public class Level2 extends Level{
             display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
             teachAccio();
         }
-        askForUpgrade();
     }
 
     @Override

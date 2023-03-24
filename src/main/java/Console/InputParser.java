@@ -7,9 +7,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputParser {
-    Scanner sc;
-    Game game;
-    Display display;
+    private Scanner sc;
+    private Game game;
+    private Display display;
 
     public InputParser(Game game, Scanner sc) {
         this.game = game;

@@ -18,9 +18,4 @@ public class DeathEater extends AbstractEnemy {
     public String getName() {
         return "The Troll";
     }
-
-    @Override
-    public void attackedByExpelliarmus() {
-
-    }
 }

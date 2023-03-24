@@ -7,7 +7,7 @@ import Game.Game;
 
 public class Troll extends Boss {
     public Troll(Game game) {
-        super(game, 100.0, 16.0, 1, Weapon.CLUB,'T',1,2);
+        super(game, 1, 16, 1, Weapon.CLUB,'T',1,2);
     }
 
     public void act() {

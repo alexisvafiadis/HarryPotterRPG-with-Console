@@ -8,30 +8,31 @@ import Potions.Potion;
 import Spells.Spell;
 import Items.Wand;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Wizard extends Character{
     //Specific attributes
-    String name;
-    Pet pet;
-    Wand wand;
-    House house;
-    HashMap<String, Spell> knownSpells;
-    List<Potion> potions;
+    private String name;
+    private Pet pet;
+    private Wand wand;
+    private House house;
+    private Map<String, Spell> knownSpells;
+    private List<Potion> potions;
 
     //Stats
-    double spellDamageMultiplier = 1;
-    double accuracy = 0.8;
-    double resistance = 1;
+    private double spellDamageMultiplier = 1;
+    private double accuracy = 0.8;
+    private double resistance = 1;
 
     public Wizard(Game game) {
-        super(game, 100, 5, 0.95,null,'B',1);
+        super(game, 100, 5, 0.95,null,'Y',1);
+        knownSpells = new HashMap<>();
+        potions = new ArrayList<>();
     }
 
     @Override
-    public void spawn(int positionX, int positionY) {
-        super.spawn(positionX, positionY);
+    public void spawn() {
+        super.spawn();
         setWeapon(null);
     }
 
@@ -79,7 +80,7 @@ public class Wizard extends Character{
         this.house = house;
     }
 
-    public HashMap<String, Spell> getKnownSpells() {
+    public Map<String, Spell> getKnownSpells() {
         return knownSpells;
     }
 
@@ -152,12 +153,9 @@ public class Wizard extends Character{
 
     @Override
     public void die() {
+        display.displayInfo("You have been killed.");
         game.getCurrentLevel().fail();
         game.getCurrentLevel().start();
     }
 
-    @Override
-    public void attackedByExpelliarmus() {
-
-    }
 }

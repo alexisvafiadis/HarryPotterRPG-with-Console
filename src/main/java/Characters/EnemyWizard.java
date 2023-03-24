@@ -2,9 +2,11 @@ package Characters;
 
 import Game.Game;
 import Items.Weapon;
+import Potions.EffectType;
 import Spells.SimpleSpell;
 import Spells.Spell;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class EnemyWizard extends AbstractEnemy {
@@ -15,6 +17,7 @@ public abstract class EnemyWizard extends AbstractEnemy {
 
     public EnemyWizard(Game game, double maxHP, double physicalDamage, double vulnerabilityToMagic, char charTile, int moveStep, double spellDamageMultiplier, double defaultMasteryScoreMultiplier) {
         super(game, maxHP, physicalDamage, vulnerabilityToMagic, null, charTile, moveStep, 1);
+        spellWeights = new HashMap<>();
         this.spellDamageMultiplier = spellDamageMultiplier;
         this.defaultMasteryScoreMultiplier = defaultMasteryScoreMultiplier;
     }
@@ -26,8 +29,13 @@ public abstract class EnemyWizard extends AbstractEnemy {
 
     @Override
     public void act() {
-        SimpleSpell spell = generateSpell();
-        spell.cast(game.getPlayer());
+        if (hasEffect(EffectType.DISARM)) {
+            display.displayInfo(getName() + " cannot cast a spell because they are disarmed");
+        }
+        else {
+            SimpleSpell spell = generateSpell();
+            spell.cast(game.getPlayer());
+        }
     }
 
     public SimpleSpell generateSpell() {
@@ -48,6 +56,12 @@ public abstract class EnemyWizard extends AbstractEnemy {
         for (int w : spellWeights.values()) {
             totalSpellWeight += w;
         }
+    }
+
+    @Override
+    public void spawn() {
+        super.spawn();
+        calculateTotalSpellWeight(); //to avoid adding this function in every child of enemywizard after adding the spells
     }
 
     public void addSpell(SimpleSpell spell, Integer weight) { spellWeights.put(spell, weight); }

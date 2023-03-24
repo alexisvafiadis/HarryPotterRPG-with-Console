@@ -1,6 +1,7 @@
 package Levels.Essentials;
 
 import Characters.AbstractEnemy;
+import Characters.EnemyWizard;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -19,6 +20,7 @@ import Spells.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Battle {
     protected Game game;
@@ -40,9 +42,9 @@ public class Battle {
         this.enemy = enemy;
         roundNumber = 1;
         spellInputs = getSpellInputs();
+        displayFightStartMessage();
 
         while (getFightContinueCondition()) {
-            displayFightStartMessage();
             display.displayHP(player, true);
             display.displayHP(enemy, false);
             askPlayerForAction();
@@ -70,7 +72,13 @@ public class Battle {
                 lookAround();
                 break;
             case "Cast a spell":
-                castSpell();
+                if (player.hasEffect(EffectType.DISARM)) {
+                    display.announceFail("You cannot cast a spell because you are disarmed");
+                    askPlayerForAction();
+                }
+                else {
+                    castSpell();
+                }
                 break;
             case "Hide":
                 player.giveEffect(EffectType.HIDE, new ActiveEffect(1, 0.75));
@@ -111,7 +119,7 @@ public class Battle {
         else if (random < 0.9) {
             ItemType randomItemType = generateItemType();
             display.announceDiscovery("You have found an item. It looks like a " + randomItemType.toString());
-            level.addItem(new Item(randomItemType, 0, 0, 0));
+            level.addItem(new Item(randomItemType));
         }
         else {
             display.announceFail("Unfortunately, you haven't found anything.");
@@ -128,9 +136,9 @@ public class Battle {
                     display.announceFail("You haven't found any item to levitate. Try looking around.");
                     askPlayerForAction();
                 } else {
-                    display.displayInfo(items.toString());
                     HashMap<Integer, String> itemInputs = getItemInputs();
-                    int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for");
+                    display.displayInfo(itemInputs.toString());
+                    int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for") - 1;
                     Item item = items.get(itemIndex);
                     if (((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy)) {
                         items.remove(item);
@@ -138,14 +146,8 @@ public class Battle {
                 }
                 break;
             case "Expelliarmus":
-                if (enemy.isDisarmed()) {
-                    display.announceFail("You have already disarmed the " + enemy.getName() + ", so this was uneffective");
-                } else if (!enemy.hasWeapon()) {
+                if (!enemy.hasWeapon() || !(enemy instanceof EnemyWizard)) {
                     display.announceFail(enemy.getName() + " doesn't have a weapon");
-                } else {
-                    enemy.setDisarmed(true);
-                    enemy.attackedByExpelliarmus();
-                    display.announceSuccess("You disarmed the " + enemy.getName());
                 }
                 break;
             case "Engorgio":
@@ -155,7 +157,7 @@ public class Battle {
                     askPlayerForAction();
                 } else {
                     HashMap<Integer, String> itemInputs = getItemInputs();
-                    int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for");
+                    int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for") - 1;
                     Item item = items.get(itemIndex);
                     ((Engorgio) player.getKnownSpells().get(spellChoice)).cast(item);
                 }
@@ -172,6 +174,7 @@ public class Battle {
                 if (level instanceof Level3) {
                     if (((Expectopatronum) player.getKnownSpells().get(spellChoice)).cast()) {
                         ((Level3) level).setExpectoPatronumUsed();
+                        enemy.die();
                     }
                 }
                 else { display.displayInfo("This spell is useless here."); }
@@ -181,7 +184,7 @@ public class Battle {
     public HashMap<Integer, String> getSpellInputs() {
         HashMap<Integer, String> spellInputs = new HashMap<>();
         int i = 1;
-        HashMap<String, Spell> playerKnownSpells = player.getKnownSpells();
+        Map<String, Spell> playerKnownSpells = player.getKnownSpells();
         for (String spellName : playerKnownSpells.keySet()) {
             spellInputs.put(i, spellName);
             i++;
@@ -192,7 +195,7 @@ public class Battle {
     public HashMap<Integer, String> getItemInputs() {
         List<Item> items = level.getItems();
         HashMap<Integer, String> itemInputs = new HashMap<>();
-        for (int itemIndex = 1; itemIndex < items.size() ; itemIndex++) {
+        for (int itemIndex = 1; itemIndex < items.size() + 1 ; itemIndex++) {
             itemInputs.put(itemIndex, items.get(itemIndex - 1).getItemType().toString());
         }
         return itemInputs;

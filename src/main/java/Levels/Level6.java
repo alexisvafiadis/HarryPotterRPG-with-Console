@@ -15,14 +15,14 @@ public class Level6 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0);
+        player.spawn();
         super.start();
         if (player.getHouse().equals(House.SLYTHERIN)) {
 
         }
         else {
             DeathEater deathEater = new DeathEater(game);
-            deathEater.spawn(1, 1);
+            deathEater.spawn();
             new Battle(game, this, player, deathEater);
             finish();
         }
@@ -35,7 +35,6 @@ public class Level6 extends Level{
             display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
             teachAccio();
         }
-        askForUpgrade();
     }
 
     @Override

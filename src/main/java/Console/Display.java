@@ -8,10 +8,10 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Display {
-    Game game;
-    int DEFAULT_WRITING_DELAY = 15;
-    final int FAST_WRITING_DELAY = 5;
-    final int SLOW_WRITING_DELAY = 30;
+    private Game game;
+    private int DEFAULT_WRITING_DELAY = 15;
+    private final int FAST_WRITING_DELAY = 5;
+    private final int SLOW_WRITING_DELAY = 30;
 
     public Display(Game game) {
         this.game = game;

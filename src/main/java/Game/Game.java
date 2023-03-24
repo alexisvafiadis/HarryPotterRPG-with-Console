@@ -1,5 +1,6 @@
 package Game;
 
+import Characters.Character;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -29,6 +30,7 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
+        startLevel(4);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }
@@ -63,5 +65,27 @@ public class Game {
 
     public boolean isInDebugMode() {
         return DEBUG_MODE;
+    }
+
+    public String getMessageStartHave(Character character) {
+        String castMessageStart;
+        if (character instanceof Wizard) {
+            castMessageStart = "You have";
+        }
+        else {
+            castMessageStart = character.getName() + "has";
+        }
+        return castMessageStart;
+    }
+
+    public String getMessageStartBe(Character character) {
+        String castMessageStart;
+        if (character instanceof Wizard) {
+            castMessageStart = "You are";
+        }
+        else {
+            castMessageStart = character.getName() + "is";
+        }
+        return castMessageStart;
     }
 }

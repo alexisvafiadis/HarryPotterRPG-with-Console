@@ -5,9 +5,9 @@ import Characters.Wizard;
 import Game.Game;
 
 public class Sectumsempra extends SimpleSpell{
-    double DEFAULT_DAMAGE = 40;
+    private final double DEFAULT_DAMAGE = 40;
 
-    public Sectumsempra(Game game, Wizard wizard) {
+    public Sectumsempra(Game game, Character wizard) {
         super(game, wizard, "Sectumsempra", 5, 1, 0.32, 0.58);
     }
 
@@ -15,6 +15,7 @@ public class Sectumsempra extends SimpleSpell{
         if (isCastSuccessful(target)) {
             target.damage(calculateDamage(DEFAULT_DAMAGE));
             displayCastMessage("lacerated " + target.getName() + ", causing severe haemorrhaging");
+            use();
         }
     }
 }

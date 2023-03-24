@@ -22,7 +22,7 @@ public class Potion {
 
     public void use() {
         double potionValue = potionType.getEffectValue() * owner.getHouse().getPOTION_EFFICIENCY_MULTIPLIER();
-        String message = "You have consumed your " + potionType.toString() + " and are " + potionType.getEffect().getStartMessage();
+        String message = "You have consumed your " + potionType.toString();// + " and are " + potionType.getEffect().getStartMessage();
         switch (potionType.getEffect()) {
             case HEAL:
                 owner.heal(potionValue);

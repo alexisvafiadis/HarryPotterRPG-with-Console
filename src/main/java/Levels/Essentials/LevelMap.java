@@ -15,6 +15,7 @@ public class LevelMap {
     public LevelMap(int width, int height) {
         this.width = width;
         this.height = height;
+        grid = new char[width][height];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 grid[i][j] = '.';
@@ -41,7 +42,7 @@ public class LevelMap {
     public void display() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                System.out.print(grid[i][j] + " ");
+                System.out.print(grid[i][j] + "  ");
             }
             System.out.println();
         }

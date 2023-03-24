@@ -14,10 +14,10 @@ public class Level5 extends Level{
 
     @Override
     public void start() {
-        player.spawn(0,0);
+        player.spawn();
         super.start();
         DoloresUmbridge doloresUmbridge = new DoloresUmbridge(game);
-        doloresUmbridge.spawn(1,1);
+        doloresUmbridge.spawn();
         new DoloresUmbridgeBattle(game, this, player, doloresUmbridge);
         if (!doloresUmbridge.isDistracted()) {
             display.announceFail("You weren't able to distract Dolores Umbridge for enough time.");
@@ -33,7 +33,6 @@ public class Level5 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have distracted Dolores Umbridge for enough time, and the fireworks are now ready");
         display.displayInfo("Let the party begin!");
-        askForUpgrade();
     }
 
     @Override

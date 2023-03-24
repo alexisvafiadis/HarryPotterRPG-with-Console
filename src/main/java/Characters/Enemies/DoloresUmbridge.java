@@ -13,8 +13,8 @@ public class DoloresUmbridge extends Boss {
     }
 
     @Override
-    public void spawn(int positionX, int positionY) {
-        super.spawn(positionX, positionY);
+    public void spawn() {
+        super.spawn();
         distractionLevel = 2;
     }
 
