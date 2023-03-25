@@ -146,8 +146,11 @@ public class Battle {
                 }
                 break;
             case "Expelliarmus":
-                if (!enemy.hasWeapon() || !(enemy instanceof EnemyWizard)) {
+                if (!enemy.hasWeapon() && !(enemy instanceof EnemyWizard)) {
                     display.announceFail(enemy.getName() + " doesn't have a weapon");
+                }
+                else {
+                    ((Expelliarmus) player.getKnownSpells().get(spellChoice)).cast(enemy);
                 }
                 break;
             case "Engorgio":

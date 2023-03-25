@@ -25,9 +25,11 @@ public class Accio extends Spell{
         boolean castSuccessful = isCastSuccessful(wizard);
         if (castSuccessful) {
             if (Math.random() < CAST_CHANCE_MULTIPLIER / wizard.getMap().calculateDistance(wizard,item)) {
+                castSuccessful = true;
                 displayCastMessage("summoned a " + item.getItemType().toString());
             }
             else {
+                castSuccessful = false;
                 display.announceFail("Accio failed. You might be too far.");
             }
         }

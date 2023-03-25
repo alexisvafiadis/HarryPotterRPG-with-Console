@@ -40,6 +40,10 @@ public class Level4 extends Level{
             voldemort.speak("What are you doing here, mister Potter? Thanks for visiting me!");
             new Battle(game, this, player, voldemort);
         }
+        else {
+            inputParser.waitForYes("Visualize your room in Hogwarts in your head, then touch the Portkey.");
+            display.displayInfo("The power of the Portkey teleports you back to Hogwarts...");
+        }
         finish();
     }
 

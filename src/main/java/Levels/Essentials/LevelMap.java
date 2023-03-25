@@ -48,8 +48,9 @@ public class LevelMap {
         }
     }
 
+    //Check if position is inside the map or already taken by another character/item
     public boolean isPositionPossible(int x, int y) {
-        return ((x >= 0 && x < width && y >= 0 && y < height));
+        return ((x >= 0 && x < width && y >= 0 && y < height) && (getTile(x,y) == '.'));
     }
 
     public double calculateDistance(Character character, Item item) {
