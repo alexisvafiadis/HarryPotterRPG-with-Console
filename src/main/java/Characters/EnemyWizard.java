@@ -1,10 +1,8 @@
 package Characters;
 
 import Game.Game;
-import Items.Weapon;
-import Potions.EffectType;
-import Spells.SimpleSpell;
-import Spells.Spell;
+import Magic.EffectType;
+import Magic.SimpleSpell;
 
 import java.util.HashMap;
 import java.util.Map;

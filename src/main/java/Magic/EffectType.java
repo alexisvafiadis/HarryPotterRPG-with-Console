@@ -1,4 +1,4 @@
-package Potions;
+package Magic;
 
 public enum EffectType {
     CONFUSION("now confused", "already confused","no longer confused"),
@@ -8,13 +8,14 @@ public enum EffectType {
     HEAL("healed by","",""),
     SLUG_VOMITING("now feeling really nauseous","already nauseous","no longer nauseous"),
     DANCING("now feeling their legs spasm widly out of control","already dancing","in full control of their legs again"),
-    //Concrete effects
+    EXCRUCIATING_PAIN("now writhing in excruciating pain on the ground","already being tortured","no longer in pain"),
+    BURN("now burning","already burning","no longer burning"),
+    STUN("now stunned", "already stunned","no longer stunned"),
+    //Effects that would need to be accompanied by visuals
     HIDE("now hiding", "","no longer hiding"),
-    DISARM("now disarmed","already disarmed","has managed to take their weapon back");
-    /*
-    INVISIBILITY(""),
-    SPEED("");
-     */
+    DISARM("now disarmed","already disarmed","armed again"),
+    SHIELD("now protected by a shield","already protected by a shield","no longer protected by a shield"),
+    INVISIBILITY("now invisible","already invisible","no longer invisible");
 
     private String startMessage;
     private String alreadyAffectedMessage;

@@ -7,7 +7,7 @@ import Game.Game;
 import Levels.Level;
 
 public class DoloresUmbridgeBattle extends Battle {
-    final int NB_OF_ROUNDS_BEFORE_WIN = 12;
+    final int NB_OF_ROUNDS_BEFORE_WIN = 10;
 
     public DoloresUmbridgeBattle(Game game, Level level, Wizard player, AbstractEnemy enemy) {
         super(game, level, player, enemy);

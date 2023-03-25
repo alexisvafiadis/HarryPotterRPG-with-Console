@@ -1,12 +1,12 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
-import Potions.ActiveEffect;
-import Potions.EffectType;
+import Magic.ActiveEffect;
+import Magic.EffectType;
+import Magic.SimpleSpell;
 
-public class Confundus extends SimpleSpell{
+public class Confundus extends SimpleSpell {
     private final int EFFECT_DURATION = 4;
 
     public Confundus(Game game, Character wizard) {
@@ -17,7 +17,7 @@ public class Confundus extends SimpleSpell{
         use();
         if (isCastSuccessful(getWizard())) {
             target.giveEffect(EffectType.CONFUSION, new ActiveEffect(EFFECT_DURATION, 0.6));
-            displayCastMessage(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
+            displayCastMessage("");
         }
     }
 

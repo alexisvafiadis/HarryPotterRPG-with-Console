@@ -5,6 +5,7 @@ import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Levels.*;
+import Magic.Spells.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,21 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
+        if (isInDebugMode()) {
+            player.learnSpell(new Accio(this, player));
+            player.learnSpell(new WingardiumLeviosa(this, player));
+            player.learnSpell(new Lumos(this, player));
+            player.learnSpell(new Reducto(this, player));
+            player.learnSpell(new Confundus(this, player));
+            player.learnSpell(new Expelliarmus(this, player));
+            player.learnSpell(new Protego(this, player));
+            player.learnSpell(new Rictumsempra(this, player));
+            player.learnSpell(new Sectumsempra(this, player));
+            player.learnSpell(new Tarantallegra(this, player));
+            player.learnSpell(new Stupefy(this, player));
+            player.learnSpell(new SlugulusErecto(this, player));
+        }
+        startLevel(5);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }

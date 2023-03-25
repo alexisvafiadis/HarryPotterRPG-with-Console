@@ -4,8 +4,8 @@ import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Characters.Characteristics.Pet;
-import Spells.Engorgio;
-import Spells.Expelliarmus;
+import Magic.Spells.Engorgio;
+import Magic.Spells.Expelliarmus;
 
 import java.util.HashMap;
 

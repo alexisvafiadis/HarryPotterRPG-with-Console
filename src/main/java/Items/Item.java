@@ -5,8 +5,8 @@ import Levels.Essentials.LevelMap;
 public class Item {
     private LevelMap map;
     private char charTile;
-    private double positionX;
-    private double positionY;
+    private Integer positionX;
+    private Integer positionY;
     private ItemType itemType;
 
     public Item(ItemType itemType, int positionX, int positionY, LevelMap map, char charTile) {
@@ -21,14 +21,17 @@ public class Item {
         this.itemType = itemType;
     }
 
-    public boolean moveTo(int positionX, int positionY) {
-        boolean isPositionPossible = map.isPositionPossible(positionX, positionY);
-        if (isPositionPossible) {
+    public boolean moveTo(Integer positionX, Integer positionY) {
+        if (this.positionX != null && this.positionY != null) {
+            map.clearTile(this.positionX, this.positionY);
+        }
+        boolean isPositionAvailable = map.isPositionAvailable(positionX, positionY);
+        if (isPositionAvailable) {
             this.positionX = positionX;
             this.positionY = positionY;
             map.setTile(positionX, positionY, charTile);
         }
-        return isPositionPossible;
+        return isPositionAvailable;
     }
 
     public ItemType getItemType() {
@@ -39,7 +42,7 @@ public class Item {
         return positionX;
     }
 
-    public void setPositionX(double positionX) {
+    public void setPositionX(Integer positionX) {
         this.positionX = positionX;
     }
 
@@ -47,7 +50,7 @@ public class Item {
         return positionY;
     }
 
-    public void setPositionY(double positionY) {
+    public void setPositionY(Integer positionY) {
         this.positionY = positionY;
     }
 }

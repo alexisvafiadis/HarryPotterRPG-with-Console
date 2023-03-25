@@ -1,12 +1,12 @@
 package Characters;
 
 import Levels.Essentials.LevelMap;
-import Potions.EffectType;
+import Magic.EffectType;
 import Console.Display;
 import Console.InputParser;
 import Items.Weapon;
 import Game.Game;
-import Potions.ActiveEffect;
+import Magic.ActiveEffect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -132,16 +132,16 @@ public abstract class Character {
 
     public void giveEffect(EffectType effectType, ActiveEffect activeEffect) {
         if (hasEffect(effectType)) {
-            display.displayInfo(game.getMessageStartHave(this) + " " +  effectType.getAlreadyAffectedMessage() +  ", so this was uneffective");
+            display.displayInfo(game.getMessageStartBe(this) + " " +  effectType.getAlreadyAffectedMessage() +  ", so this was uneffective");
         }
         else {
-            display.displayInfo(game.getMessageStartHave((this)) + " " + effectType.getStartMessage());
+            display.displayInfo(game.getMessageStartBe((this)) + " " + effectType.getStartMessage());
         }
         activeEffects.put(effectType, activeEffect);
     }
 
     public void removeEffect(EffectType et) {
-        display.displayInfo(game.getMessageStartBe(this) + et.getEndMessage());
+        display.displayInfo(game.getMessageStartBe(this) + " " + et.getEndMessage());
         activeEffects.remove(et); }
 
     public Weapon getWeapon() {
@@ -156,15 +156,23 @@ public abstract class Character {
 
     public boolean canAttack(Character target) {
         if (getEffectProbability(EffectType.LAUGH)) {
-            display.displayInfo(getName() + " couldn't attack because they are laughing");
+            display.displayInfo(getName() + " couldn't do anything because they are laughing");
             return false;
         }
-        if (getEffectProbability(EffectType.CONFUSION)) {
-            display.displayInfo(getName() + " couldn't attack because they are confused.");
+        else if (getEffectProbability(EffectType.CONFUSION)) {
+            display.displayInfo(getName() + " couldn't do anything because they are confused.");
             return false;
         }
-        if (target.getEffectProbability(EffectType.HIDE)) {
+        else if (getEffectProbability(EffectType.STUN)) {
+            display.displayInfo(getName() + " couldn't do anything because they are momentarily stunned");
+            return false;
+        }
+        else if (target.getEffectProbability(EffectType.HIDE)) {
             display.announceSuccess("Well done, " + getName() + " couldn't find you!");
+            return false;
+        }
+        else if (target.getEffectProbability(EffectType.SHIELD)) {
+            display.displayInfo(target.getName() + "'s shield protected them from " + getName() +"'s attack");
             return false;
         }
         return true;
@@ -175,6 +183,17 @@ public abstract class Character {
     }
 
     public void finishRound() {
+        //Maybe try event listeners later
+        if (hasEffect(EffectType.EXCRUCIATING_PAIN)) {
+            double damage = activeEffects.get(EffectType.EXCRUCIATING_PAIN).getValue() / activeEffects.get(EffectType.EXCRUCIATING_PAIN).getNbOfRoundsLeft();
+            display.displayInfo(getName() + " suffers from torture");
+            damage(damage);
+        }
+        if (hasEffect(EffectType.BURN)) {
+            double damage = activeEffects.get(EffectType.BURN).getValue();
+            display.displayInfo(getName() + " suffers from their burns");
+            damage(damage);
+        }
         for (EffectType effectType : activeEffects.keySet()) {
             if (activeEffects.get(effectType).getNbOfRoundsLeft() == 1) {
                 removeEffect(effectType);
@@ -217,16 +236,14 @@ public abstract class Character {
 
     public boolean moveTo(Integer positionX, Integer positionY) {
         if (this.positionX != null && this.positionY != null) {
-            map.setTile(this.positionX, this.positionY, '.');
+            map.clearTile(this.positionX, this.positionY);
         }
-        boolean isPositionPossible = map.isPositionPossible(positionX, positionY);
-        if (isPositionPossible) {
+        boolean isPositionAvailable = map.isPositionAvailable(positionX, positionY);
+        if (isPositionAvailable) {
             this.positionX = positionX;
             this.positionY = positionY;
             map.setTile(positionX, positionY, charTile);
         }
-        return isPositionPossible;
-
+        return isPositionAvailable;
     }
-
 }

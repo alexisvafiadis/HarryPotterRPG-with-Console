@@ -3,8 +3,8 @@ package Levels;
 import Characters.Enemies.Dementor;
 import Game.Game;
 import Levels.Essentials.Battle;
-import Spells.Expectopatronum;
-import Spells.Lumos;
+import Magic.Spells.Expectopatronum;
+import Magic.Spells.Lumos;
 
 public class Level3 extends Level{
     boolean expectoPatronumUsed;

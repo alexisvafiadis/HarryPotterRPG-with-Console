@@ -1,10 +1,10 @@
-package Spells;
+package Magic.Spells;
 
-import Characters.Character;
 import Characters.Wizard;
 import Game.Game;
+import Magic.Spell;
 
-public class Expectopatronum extends Spell{
+public class Expectopatronum extends Spell {
 
     public Expectopatronum(Game game, Wizard wizard) {
         super(game, wizard, "Expecto Patronum", 5, 1, 0.15, 0.08);

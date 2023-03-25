@@ -1,7 +1,6 @@
 package Levels.Essentials;
 
 import Characters.AbstractEnemy;
-import Characters.EnemyWizard;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
@@ -12,15 +11,18 @@ import Items.Weapon;
 import Levels.Level;
 import Levels.Level2;
 import Levels.Level3;
-import Potions.ActiveEffect;
-import Potions.EffectType;
-import Potions.Potion;
-import Potions.PotionType;
-import Spells.*;
+import Magic.ActiveEffect;
+import Magic.EffectType;
+import Magic.Potion;
+import Magic.PotionType;
+import Magic.Spells.*;
+import Magic.SimpleSpell;
+import Magic.Spell;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Battle {
     protected Game game;
@@ -128,66 +130,56 @@ public class Battle {
 
     public void castSpell() {
         String spellChoice = inputParser.getNumberToStringInput("What spell do you want to use?", spellInputs, "for");
-        List<Item> items;
-        switch(spellChoice) {
-            case "Wingardium Leviosa":
-                items = level.getItems();
-                if (items.isEmpty()) {
-                    display.announceFail("You haven't found any item to levitate. Try looking around.");
-                    askPlayerForAction();
-                } else {
-                    HashMap<Integer, String> itemInputs = getItemInputs();
-                    display.displayInfo(itemInputs.toString());
-                    int itemIndex = inputParser.getNumberInput("Choose an item to levitate", itemInputs, "for") - 1;
-                    Item item = items.get(itemIndex);
-                    if (((WingardiumLeviosa) player.getKnownSpells().get(spellChoice)).cast(item, enemy)) {
+        Spell spell = player.getKnownSpells().get(spellChoice);
+        if (spellChoice.equals("Accio")) {
+            if (level instanceof Level2) {
+                ((Accio) spell).cast(Weapon.BASILISK_FANG);
+            }
+        }
+        else if (spellChoice.equals("Expecto Patronum")) {
+            if (level instanceof Level3) {
+                if (((Expectopatronum) spell).cast()) {
+                    ((Level3) level).setExpectoPatronumUsed();
+                    enemy.die();
+                }
+            }
+            else { display.displayInfo("This spell is useless here."); }
+        }
+        else if (spell instanceof ItemSpell) {
+            List<Item> items = level.getItems();
+            if (items.isEmpty()) {
+                display.announceFail("You haven't found any item. Try looking around.");
+                askPlayerForAction();
+            }
+            else {
+                HashMap<Integer, String> itemInputs = getItemInputs();
+                display.displayInfo(itemInputs.toString());
+                int itemIndex = inputParser.getNumberInput("Choose an item " + ((ItemSpell) spell).getStringForItem(), itemInputs, "for") - 1;
+                Item item = items.get(itemIndex);
+                if (spell instanceof WingardiumLeviosa) {
+                    if (((WingardiumLeviosa) spell).cast(item, enemy)) {
                         items.remove(item);
                     }
                 }
-                break;
-            case "Expelliarmus":
-                if (!enemy.hasWeapon() && !(enemy instanceof EnemyWizard)) {
-                    display.announceFail(enemy.getName() + " doesn't have a weapon");
+                else if (spell instanceof Engorgio) {
+                    ((Engorgio) spell).cast(item);
                 }
-                else {
-                    ((Expelliarmus) player.getKnownSpells().get(spellChoice)).cast(enemy);
-                }
-                break;
-            case "Engorgio":
-                items = level.getItems();
-                if (items.isEmpty()) {
-                    display.announceFail("You haven't found any item to engorge. Try looking around.");
-                    askPlayerForAction();
-                } else {
-                    HashMap<Integer, String> itemInputs = getItemInputs();
-                    int itemIndex = inputParser.getNumberInput("Choose an item to engorge", itemInputs, "for") - 1;
-                    Item item = items.get(itemIndex);
-                    ((Engorgio) player.getKnownSpells().get(spellChoice)).cast(item);
-                }
-                break;
-            case "Confundus":
-                ((Confundus) player.getKnownSpells().get(spellChoice)).cast(enemy);
-                break;
-            case "Accio":
-                if (level instanceof Level2) {
-                    ((Accio) player.getKnownSpells().get(spellChoice)).cast(Weapon.BASILISK_FANG);
-                }
-                break;
-            case "Expecto Patronum":
-                if (level instanceof Level3) {
-                    if (((Expectopatronum) player.getKnownSpells().get(spellChoice)).cast()) {
-                        ((Level3) level).setExpectoPatronumUsed();
-                        enemy.die();
+                else if (spell instanceof Reducto) {
+                    if (((Reducto) spell).cast(item, enemy)) {
+                        items.remove(item);
                     }
                 }
-                else { display.displayInfo("This spell is useless here."); }
+            }
+        }
+        else if (player.getKnownSpells().get(spellChoice) instanceof SimpleSpell) {
+            ((SimpleSpell) player.getKnownSpells().get(spellChoice)).cast(enemy);
         }
     }
 
     public HashMap<Integer, String> getSpellInputs() {
         HashMap<Integer, String> spellInputs = new HashMap<>();
         int i = 1;
-        Map<String, Spell> playerKnownSpells = player.getKnownSpells();
+        LinkedHashMap<String, Spell> playerKnownSpells = player.getKnownSpells();
         for (String spellName : playerKnownSpells.keySet()) {
             spellInputs.put(i, spellName);
             i++;
@@ -241,6 +233,9 @@ public class Battle {
     }
 
     public void displayFightStartMessage() {
+        if (enemy.getCustomBattleStartMessage() != null) {
+            display.displayQuote(enemy.getName(), enemy.getCustomBattleStartMessage());
+        }
         display.displayInfo("You have started a battle against " + enemy.getName());
     }
 }

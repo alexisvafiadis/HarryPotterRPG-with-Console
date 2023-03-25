@@ -1,10 +1,10 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
+import Magic.SimpleSpell;
 
-public class Sectumsempra extends SimpleSpell{
+public class Sectumsempra extends SimpleSpell {
     private final double DEFAULT_DAMAGE = 40;
 
     public Sectumsempra(Game game, Character wizard) {
@@ -12,10 +12,10 @@ public class Sectumsempra extends SimpleSpell{
     }
 
     public void cast(Character target) {
+        use();
         if (isCastSuccessful(target)) {
             target.damage(calculateDamage(DEFAULT_DAMAGE));
             displayCastMessage("lacerated " + target.getName() + ", causing severe haemorrhaging");
-            use();
         }
     }
 }

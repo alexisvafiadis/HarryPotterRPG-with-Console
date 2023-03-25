@@ -1,18 +1,11 @@
 package Levels;
 
-import Characters.AbstractEnemy;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Items.Item;
 import Items.ItemType;
 import Game.Game;
-import Items.Weapon;
-import Potions.ActiveEffect;
-import Potions.EffectType;
-import Potions.Potion;
-import Potions.PotionType;
-import Spells.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,6 @@
-package Spells;
+package Magic;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
 
 public abstract class SimpleSpell extends Spell {

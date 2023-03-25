@@ -55,6 +55,8 @@ public class Display {
 
     public void congratulate(String congratulations) { slowPrint(congratulations, ConsoleColors.YELLOW_BRIGHT); }
 
+    public void displayError(String error) {slowPrint(error, ConsoleColors.RED_BOLD_BRIGHT); }
+
     public void displayHP(Character character, boolean own) {
         String color, message;
         if (own) {

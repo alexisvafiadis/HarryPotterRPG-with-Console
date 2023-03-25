@@ -1,16 +1,16 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
 import Characters.Wizard;
 import Items.Item;
 import Game.Game;
-import Items.ItemType;
+import Magic.Spell;
 
-public class WingardiumLeviosa extends Spell{
+public class WingardiumLeviosa extends ItemSpell {
     private final double DEFAULT_DAMAGE = 15;
 
     public WingardiumLeviosa(Game game, Wizard wizard) {
-        super(game, wizard, "Wingardium Leviosa", 5, 1, 0.3, 0.5);
+        super(game, wizard, "Wingardium Leviosa", 5, 1, 0.3, 0.5,"to levitate");
     }
 
     public boolean cast(Item item, Character target) {

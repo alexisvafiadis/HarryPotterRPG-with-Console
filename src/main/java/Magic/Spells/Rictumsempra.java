@@ -1,12 +1,12 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
-import Potions.ActiveEffect;
-import Potions.EffectType;
+import Magic.ActiveEffect;
+import Magic.EffectType;
+import Magic.SimpleSpell;
 
-public class Rictumsempra extends SimpleSpell{
+public class Rictumsempra extends SimpleSpell {
     private final int EFFECT_DURATION = 3;
 
     public Rictumsempra(Game game, Character wizard) {
@@ -18,7 +18,7 @@ public class Rictumsempra extends SimpleSpell{
         if (isCastSuccessful(target)) {
             //check if target is human
             target.giveEffect(EffectType.LAUGH, new ActiveEffect(EFFECT_DURATION, 0.6));
-            displayCastMessage(target.getName() + " is " + EffectType.LAUGH.getStartMessage());
+            displayCastMessage("");
         }
     }
 

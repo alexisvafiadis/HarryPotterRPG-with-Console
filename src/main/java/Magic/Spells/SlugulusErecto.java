@@ -1,12 +1,12 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
-import Potions.ActiveEffect;
-import Potions.EffectType;
+import Magic.ActiveEffect;
+import Magic.EffectType;
+import Magic.SimpleSpell;
 
-public class SlugulusErecto extends SimpleSpell{
+public class SlugulusErecto extends SimpleSpell {
     private final int EFFECT_DURATION = 3;
 
     public SlugulusErecto(Game game, Character wizard) {
@@ -17,7 +17,7 @@ public class SlugulusErecto extends SimpleSpell{
         use();
         if (isCastSuccessful(getWizard())) {
             target.giveEffect(EffectType.SLUG_VOMITING, new ActiveEffect(EFFECT_DURATION, 0.72));
-            displayCastMessage(target.getName() + " is " + EffectType.CONFUSION.getStartMessage());
+            displayCastMessage("");
         }
     }
 }

@@ -4,7 +4,7 @@ import Characters.Enemies.Basilisk;
 import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;
-import Spells.Accio;
+import Magic.Spells.Accio;
 
 public class Level2 extends Level{
 

@@ -1,4 +1,4 @@
-package Potions;
+package Magic;
 
 import Characters.Wizard;
 import Console.Display;

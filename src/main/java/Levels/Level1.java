@@ -4,7 +4,7 @@ import Characters.Enemies.Troll;
 import Characters.Wizard;
 import Game.Game;
 import Levels.Essentials.Battle;
-import Spells.WingardiumLeviosa;
+import Magic.Spells.WingardiumLeviosa;
 
 public class Level1 extends Level{
     Wizard player;

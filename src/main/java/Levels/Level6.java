@@ -2,10 +2,13 @@ package Levels;
 
 import Characters.Characteristics.House;
 import Characters.Enemies.DeathEater;
+import Characters.Enemies.Student;
 import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;
-import Spells.Accio;
+import Magic.Spells.Accio;
+
+import java.util.HashMap;
 
 public class Level6 extends Level{
 
@@ -17,15 +20,37 @@ public class Level6 extends Level{
     public void start() {
         player.spawn();
         super.start();
+        boolean againstDeathEaters = true;
         if (player.getHouse().equals(House.SLYTHERIN)) {
-
+            HashMap<Integer, String> validInputs = new HashMap<>();
+            validInputs.put(0,"No");
+            validInputs.put(1,"Yes");
+            int choice = inputParser.getNumberInput("Do you wish to side with the Death Eaters?", validInputs,"for");
+            if (choice == 1) {
+                againstDeathEaters = false;
+            }
         }
-        else {
+        if (againstDeathEaters)  {
             DeathEater deathEater = new DeathEater(game);
             deathEater.spawn();
             new Battle(game, this, player, deathEater);
-            finish();
         }
+        else {
+            Student cho = new Student(game, "Cho Chang", 90, 1, 1, 2, "I won't let you hurt my friends or my school.");
+            cho.spawn();
+            new Battle(game,this,player,cho);
+            Student neville = new Student(game, "Neville Longbottom", 140,1.05,1.05,1.3, "I'm not the same boy you used to know. I've learned a few things since then.");
+            neville.spawn();
+            new Battle(game,this,player,neville);
+            Student ginny = new Student(game, "Ginny Weasley", 100, 0.85, 1.2, 1.55, "I may be small, but I can pack a punch.");
+            ginny.spawn();
+            new Battle(game,this,player,ginny);
+            Student cedric = new Student(game, "Cedric Diggory", 155, 0.8, 1.45, 1.8, "Let's make this a fair fight, shall we?");
+            cedric.spawn();
+            new Battle(game,this,player,cedric);
+        }
+        player.setAgainstDeathEaters(againstDeathEaters);
+        finish();
     }
 
     @Override

@@ -1,11 +1,12 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Wizard;
 import Items.Item;
 import Game.Game;
 import Items.Weapon;
+import Magic.Spell;
 
-public class Accio extends Spell{
+public class Accio extends Spell {
     private final double CAST_CHANCE_MULTIPLIER = 5;
 
     public Accio(Game game, Wizard wizard) {
@@ -14,7 +15,7 @@ public class Accio extends Spell{
 
     public void cast(Weapon weapon) {
         use();
-        if (isCastSuccessful(wizard)) {
+        if (isCastSuccessful()) {
             wizard.setWeapon(weapon);
             displayCastMessage("summoned a " + weapon.toString());
         }
@@ -22,7 +23,7 @@ public class Accio extends Spell{
 
     public boolean cast(Item item) {
         use();
-        boolean castSuccessful = isCastSuccessful(wizard);
+        boolean castSuccessful = isCastSuccessful();
         if (castSuccessful) {
             if (Math.random() < CAST_CHANCE_MULTIPLIER / wizard.getMap().calculateDistance(wizard,item)) {
                 castSuccessful = true;

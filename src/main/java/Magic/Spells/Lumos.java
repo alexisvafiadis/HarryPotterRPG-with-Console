@@ -1,11 +1,11 @@
-package Spells;
+package Magic.Spells;
 
 import Characters.Character;
-import Characters.Wizard;
 import Game.Game;
 import Levels.Essentials.LevelMap;
+import Magic.Spell;
 
-public class Lumos extends Spell{
+public class Lumos extends Spell {
 
     public Lumos(Game game, Character wizard) {
         super(game, wizard, "Lumos", 5, 1, 0.32, 0.58);

@@ -1,4 +1,4 @@
-package Spells;
+package Magic;
 
 import Characters.Character;
 import Characters.EnemyWizard;
@@ -20,13 +20,15 @@ public abstract class Spell {
     private double learningExponent;
     private double defaultMasteryScore;
     private boolean isForbidden;
-    final private String CAST_MESSAGE_SUCCESS = "successfully cast";
-    final private String CAST_MESSAGE_FAIL = "failed to cast";
 
     //Instance-specific
     protected int nbOfUses;
     protected Character wizard;// character and not wizard because there is Wizard and EnemyWizard
     protected String specificCastMessage;
+
+    //CONST
+    final private String CAST_MESSAGE_SUCCESS = "successfully cast";
+    final private String CAST_MESSAGE_FAIL = "failed to cast";
 
     public Spell(Game game, Character wizard, String name, int range, float cooldown, double learningExponent, double defaultMasteryScore) {
         this.game = game;
@@ -34,8 +36,10 @@ public abstract class Spell {
         this.display = game.getDisplay();
         this.inputParser = game.getInputParser();
         this.name = name;
+        //Range and cooldowns aren't used yet, but could be useful if the game becomes a bit more complex when making the graphic interface
         this.range = range;
         this.cooldown = cooldown;
+
         this.learningExponent = learningExponent;
         this.defaultMasteryScore = defaultMasteryScore;
         nbOfUses = 0;
@@ -53,13 +57,22 @@ public abstract class Spell {
         }
     }
 
+    //Calculates if the wizard successfully casts a default spell, depending on different factors
+    //Doesn't display if the cast is successful because some spells may need extra requirements for a spell to be successful
     public boolean isCastSuccessful(Character target) {
+        if (target != null && !wizard.canAttack(target)) {
+            return false;
+        }
         double probability;
         if (wizard instanceof Wizard) {
             probability = getMasteryScore() * ((Wizard) wizard).getAccuracy();
         }
-        else { // <=> wizard instanceof EnemyWizard
+        else if (wizard instanceof EnemyWizard){
             probability = getDefaultMasteryScore() * ((EnemyWizard) wizard).getDefaultMasteryScoreMultiplier();
+        }
+        else {
+            display.displayError("A non wizard character tried to cast a spell");
+            return false;
         }
         if (target != null) { probability = probability * target.getVulnerabilityToMagic(); }
         boolean b = (Math.random() < probability) ;
@@ -74,6 +87,9 @@ public abstract class Spell {
         return b;
     }
 
+    public boolean isCastSuccessful() {
+        return isCastSuccessful(null);
+    }
 
     public void displayCastMessage(String specificCastMessage) {
         String castMessage = game.getMessageStartHave(wizard) + " " + CAST_MESSAGE_SUCCESS + " " + getName() + " and " + specificCastMessage;
@@ -83,10 +99,6 @@ public abstract class Spell {
         else {
             display.displayInfo(castMessage);
         }
-    }
-
-    public boolean isCastSuccessful() {
-        return isCastSuccessful(null);
     }
 
     //Call that function when the player uses the spell so that they can get better at using it
@@ -139,5 +151,13 @@ public abstract class Spell {
         else {
             return ((EnemyWizard) wizard).amplifySpellDamage(damage);
         }
+    }
+
+    public boolean isForbidden() {
+        return isForbidden;
+    }
+
+    public void setForbidden(boolean forbidden) {
+        isForbidden = forbidden;
     }
 }

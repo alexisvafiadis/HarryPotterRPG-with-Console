@@ -1,11 +1,11 @@
 package Characters;
 
-import Potions.EffectType;
+import Magic.EffectType;
 import Characters.Characteristics.Pet;
 import Game.Game;
 import Characters.Characteristics.House;
-import Potions.Potion;
-import Spells.Spell;
+import Magic.Potion;
+import Magic.Spell;
 import Items.Wand;
 
 import java.util.*;
@@ -16,8 +16,9 @@ public class Wizard extends Character{
     private Pet pet;
     private Wand wand;
     private House house;
-    private Map<String, Spell> knownSpells;
+    private LinkedHashMap<String, Spell> knownSpells;
     private List<Potion> potions;
+    private boolean againstDeathEaters;
 
     //Stats
     private double spellDamageMultiplier = 1;
@@ -26,7 +27,7 @@ public class Wizard extends Character{
 
     public Wizard(Game game) {
         super(game, 100, 5, 0.95,null,'Y',1);
-        knownSpells = new HashMap<>();
+        knownSpells = new LinkedHashMap<>();
         potions = new ArrayList<>();
     }
 
@@ -80,12 +81,12 @@ public class Wizard extends Character{
         this.house = house;
     }
 
-    public Map<String, Spell> getKnownSpells() {
-        return knownSpells;
-    }
+    public LinkedHashMap<String, Spell> getKnownSpells() { return knownSpells; }
 
     public void learnSpell(Spell spell) {
-        this.knownSpells.put(spell.getName(), spell);
+        if (!knownSpells.containsKey(spell.getName())) {
+            this.knownSpells.put(spell.getName(), spell);
+        }
     }
 
     public boolean knowsSpell(String spellName) { return knownSpells.containsKey(spellName); }
@@ -158,4 +159,11 @@ public class Wizard extends Character{
         game.getCurrentLevel().start();
     }
 
+    public boolean isAgainstDeathEaters() {
+        return againstDeathEaters;
+    }
+
+    public void setAgainstDeathEaters(boolean againstDeathEaters) {
+        this.againstDeathEaters = againstDeathEaters;
+    }
 }

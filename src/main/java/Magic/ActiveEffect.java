@@ -1,4 +1,4 @@
-package Potions;
+package Magic;
 
 public class ActiveEffect {
     //This could be the result of a spell or potions

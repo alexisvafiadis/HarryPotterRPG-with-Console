@@ -1,13 +1,12 @@
 package Levels;
 
 import Characters.Enemies.Voldemort;
-import Characters.Wizard;
 import Game.Game;
 import Items.Item;
 import Items.ItemType;
 import Levels.Essentials.Battle;
 import Levels.Essentials.LevelMap;
-import Spells.*;
+import Magic.Spells.*;
 
 import java.util.HashMap;
 
@@ -37,7 +36,6 @@ public class Level4 extends Level{
             askForAction();
         }
         if (seenByVoldemort()) {
-            voldemort.speak("What are you doing here, mister Potter? Thanks for visiting me!");
             new Battle(game, this, player, voldemort);
         }
         else {
@@ -105,7 +103,6 @@ public class Level4 extends Level{
                 }
                 break;
             case "Use Lumos":
-                player.learnSpell(new Lumos(game, player));
                 ((Lumos) player.getKnownSpells().get("Lumos")).cast(map);
                 break;
         }

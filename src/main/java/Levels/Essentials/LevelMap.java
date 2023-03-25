@@ -31,6 +31,10 @@ public class LevelMap {
         }
     }
 
+    public void clearTile(int x, int y) {
+        grid[y][x] = '.';
+    }
+
     public char getTile(int x, int y) {
         if (isPositionPossible(x,y)) {
             return grid[y][x];
@@ -49,8 +53,12 @@ public class LevelMap {
     }
 
     //Check if position is inside the map or already taken by another character/item
+    public boolean isPositionAvailable(int x, int y) {
+        return ((isPositionPossible(x,y)) && (getTile(x,y) == '.'));
+    }
+
     public boolean isPositionPossible(int x, int y) {
-        return ((x >= 0 && x < width && y >= 0 && y < height) && (getTile(x,y) == '.'));
+        return ((x >= 0 && x < width && y >= 0 && y < height));
     }
 
     public double calculateDistance(Character character, Item item) {

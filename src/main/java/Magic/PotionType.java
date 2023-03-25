@@ -1,4 +1,4 @@
-package Potions;
+package Magic;
 
 public enum PotionType {
     STRENGHTENING_SOLUTION(EffectType.STRENGTH, 2, 4, 1,"This potion is used to strengthen and fortify objects, and can be used to temporarily increase the player's physical strength."),

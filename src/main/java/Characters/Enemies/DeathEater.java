@@ -8,14 +8,14 @@ import Game.Game;
 public class DeathEater extends AbstractEnemy {
 
     public DeathEater(Game game) {
-        super(game, 30.0, 80.0, 0.9,null,'D',1,1);
+        super(game, 30, 80, 0.9,null,'D',1,1);
     }
 
     public void act() {
-        attack(getGame().getPlayer());
+        attack(game.getPlayer());
     }
 
     public String getName() {
-        return "The Troll";
+        return "Death Eater";
     }
 }
