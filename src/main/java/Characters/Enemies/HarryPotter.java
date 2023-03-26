@@ -6,7 +6,7 @@ import Magic.Spells.*;
 
 public class HarryPotter extends EnemyWizard {
     public HarryPotter(Game game) {
-        super(game, 180, 5, 0.53, 'V', 1, 2.1, 2.1);
+        super(game, 180, 5, 0.53, 'V', 1, 1.9, 2);
         addSpell(new Sectumsempra(game, this), 4);
         addSpell(new Stupefy(game, this), 1);
         addSpell(new Expelliarmus(game, this), 2);

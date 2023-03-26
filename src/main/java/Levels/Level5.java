@@ -3,6 +3,8 @@ package Levels;
 import Characters.Enemies.DoloresUmbridge;
 import Game.Game;
 import Levels.Essentials.DoloresUmbridgeBattle;
+import Magic.Spells.Reducto;
+import Magic.Spells.Stupefy;
 
 public class Level5 extends Level{
 
@@ -25,6 +27,7 @@ public class Level5 extends Level{
         }
         else if (!doloresUmbridge.isAlive()) {
             display.announceFail("You have hurt Dolores Umbridge with a spell and get expelled from Hogwarts.");
+            fail();
         }
         finish();
     }
@@ -33,12 +36,19 @@ public class Level5 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have distracted Dolores Umbridge for enough time, and the fireworks are now ready");
         display.displayInfo("Let the party begin!");
+        display.displayInfo("20 minutes later...");
+        display.displayQuote("Dolores Umbridge", "Ok, enough now! It's actually the perfect situation to teach you all a new spell.");
+        display.displayInfo("Dolores Umbridge casts a spell to destroy the firework machine.. The party is over");
+        display.displayQuote("Dolores Umbridge","This spell is called Reducto and it is very useful, especially in combat.");
+        Reducto reducto = new Reducto(game, player);
+        reducto.teach(player);
     }
 
     @Override
     public void introduce() {
         giveLevelInfo();
-        display.displayInfo("You have to distract Dolores Umbridge until ");
+        display.displayInfo("In this level, you have to distract Dolores Umbridge until your fellow classmates finish preparing the fireworks.");
+        display.displayInfo("She may get mad at you, but don't worry, she will have bigger fish to fry if the party really happens");
         wishGoodLuck();
     }
 

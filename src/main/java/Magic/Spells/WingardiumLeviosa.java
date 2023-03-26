@@ -10,7 +10,7 @@ public class WingardiumLeviosa extends ItemSpell {
     private final double DEFAULT_DAMAGE = 15;
 
     public WingardiumLeviosa(Game game, Wizard wizard) {
-        super(game, wizard, "Wingardium Leviosa", 5, 1, 0.3, 0.5,"to levitate");
+        super(game, wizard, "Wingardium Leviosa", 5, 1, 0.75, 0.36,"to levitate");
     }
 
     public boolean cast(Item item, Character target) {
@@ -18,8 +18,8 @@ public class WingardiumLeviosa extends ItemSpell {
             tryForFirstTime();
         }
         use();
-        if (isCastSuccessful(getWizard())) {
-            display.announceSuccess("You have used Wingardium Leviosa to throw this " + item.getItemType().toString() + " on " + target.getName());
+        if (isCastSuccessful(target)) {
+            displayCastMessage("rose " + item.getItemType().toString() + " into the air, throwing it on " + target.getName() +"'s head");
             target.damage(calculateDamage(DEFAULT_DAMAGE * item.getItemType().getDamageMultiplier()));
             return true;
         }
@@ -32,5 +32,15 @@ public class WingardiumLeviosa extends ItemSpell {
                 "Once the object is floating in the air, you can move it around by pointing your wand in different directions. Try moving the object to the left, right, up, and down by changing the direction of your wand.\n" +
                 "To release the object, simply stop concentrating on it and let it fall back to the ground.\n"
                 + "Understood?");;
+    }
+
+    public void displayInstructions() {
+        display.displayInfo("To cast the Wingardium Leviosa spell, hold your wand out in front of you and say the incantation clearly: Wingardium Leviosa.");
+        display.displayInfo("Next, you need to make the wand movement for the spell. With your wand in your hand, make a swishing motion upward, as if you are lifting something up into the air.");
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+        }
+        display.displayInfo("Good. Now that you have the spell incantation and wand movement down, you need to find an object to levitate. Look around the room and find an object that you want to move with the spell.");
     }
 }

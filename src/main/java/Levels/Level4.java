@@ -56,31 +56,23 @@ public class Level4 extends Level{
         giveLevelInfo();
         display.displayInfo("Voldemort and Peter Pettigrew are nearby. You should probably get away.");
         display.displayInfo("You have to get close to the Portkey to attract it to you using Accio then use the Portkey");
+        display.displayInfo("If you get spotted by Voldemort, you will have to defend yourself.");
+        display.displayInfo("I doubt you're skilled enough to survive yet, but we never know. Let me teach you Protego");
+        Protego protego = new Protego(game, player);
+        protego.teach(player);
         wishGoodLuck();
     }
 
     public void teachFunnySpells() {
-        display.displayInfo("To help you recover, let me teach you some funny spells. Let's tart with Rictumsempra.");
-        inputParser.waitForYes("First, make sure you have your wand at the ready and choose your target carefully.\n" +
-                "The Rictumsempra spell is a jinx that causes your target to experience a tickling sensation, so it's a harmless spell that wouldn't be useful in a dangerous situation.\n" +
-                "Point your wand at your target and clearly enunciate Rictumsempra while flicking your wand in a zig-zag motion.\n" +
-                "If successful, your target should start to experience an uncontrollable tickling sensation, causing them to double over with laughter.\n");
-        player.learnSpell(new Rictumsempra(game, player));
-
+        display.displayInfo("To help you recover, let me teach you some funny spells. Let's start with Rictumsempra.");
+        Rictumsempra rictumsempra = new Rictumsempra(game, player);
+        rictumsempra.teach(player);
         display.displayInfo("There's also Slugulus Erecto, a spell that causes the target to vomit slugs for a short period");
-        inputParser.waitForYes("To begin casting the Slug-vomiting Charm, visualize your target being overcome with the uncontrollable urge to vomit slugs.\n" +
-                "Firmly grasp your wand and prepare to perform a smooth, circular motion while keeping your focus on the target.\n" +
-                "As you execute the circular motion with your wand, confidently and clearly enunciate the incantation Slugulus Eructo.\n" +
-                "The effectiveness of the Slug-vomiting Charm relies on the caster's ability to concentrate on their target and deliver the incantation with precision and confidence.");
-        player.learnSpell(new SlugulusErecto(game, player));
-
+        SlugulusErecto slugulusErecto = new SlugulusErecto(game, player);
+        slugulusErecto.teach(player);
         display.displayInfo("You can learn Tarantallegra as well.");
-        inputParser.waitForYes("To cast Tarantallegra, first focus your mind on the target and imagine their feet moving uncontrollably in a dance.\n" +
-                "While concentrating on your target, hold your wand firmly and perform a swift, upward flicking motion.\n" +
-                "As you flick your wand, confidently and clearly pronounce the incantation Tarantallegra.\n" +
-                "Remember, the key to a successful Tarantallegra spell is maintaining a strong mental image of the target dancing and delivering the incantation with confidence.");
-        player.learnSpell(new Tarantallegra(game, player));
-
+        Tarantallegra tarantallegra = new Tarantallegra(game, player);
+        tarantallegra.teach(player);
     }
 
     public boolean seenByVoldemort() {

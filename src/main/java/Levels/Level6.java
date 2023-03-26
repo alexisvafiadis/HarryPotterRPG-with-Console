@@ -7,6 +7,7 @@ import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;
 import Magic.Spells.Accio;
+import Magic.Spells.Sectumsempra;
 
 import java.util.HashMap;
 
@@ -20,20 +21,19 @@ public class Level6 extends Level{
     public void start() {
         player.spawn();
         super.start();
-        boolean againstDeathEaters = true;
-        if (player.getHouse().equals(House.SLYTHERIN)) {
-            HashMap<Integer, String> validInputs = new HashMap<>();
-            validInputs.put(0,"No");
-            validInputs.put(1,"Yes");
-            int choice = inputParser.getNumberInput("Do you wish to side with the Death Eaters?", validInputs,"for");
-            if (choice == 1) {
-                againstDeathEaters = false;
-            }
-        }
-        if (againstDeathEaters)  {
-            DeathEater deathEater = new DeathEater(game);
-            deathEater.spawn();
-            new Battle(game, this, player, deathEater);
+        if (player.isAgainstDeathEaters())  {
+            DeathEater alecto = new DeathEater(game, "Alecto Carrow", 110, 1, 1.6, 1.9, "I'll make sure you regret ever crossing the Dark Lord.");
+            alecto.spawn();
+            new Battle(game, this, player, alecto);
+            DeathEater malfoy = new DeathEater(game, "Lucius Malfoy", 125, 0.9, 1.85, 1.5, "My loyalty lies with the Dark Lord.");
+            malfoy.spawn();
+            new Battle(game, this, player, malfoy);
+            DeathEater yaxley = new DeathEater(game, "Corban Yaxley", 190, 0.7, 1, 2.1, "I serve the Dark Lord and nothing else. You will not break through my defense.");
+            yaxley.spawn();
+            new Battle(game, this, player, yaxley);
+            DeathEater dolohov = new DeathEater(game, "Antonin Dolohov", 130, 0.85, 2.15, 1.7, "I'll take pleasure in taking you down!");
+            dolohov.spawn();
+            new Battle(game, this, player, dolohov);
         }
         else {
             Student cho = new Student(game, "Cho Chang", 90, 1, 1, 2, "I won't let you hurt my friends or my school.");
@@ -49,44 +49,50 @@ public class Level6 extends Level{
             cedric.spawn();
             new Battle(game,this,player,cedric);
         }
-        player.setAgainstDeathEaters(againstDeathEaters);
         finish();
     }
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have killed the Basilisk");
-        if (!player.knowsSpell("Accio")) {
-            display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
-            teachAccio();
+        if (player.isAgainstDeathEaters()) {
+            display.congratulate("Well done, by winning those intense battles, you have helped Hogwarts defeat the Death Eaters and ensure the safety of Hogwarts.");
+            display.displayInfo("You have proved yourself of worthy defender of Hogwarts.");
+            display.displayInfo("However, with Voldemort still alive somewhere, the hardest task still has to be done. You should prepare yourself.");
+        }
+        else {
+            display.displayInfo("As you stand among the fallen bodies of your former classmates, you feel the rush of power and victory, at the expense of your school, friends and principles.");
+            display.congratulate("You have proven your worth to the Death Eaters and solidified your place among them by helping them win an important battle.");
+            display.displayInfo("However, with Harry Potter, Hermione Granger and Ron Weasley still alive somewhere in Hogwarts, an extremely difficult fight is upcoming.");
         }
     }
 
     @Override
     public void introduce() {
         giveLevelInfo();
-        display.displayInfo("For this level, you have to defeat the Basilisk. It is a very venomous snake that kills anyone that makes eye contact with it.");
-        if (player.getHouse().toString().equals("Gryffindor")) {
-            display.displayInfo("In order to do that, you have to use the Gryffindor sword. Here it is.");
-            display.announceReward("You have been given the Gryffindor sword");
-            player.setWeapon(Weapon.SWORD_OF_GRYFFINDOR);
+        display.displayInfo("In this level, Hogwarts is under attack by the Death Eaters, a group of dark wizards and witches who are loyal to the evil Lord Voldemort.");
+        display.displayInfo("As a student of Hogwarts, your duty is to defend your school and your fellow students from the impending attack.");
+        boolean againstDeathEaters = true;
+        if (player.getHouse().equals(House.SLYTHERIN)) {
+            display.displayInfo("As you are a Slytherin, you have the option to join the ranks of the Death Eaters and fight against your fellow students and former allies.");
+            display.displayInfo("But remember, every decision you make in this level will have consequences. Choose your side wisely, as your actions will impact the rest of the game");
+            HashMap<Integer, String> validInputs = new HashMap<>();
+            validInputs.put(0,"No");
+            validInputs.put(1,"Yes");
+            int choice = inputParser.getNumberInput("So, do you wish to side with the Death Eaters?", validInputs,"for");
+            if (choice == 1) { againstDeathEaters = false; }
         }
         else {
-            display.displayInfo("In order to do that, you will probably need the Accio spell to summon a Basilisk's fang and use it against itself.");
-            teachAccio();
+            display.displayInfo("Therefore, you will fight against the Death Eaters.");
         }
+        String enemies;
+        if (againstDeathEaters) {  enemies = "death eaters"; }
+        else { enemies = "students"; }
+        display.displayInfo("As you navigate through the level, you will encounter " + enemies + " with different abilities, strengths and weaknesses");
+        display.displayInfo("Each encounter will be more difficult than the last. You will need to be strategic and use your spells wisely to ensure your survival.");
+        display.displayInfo("This will be a challenging battle. The Sectumsempra spell will be essential to attack " + enemies + " head-on");
+        Sectumsempra sectumsempra = new Sectumsempra(game, player);
+        sectumsempra.teach(player);
+        player.setAgainstDeathEaters(againstDeathEaters);
         wishGoodLuck();
-    }
-
-    public void teachAccio() {
-        if (!player.knowsSpell("Accio")) {
-            inputParser.waitForYes("First, have your wand at the ready. Then, focus your attention on the object you want to summon. Visualize the object in your mind and concentrate on it.\n" +
-                    "Now, hold out your wand and say \"Accio\" followed by the name of the object you want to summon. For example, \"Accio broomstick!\"\n" +
-                    "If the spell is successful, the object should fly towards you. Be ready to catch it, or move out of the way if it's a larger object.\n" +
-                    "Practice your casting and timing to improve your success rate with the spell. Remember, the Accio spell only works on objects within your line of sight.\n" +
-                    "Understood?");
-            display.announceReward("You have learned the Accio spell");
-            player.learnSpell(new Accio(game, player));
-        }
     }
 }

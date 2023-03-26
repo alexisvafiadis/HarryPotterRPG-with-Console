@@ -7,7 +7,7 @@ import Game.Game;
 public class Dementor extends AbstractEnemy {
 
     public Dementor(Game game) {
-        super(game, 40, 15, 1,null,'D',1,1);
+        super(game, 30, 35, 1,null,'D',1,1);
     }
 
     public void act() {

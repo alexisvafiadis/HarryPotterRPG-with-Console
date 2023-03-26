@@ -4,6 +4,7 @@ import Characters.Enemies.Troll;
 import Characters.Wizard;
 import Game.Game;
 import Levels.Essentials.Battle;
+import Magic.Spells.Stupefy;
 import Magic.Spells.WingardiumLeviosa;
 
 public class Level1 extends Level{
@@ -26,22 +27,12 @@ public class Level1 extends Level{
         finish();
     }
 
-    public void teachWingardiumLeviosa() {
-        if (!player.knowsSpell("Wingardium Leviosa")) {
-            display.displayInfo("To cast the Wingardium Leviosa spell, hold your wand out in front of you and say the incantation clearly: Wingardium Leviosa.");
-            display.displayInfo("Next, you need to make the wand movement for the spell. With your wand in your hand, make a swishing motion upward, as if you are lifting something up into the air.");
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
-            }
-            display.displayInfo("Good. Now that you have the spell incantation and wand movement down, you need to find an object to levitate. Look around the room and find an object that you want to move with the spell.");
-            player.learnSpell(new WingardiumLeviosa(game, player));
-        }
-    }
-
     @Override
     public void conclude() {
         display.congratulate("Well done, you have killed the Troll!");
+        display.announceReward("You have earned the right to learn an offensive spell that may come in handy in the future");
+        Stupefy stupefy = new Stupefy(game, player);
+        stupefy.teach(player);
     }
 
     @Override
@@ -49,7 +40,8 @@ public class Level1 extends Level{
         giveLevelInfo();
         display.displayInfo("In this level, you have to defeat the Troll.");
         display.displayInfo("In order to do that, you have to use the Wingardium Leviosa spell to lift and throw items on the Troll's head");
-        teachWingardiumLeviosa();
+        WingardiumLeviosa wingardium = new WingardiumLeviosa(game, player);
+        wingardium.teach(player);
         wishGoodLuck();
     }
 

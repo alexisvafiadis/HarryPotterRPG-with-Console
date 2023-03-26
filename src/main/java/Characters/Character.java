@@ -1,6 +1,7 @@
 package Characters;
 
 import Levels.Essentials.LevelMap;
+import Magic.EffectCategory;
 import Magic.EffectType;
 import Console.Display;
 import Console.InputParser;
@@ -9,6 +10,7 @@ import Game.Game;
 import Magic.ActiveEffect;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public abstract class Character {
@@ -154,10 +156,32 @@ public abstract class Character {
 
     public boolean hasWeapon() { return (weapon != null); }
 
+    public boolean canDoSomething() {
+        for (EffectType effectType : activeEffects.keySet()) {
+            if (effectType.getEffectCategory().equals(EffectCategory.INABILITY) && (getEffectProbability(effectType))) {
+                display.displayInfo(getName() + " couldn't do anything because they are " + effectType.getConsequenceMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean canAttack(Character target) {
-        if (getEffectProbability(EffectType.LAUGH)) {
-            display.displayInfo(getName() + " couldn't do anything because they are laughing");
+        if (canDoSomething()) {
+            for (EffectType effectType : target.getActiveEffects().keySet()) {
+                if (effectType.getEffectCategory().equals(EffectCategory.PROTECTION) && (getEffectProbability(effectType))) {
+                    display.displayInfo(getName() + " couldn't attack " + target.getName() + " because they are " + effectType.getConsequenceMessage());
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
             return false;
+        }
+        /*
+        if (getEffectProbability(EffectType.LAUGH)) {
+
         }
         else if (getEffectProbability(EffectType.CONFUSION)) {
             display.displayInfo(getName() + " couldn't do anything because they are confused.");
@@ -175,7 +199,7 @@ public abstract class Character {
             display.displayInfo(target.getName() + "'s shield protected them from " + getName() +"'s attack");
             return false;
         }
-        return true;
+         */
     }
 
     public boolean getEffectProbability(EffectType et) {
@@ -183,24 +207,25 @@ public abstract class Character {
     }
 
     public void finishRound() {
-        //Maybe try event listeners later
         if (hasEffect(EffectType.EXCRUCIATING_PAIN)) {
             double damage = activeEffects.get(EffectType.EXCRUCIATING_PAIN).getValue() / activeEffects.get(EffectType.EXCRUCIATING_PAIN).getNbOfRoundsLeft();
-            display.displayInfo(getName() + " suffers from torture");
+            display.displayInfo(getName() + " " + EffectType.EXCRUCIATING_PAIN.getConsequenceMessage());
             damage(damage);
         }
         if (hasEffect(EffectType.BURN)) {
             double damage = activeEffects.get(EffectType.BURN).getValue();
-            display.displayInfo(getName() + " suffers from their burns");
+            display.displayInfo(getName() + " " + EffectType.BURN.getConsequenceMessage());
             damage(damage);
         }
+        Iterator<Map.Entry<EffectType, ActiveEffect>> it = activeEffects.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<EffectType, ActiveEffect> entry = it.next();
+            if (entry.getValue().getNbOfRoundsLeft() == 0) {
+                it.remove(); // remove elements with value greater than 2
+            }
+        }
         for (EffectType effectType : activeEffects.keySet()) {
-            if (activeEffects.get(effectType).getNbOfRoundsLeft() == 1) {
-                removeEffect(effectType);
-            }
-            else {
-                activeEffects.get(effectType).reduceNbOfRounds();
-            }
+            activeEffects.get(effectType).reduceNbOfRounds();
         }
     }
 
@@ -245,5 +270,13 @@ public abstract class Character {
             map.setTile(positionX, positionY, charTile);
         }
         return isPositionAvailable;
+    }
+
+    public Map<EffectType, ActiveEffect> getActiveEffects() {
+        return activeEffects;
+    }
+
+    public ActiveEffect getActiveEffect(EffectType effectType) {
+        return activeEffects.get(effectType);
     }
 }

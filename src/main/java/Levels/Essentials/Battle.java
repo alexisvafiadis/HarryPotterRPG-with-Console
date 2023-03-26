@@ -51,7 +51,7 @@ public class Battle {
             display.displayHP(enemy, false);
             askPlayerForAction();
             enemyAttack();
-            nextRound();
+            finishRound();
         }
     }
 
@@ -105,7 +105,7 @@ public class Battle {
         }
     }
 
-    public void nextRound() {
+    public void finishRound() {
         enemy.finishRound();
         player.finishRound();
         roundNumber += 1;
@@ -172,7 +172,12 @@ public class Battle {
             }
         }
         else if (player.getKnownSpells().get(spellChoice) instanceof SimpleSpell) {
-            ((SimpleSpell) player.getKnownSpells().get(spellChoice)).cast(enemy);
+            if (player.getEffectProbability(EffectType.UNDER_CONTROL)) {
+                ((SimpleSpell) spell).cast(player);
+            }
+            else {
+                ((SimpleSpell) spell).cast(enemy);
+            }
         }
     }
 

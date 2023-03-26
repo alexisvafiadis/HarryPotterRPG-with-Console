@@ -10,7 +10,7 @@ public class Accio extends Spell {
     private final double CAST_CHANCE_MULTIPLIER = 5;
 
     public Accio(Game game, Wizard wizard) {
-        super(game, wizard, "Accio", 5, 1, 0.4, 0.56);
+        super(game, wizard, "Accio", 5, 1, 0.7, 0.34);
     }
 
     public void cast(Weapon weapon) {
@@ -25,7 +25,7 @@ public class Accio extends Spell {
         use();
         boolean castSuccessful = isCastSuccessful();
         if (castSuccessful) {
-            if (Math.random() < CAST_CHANCE_MULTIPLIER / wizard.getMap().calculateDistance(wizard,item)) {
+            if (Math.random() < 1 / (Math.pow(wizard.getMap().calculateDistance(wizard,item),3))) {
                 castSuccessful = true;
                 displayCastMessage("summoned a " + item.getItemType().toString());
             }
@@ -37,5 +37,12 @@ public class Accio extends Spell {
         return castSuccessful;
     }
 
-
+    @Override
+    public void displayInstructions() {
+        inputParser.waitForYes("First, have your wand at the ready. Then, focus your attention on the object you want to summon. Visualize the object in your mind and concentrate on it.\n" +
+                "Now, hold out your wand and say \"Accio\" followed by the name of the object you want to summon. For example, \"Accio broomstick!\"\n" +
+                "If the spell is successful, the object should fly towards you. Be ready to catch it, or move out of the way if it's a larger object.\n" +
+                "Practice your casting and timing to improve your success rate with the spell. Remember, the Accio spell only works on objects within your line of sight.\n" +
+                "Understood?");
+    }
 }

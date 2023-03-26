@@ -139,7 +139,7 @@ public class Wizard extends Character{
     }
 
     public double getAccuracy() {
-        return accuracy * house.getACCURACY_MULTIPLIER();
+        return this.accuracy * house.getACCURACY_MULTIPLIER();
     }
 
     public void consumePotion(Potion potion) {

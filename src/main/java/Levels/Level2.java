@@ -5,6 +5,7 @@ import Items.Weapon;
 import Game.Game;
 import Levels.Essentials.Battle;
 import Magic.Spells.Accio;
+import Magic.Spells.PetrificusTotalus;
 
 public class Level2 extends Level{
 
@@ -24,10 +25,14 @@ public class Level2 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have killed the Basilisk");
+        display.congratulate("Well done, you have killed the Basilisk!");
+        display.displayInfo("Considering the threats you've been facing, it would be a good idea to teach you another offensive spell : Petrificus Totalus.");
+        PetrificusTotalus petrificustotalus = new PetrificusTotalus(game, player);
+        petrificustotalus.teach(player);
         if (!player.knowsSpell("Accio")) {
             display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
-            teachAccio();
+            Accio accio = new Accio(game, player);
+            accio.teach(player);
         }
     }
 
@@ -42,20 +47,10 @@ public class Level2 extends Level{
         }
         else {
             display.displayInfo("In order to do that, you will probably need the Accio spell to summon a Basilisk's fang and use it against itself.");
-            teachAccio();
+            Accio accio = new Accio(game, player);
+            accio.teach(player);
         }
         wishGoodLuck();
     }
 
-    public void teachAccio() {
-        if (!player.knowsSpell("Accio")) {
-            inputParser.waitForYes("First, have your wand at the ready. Then, focus your attention on the object you want to summon. Visualize the object in your mind and concentrate on it.\n" +
-                    "Now, hold out your wand and say \"Accio\" followed by the name of the object you want to summon. For example, \"Accio broomstick!\"\n" +
-                    "If the spell is successful, the object should fly towards you. Be ready to catch it, or move out of the way if it's a larger object.\n" +
-                    "Practice your casting and timing to improve your success rate with the spell. Remember, the Accio spell only works on objects within your line of sight.\n" +
-                    "Understood?");
-            display.announceReward("You have learned the Accio spell");
-            player.learnSpell(new Accio(game, player));
-        }
-    }
 }

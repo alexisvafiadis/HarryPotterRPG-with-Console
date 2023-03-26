@@ -1,21 +1,27 @@
 package Characters.Enemies;
 
-import Characters.AbstractEnemy;
-import Items.Item;
-import Items.Weapon;
+import Characters.EnemyWizard;
 import Game.Game;
+import Magic.Spells.*;
 
-public class DeathEater extends AbstractEnemy {
+public class DeathEater extends EnemyWizard {
+    private String name;
 
-    public DeathEater(Game game) {
-        super(game, 30, 80, 0.9,null,'D',1,1);
+    public DeathEater(Game game, String name, double maxHP, double vulnerabilityToMagic, double spellDamageMultiplier, double defaultMasteryScoreMultiplier, String customBattleStartMessage) {
+        super(game, maxHP, 8, vulnerabilityToMagic, 'S', 1, spellDamageMultiplier, defaultMasteryScoreMultiplier);
+        this.name = name;
+        setCustomBattleStartMessage(customBattleStartMessage);
+        addSpell(new AvadaKedavra(game, this), 3);
+        addSpell(new Sectumsempra(game, this), 4);
+        addSpell(new Crucio(game, this), 1);
+        addSpell(new Imperius(game, this), 1);
+        addSpell(new Stupefy(game, this), 1);
+        addSpell(new Expelliarmus(game, this), 1);
     }
 
-    public void act() {
-        attack(game.getPlayer());
-    }
-
+    @Override
     public String getName() {
-        return "Death Eater";
+        return name;
     }
+
 }

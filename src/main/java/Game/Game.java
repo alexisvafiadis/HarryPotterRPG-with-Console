@@ -31,7 +31,7 @@ public class Game {
         levels.add(new Level3(this));
         levels.add(new Level4(this));
         levels.add(new Level5(this));
-        if (isInDebugMode()) {
+        if (!isInDebugMode()) {
             player.learnSpell(new Accio(this, player));
             player.learnSpell(new WingardiumLeviosa(this, player));
             player.learnSpell(new Lumos(this, player));
@@ -45,10 +45,10 @@ public class Game {
             player.learnSpell(new Stupefy(this, player));
             player.learnSpell(new SlugulusErecto(this, player));
         }
-        startLevel(5);
         for (int i = 1; i < 8 ; i++) {
             startLevel(i);
         }
+        finish();
     }
 
     public void introduce(Wizard wizard) {
@@ -68,6 +68,10 @@ public class Game {
     public void startLevel(int levelNumber) {
         this.currentLevelNumber = levelNumber;
         levels.get(levelNumber - 1).start();
+    }
+
+    public void setLevel(Level level) {
+
     }
 
     public Display getDisplay() {
@@ -99,8 +103,12 @@ public class Game {
             castMessageStart = "You are";
         }
         else {
-            castMessageStart = character.getName() + "is";
+            castMessageStart = character.getName() + " is";
         }
         return castMessageStart;
+    }
+
+    public void finish() {
+        display.congratulate("You have finished the game, congratulations!");
     }
 }

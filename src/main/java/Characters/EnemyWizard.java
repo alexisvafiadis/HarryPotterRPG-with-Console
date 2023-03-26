@@ -32,7 +32,12 @@ public abstract class EnemyWizard extends AbstractEnemy {
         }
         else {
             SimpleSpell spell = generateSpell();
-            spell.cast(game.getPlayer());
+            if (hasEffect(EffectType.UNDER_CONTROL)) {
+                spell.cast(game.getPlayer());
+            }
+            else {
+                spell.cast(this);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Game.Game;
+import Magic.Spells.WingardiumLeviosa;
 
 public abstract class Spell {
     //Global
@@ -24,7 +25,6 @@ public abstract class Spell {
     //Instance-specific
     protected int nbOfUses;
     protected Character wizard;// character and not wizard because there is Wizard and EnemyWizard
-    protected String specificCastMessage;
 
     //CONST
     final private String CAST_MESSAGE_SUCCESS = "successfully cast";
@@ -53,7 +53,7 @@ public abstract class Spell {
         }
         else {
             //Mathematical function that increases slower and slower with a maximum of 1 to imitate a learning curve
-            return 1 - Math.exp(-1 * (Math.pow(nbOfUses, learningExponent)));
+            return 1 - Math.exp(-1 * (Math.pow(nbOfUses, learningExponent)) / 2);
         }
     }
 
@@ -74,7 +74,22 @@ public abstract class Spell {
             display.displayError("A non wizard character tried to cast a spell");
             return false;
         }
-        if (target != null) { probability = probability * target.getVulnerabilityToMagic(); }
+        if (wizard.hasEffect(EffectType.LUCK)) {
+            probability = probability * wizard.getActiveEffect(EffectType.LUCK).getValue();
+        }
+        if (wizard.hasEffect(EffectType.VIVACITY)) {
+            probability = probability * wizard.getActiveEffect(EffectType.VIVACITY).getValue();
+        }
+        if (target != null) {
+            if (target.hasEffect(EffectType.LUCK)) {
+                probability = probability / target.getActiveEffect(EffectType.LUCK).getValue();
+            }
+            if (target.hasEffect(EffectType.VIVACITY)) {
+                probability = probability / target.getActiveEffect(EffectType.VIVACITY).getValue();
+            }
+            probability = probability * target.getVulnerabilityToMagic();
+        }
+        display.displayInfo("Probability: " + probability);
         boolean b = (Math.random() < probability) ;
         if (!b) {
             if (wizard instanceof Wizard) {
@@ -92,7 +107,10 @@ public abstract class Spell {
     }
 
     public void displayCastMessage(String specificCastMessage) {
-        String castMessage = game.getMessageStartHave(wizard) + " " + CAST_MESSAGE_SUCCESS + " " + getName() + " and " + specificCastMessage;
+        String castMessage = game.getMessageStartHave(wizard) + " " + CAST_MESSAGE_SUCCESS + " " + getName();
+        if (specificCastMessage != null) {
+            castMessage = castMessage + " and " + specificCastMessage;
+        }
         if (wizard instanceof Wizard) {
             display.announceSuccess(castMessage);
         }
@@ -100,6 +118,19 @@ public abstract class Spell {
             display.displayInfo(castMessage);
         }
     }
+
+    public void teach(Wizard player) {
+        if (!player.knowsSpell(getName())) {
+            displayInstructions();
+            if (isForbidden()) {
+                display.displayInfo("Be careful not to use this spell on innocent targets, as it is dangerous. You may get expelled if you do.");
+            }
+            player.learnSpell(this);
+            display.announceReward("You have learned the spell " + getName() + "!");
+        }
+    }
+
+    public abstract void displayInstructions();
 
     //Call that function when the player uses the spell so that they can get better at using it
     public void use() { nbOfUses += 1; };
@@ -138,10 +169,6 @@ public abstract class Spell {
 
     public InputParser getInputParser() {
         return inputParser;
-    }
-
-    public void setSpecificCastMessage(String specificCastMessage) {
-        this.specificCastMessage = specificCastMessage;
     }
 
     public double calculateDamage(double damage) {

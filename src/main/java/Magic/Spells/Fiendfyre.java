@@ -7,11 +7,11 @@ import Magic.EffectType;
 import Magic.SimpleSpell;
 
 public class Fiendfyre extends SimpleSpell {
-    private final double DAMAGE = 25;
+    private final double DAMAGE = 30;
     private final int EFFECT_DURATION = 3;
 
     public Fiendfyre(Game game, Character wizard) {
-        super(game, wizard, "Fiendfyre", 5, 1, 0.15, 0.28);
+        super(game, wizard, "Fiendfyre", 5, 1, 0.19, 0.32);
         setForbidden(true);
     }
 
@@ -19,8 +19,13 @@ public class Fiendfyre extends SimpleSpell {
         use();
         if (isCastSuccessful(target)) {
             target.damage(calculateDamage(DAMAGE));
-            displayCastMessage("the cursed flames erupt, consuming everything in their path with an inferno of heat and destruction.");
+            displayCastMessage("the cursed flames erupted, consuming everything in their path with an inferno of heat and destruction.");
             target.giveEffect(EffectType.BURN, new ActiveEffect(EFFECT_DURATION, calculateDamage(DAMAGE)));
         }
+    }
+
+    @Override
+    public void displayInstructions() {
+
     }
 }
