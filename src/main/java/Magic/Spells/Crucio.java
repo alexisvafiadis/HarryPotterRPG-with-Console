@@ -11,7 +11,7 @@ public class Crucio extends SimpleSpell {
     private final int EFFECT_DURATION = 3;
 
     public Crucio(Game game, Character wizard) {
-        super(game, wizard, "Crucio", 5, 1, 0.22, 0.45);
+        super(game, wizard, "Crucio", 5, 1, 0.22, 0.19);
         setForbidden(true);
     }
 

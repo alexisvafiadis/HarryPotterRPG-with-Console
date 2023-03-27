@@ -4,10 +4,7 @@ import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Characters.Characteristics.Pet;
-import Magic.Spells.Confundus;
-import Magic.Spells.Engorgio;
-import Magic.Spells.Expelliarmus;
-import Magic.Spells.WingardiumLeviosa;
+import Magic.Spells.*;
 
 import java.util.HashMap;
 
@@ -54,14 +51,11 @@ public class WizardMaker {
     public void teachBasicSpells() {
         display.displayInfo("Now let's make sure you know how to cast some basic spells.");
         display.displayInfo("We can start with Engorgio, a pretty simple spell that seems useless but can be amazing if you use it cleverly");
-        Engorgio engorgio = new Engorgio(game, player);
-        engorgio.teach(player);
+        (new Engorgio(game, player)).teach(player);
         display.displayInfo("Now you should learn a spell that is useful in combat");
-        Confundus confundus = new Confundus(game, player);
-        confundus.teach(player);
+        (new Confundus(game, player)).teach(player);
         display.displayInfo("Another spell that you may need in combat is Expelliarmus");
-        Expelliarmus expelliarmus = new Expelliarmus(game, player);
-        expelliarmus.teach(player);
+        (new Expelliarmus(game, player)).teach(player);
         player.learnSpell(new Engorgio(game, player));
         display.displayInfo("Nice, this should be enough to get you started.");
         display.displayInfo("Remember, you may not be able to cast them successfully or perfectly the first few times you use them, but don't worry, the more you use a spell and get familiar with your wand, the easier it will get.");

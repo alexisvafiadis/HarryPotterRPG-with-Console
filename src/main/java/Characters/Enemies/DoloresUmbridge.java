@@ -19,7 +19,7 @@ public class DoloresUmbridge extends Boss {
     }
 
     public void act() {
-        if (canAttack(game.getPlayer())) {
+        if (canDoSomething()) {
             distractionLevel -= 1;
         }
         else {
@@ -66,5 +66,4 @@ public class DoloresUmbridge extends Boss {
     public boolean isDistracted() {
         return (distractionLevel != 0);
     }
-
 }

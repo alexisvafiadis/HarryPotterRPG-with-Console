@@ -58,21 +58,17 @@ public class Level4 extends Level{
         display.displayInfo("You have to get close to the Portkey to attract it to you using Accio then use the Portkey");
         display.displayInfo("If you get spotted by Voldemort, you will have to defend yourself.");
         display.displayInfo("I doubt you're skilled enough to survive yet, but we never know. Let me teach you Protego");
-        Protego protego = new Protego(game, player);
-        protego.teach(player);
+        (new Protego(game, player)).teach(player);
         wishGoodLuck();
     }
 
     public void teachFunnySpells() {
         display.displayInfo("To help you recover, let me teach you some funny spells. Let's start with Rictumsempra.");
-        Rictumsempra rictumsempra = new Rictumsempra(game, player);
-        rictumsempra.teach(player);
+        (new Rictumsempra(game, player)).teach(player);
         display.displayInfo("There's also Slugulus Erecto, a spell that causes the target to vomit slugs for a short period");
-        SlugulusErecto slugulusErecto = new SlugulusErecto(game, player);
-        slugulusErecto.teach(player);
+        (new SlugulusErecto(game, player)).teach(player);
         display.displayInfo("You can learn Tarantallegra as well.");
-        Tarantallegra tarantallegra = new Tarantallegra(game, player);
-        tarantallegra.teach(player);
+        (new Tarantallegra(game, player)).teach(player);
     }
 
     public boolean seenByVoldemort() {
@@ -99,5 +95,6 @@ public class Level4 extends Level{
                 break;
         }
     }
+
 
 }

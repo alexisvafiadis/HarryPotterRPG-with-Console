@@ -5,6 +5,7 @@ import Game.Game;
 import Levels.Essentials.DoloresUmbridgeBattle;
 import Magic.Spells.Reducto;
 import Magic.Spells.Stupefy;
+import Magic.Spells.WingardiumLeviosa;
 
 public class Level5 extends Level{
 
@@ -34,14 +35,13 @@ public class Level5 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have distracted Dolores Umbridge for enough time, and the fireworks are now ready");
+        display.congratulate("Thanks to you, the fireworks are now ready");
         display.displayInfo("Let the party begin!");
         display.displayInfo("20 minutes later...");
         display.displayQuote("Dolores Umbridge", "Ok, enough now! It's actually the perfect situation to teach you all a new spell.");
         display.displayInfo("Dolores Umbridge casts a spell to destroy the firework machine.. The party is over");
         display.displayQuote("Dolores Umbridge","This spell is called Reducto and it is very useful, especially in combat.");
-        Reducto reducto = new Reducto(game, player);
-        reducto.teach(player);
+        (new Reducto(game, player)).teach(player);
     }
 
     @Override
@@ -51,5 +51,7 @@ public class Level5 extends Level{
         display.displayInfo("She may get mad at you, but don't worry, she will have bigger fish to fry if the party really happens");
         wishGoodLuck();
     }
+
+
 
 }

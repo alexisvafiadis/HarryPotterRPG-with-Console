@@ -25,6 +25,7 @@ public abstract class Character {
     protected double physicalDamage;
     protected double vulnerabilityToMagic;//A coefficient that represents how likely a wizard can successfully cast a spell on the person
     protected Weapon weapon;
+    protected Weapon currentWeapon;
     protected char charTile;
     protected Integer moveStep;
 
@@ -33,7 +34,6 @@ public abstract class Character {
     protected Integer positionY;
     protected double HP;
     protected boolean alive;
-    protected boolean disarmed;
     Map<EffectType, ActiveEffect> activeEffects;
 
     public Character(Game game, double maxHP, double physicalDamage, double vulnerabilityToMagic, Weapon weapon, char charTile, int moveStep) {
@@ -58,7 +58,7 @@ public abstract class Character {
         HP = maxHP;
         alive = true;
         activeEffects = new HashMap<>();
-        disarmed = false;
+        currentWeapon = weapon;
     }
 
     public void attack(Character target) {
@@ -138,13 +138,22 @@ public abstract class Character {
         }
         else {
             display.displayInfo(game.getMessageStartBe((this)) + " " + effectType.getStartMessage());
+            activeEffects.put(effectType, activeEffect);
+            if (effectType.equals(EffectType.DISARM)) {
+                currentWeapon = null;
+            }
         }
-        activeEffects.put(effectType, activeEffect);
     }
 
     public void removeEffect(EffectType et) {
+        actionBeforeEffectRemoval(et);
+        activeEffects.remove(et);
+    }
+
+    public void actionBeforeEffectRemoval(EffectType et) {
         display.displayInfo(game.getMessageStartBe(this) + " " + et.getEndMessage());
-        activeEffects.remove(et); }
+        if (et.equals(EffectType.DISARM) && weapon != null) { currentWeapon = weapon; }
+    }
 
     public Weapon getWeapon() {
         return weapon;
@@ -170,7 +179,7 @@ public abstract class Character {
         if (canDoSomething()) {
             for (EffectType effectType : target.getActiveEffects().keySet()) {
                 if (effectType.getEffectCategory().equals(EffectCategory.PROTECTION) && (getEffectProbability(effectType))) {
-                    display.displayInfo(getName() + " couldn't attack " + target.getName() + " because they are " + effectType.getConsequenceMessage());
+                        display.displayInfo(getName() + " couldn't attack " + target.getName() + " because they are " + effectType.getConsequenceMessage());
                     return false;
                 }
             }
@@ -221,7 +230,8 @@ public abstract class Character {
         while (it.hasNext()) {
             Map.Entry<EffectType, ActiveEffect> entry = it.next();
             if (entry.getValue().getNbOfRoundsLeft() == 0) {
-                it.remove(); // remove elements with value greater than 2
+                actionBeforeEffectRemoval(entry.getKey());
+                it.remove();
             }
         }
         for (EffectType effectType : activeEffects.keySet()) {

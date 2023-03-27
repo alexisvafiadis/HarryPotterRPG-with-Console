@@ -6,6 +6,8 @@ import Game.Game;
 import Levels.Essentials.Battle;
 import Magic.Spells.Accio;
 import Magic.Spells.PetrificusTotalus;
+import Magic.Spells.Stupefy;
+import Magic.Spells.WingardiumLeviosa;
 
 public class Level2 extends Level{
 
@@ -27,12 +29,10 @@ public class Level2 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have killed the Basilisk!");
         display.displayInfo("Considering the threats you've been facing, it would be a good idea to teach you another offensive spell : Petrificus Totalus.");
-        PetrificusTotalus petrificustotalus = new PetrificusTotalus(game, player);
-        petrificustotalus.teach(player);
+        (new PetrificusTotalus(game, player)).teach(player);
         if (!player.knowsSpell("Accio")) {
             display.displayInfo("Oh, I almost forgot. There's a spell you will need soon. It is called Accio");
-            Accio accio = new Accio(game, player);
-            accio.teach(player);
+            (new Accio(game, player)).teach(player);
         }
     }
 
@@ -47,8 +47,7 @@ public class Level2 extends Level{
         }
         else {
             display.displayInfo("In order to do that, you will probably need the Accio spell to summon a Basilisk's fang and use it against itself.");
-            Accio accio = new Accio(game, player);
-            accio.teach(player);
+            (new Accio(game, player)).teach(player);
         }
         wishGoodLuck();
     }

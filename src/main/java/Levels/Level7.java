@@ -20,12 +20,12 @@ public class Level7 extends Level{
         player.spawn();
         super.start();
         if (player.isAgainstDeathEaters()) {
-            Voldemort voldemort = new Voldemort(game);
-            voldemort.spawn();
-            new Battle(game,this,player,voldemort);
             BellatrixLestrange bellatrix = new BellatrixLestrange(game);
             bellatrix.spawn();
             new Battle(game,this,player,bellatrix);
+            Voldemort voldemort = new Voldemort(game);
+            voldemort.spawn();
+            new Battle(game,this,player,voldemort);
         }
         else {
             HarryPotter harry = new HarryPotter(game);
@@ -74,5 +74,6 @@ public class Level7 extends Level{
         display.displayInfo("You must use all the skills you've learned and spells you've mastered to defeat these powerful adversaries.");
         wishGoodLuck();
     }
+
 
 }

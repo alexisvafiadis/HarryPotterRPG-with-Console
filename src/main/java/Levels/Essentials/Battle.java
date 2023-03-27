@@ -53,6 +53,12 @@ public class Battle {
             enemyAttack();
             finishRound();
         }
+        if (!player.isAlive()) {
+            level.start();
+        }
+        else {
+            displayFightWinMessage();
+        }
     }
 
     public void askPlayerForAction() {
@@ -242,5 +248,9 @@ public class Battle {
             display.displayQuote(enemy.getName(), enemy.getCustomBattleStartMessage());
         }
         display.displayInfo("You have started a battle against " + enemy.getName());
+    }
+
+    public void displayFightWinMessage() {
+        display.announceSuccess("Well done, you have killed " + enemy.getName());
     }
 }

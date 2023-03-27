@@ -6,7 +6,10 @@ import Console.InputParser;
 import Items.Item;
 import Items.ItemType;
 import Game.Game;
+import Magic.Spell;
+import Magic.Spells.WingardiumLeviosa;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,6 +29,7 @@ public abstract class Level {
     protected boolean outdoors;
     protected List<Item> items;
     protected List<ItemType> possibleItemTypes;
+    protected boolean levelCompleted;
 
     //Constants
     protected final double HP_UPGRADE = 20;
@@ -49,6 +53,7 @@ public abstract class Level {
     public abstract void introduce();
 
     public void start() {
+        levelCompleted = false;
         setPossibleItemTypes();
         items = new ArrayList<>();
         introduce();
@@ -61,17 +66,34 @@ public abstract class Level {
         start();
     }
 
+    /*
+    public void fail(Class<? extends Level> levelClass) {
+        display.announceFail("You failed this level. Try again!");
+        try {
+            Level currentLevel = levelClass.getDeclaredConstructor(Game.class).newInstance(game);
+            game.setLevel(currentLevel);
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+     */
+
     public void finish() {
-        conclude();
-        display.announceSuccess("Congratulations, you have completed the level " + number + "!");
-        askForUpgrade();
+        if (!levelCompleted) {
+            conclude();
+            display.announceSuccess("Congratulations, you have completed the level " + number + "!");
+            askForUpgrade();
+            levelCompleted = true;
+        }
     }
 
     public void wishGoodLuck() {display.displayInfo("Good luck!"); }
 
     public void giveLevelInfo() {
         display.displayInfo("--- Level " + number + " : " + name + " ---");
-        display.displayInfo("You arrive at " + place);
+        display.displayInfo("You arrive at the " + place);
     }
 
     public void askForUpgrade() {
@@ -159,6 +181,4 @@ public abstract class Level {
             display.announceFail("You cannot move there, sorry. Choose another direction");
         }
     }
-
-
-    }
+}

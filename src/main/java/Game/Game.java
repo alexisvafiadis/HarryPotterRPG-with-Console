@@ -5,6 +5,7 @@ import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Levels.*;
+import Magic.Spell;
 import Magic.Spells.*;
 
 import java.util.ArrayList;
@@ -12,12 +13,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Game {
-    private List<Level> levels;
     private Display display;
     private InputParser inputParser;
     private Wizard player;
-
-    int currentLevelNumber;
+    Level currentLevel;
     final boolean DEBUG_MODE = true;
 
     public Game() {
@@ -25,12 +24,14 @@ public class Game {
         inputParser = new InputParser(this, new Scanner(System.in));
         player = new Wizard(this);
         introduce(player);
-        levels = new ArrayList<>();
-        levels.add(new Level1(this));
-        levels.add(new Level2(this));
-        levels.add(new Level3(this));
-        levels.add(new Level4(this));
-        levels.add(new Level5(this));
+        setLevel(new Level1(this));
+        setLevel(new Level2(this));
+        setLevel(new Level3(this));
+        setLevel(new Level4(this));
+        setLevel(new Level5(this));
+        setLevel(new Level6(this));
+        setLevel(new Level7(this));
+
         if (!isInDebugMode()) {
             player.learnSpell(new Accio(this, player));
             player.learnSpell(new WingardiumLeviosa(this, player));
@@ -44,9 +45,6 @@ public class Game {
             player.learnSpell(new Tarantallegra(this, player));
             player.learnSpell(new Stupefy(this, player));
             player.learnSpell(new SlugulusErecto(this, player));
-        }
-        for (int i = 1; i < 8 ; i++) {
-            startLevel(i);
         }
         finish();
     }
@@ -62,16 +60,13 @@ public class Game {
     }
 
     public Level getCurrentLevel() {
-        return levels.get(currentLevelNumber - 1);
-    }
-
-    public void startLevel(int levelNumber) {
-        this.currentLevelNumber = levelNumber;
-        levels.get(levelNumber - 1).start();
+        return currentLevel;
     }
 
     public void setLevel(Level level) {
-
+        currentLevel = null;
+        currentLevel = level;
+        currentLevel.start();
     }
 
     public Display getDisplay() {

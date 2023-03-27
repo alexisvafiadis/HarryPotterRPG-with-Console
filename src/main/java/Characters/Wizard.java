@@ -154,9 +154,8 @@ public class Wizard extends Character{
 
     @Override
     public void die() {
+        super.die();
         display.displayInfo("You have been killed.");
-        game.getCurrentLevel().fail();
-        game.getCurrentLevel().start();
     }
 
     public boolean isAgainstDeathEaters() {

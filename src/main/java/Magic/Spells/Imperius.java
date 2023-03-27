@@ -10,7 +10,7 @@ public class Imperius extends SimpleSpell {
     private final int EFFECT_DURATION = 3;
 
     public Imperius(Game game, Character wizard) {
-        super(game, wizard, "Imperius", 5, 1, 0.21, 0.37);
+        super(game, wizard, "Imperius", 5, 1, 0.21, 0.12);
         setForbidden(true);
     }
 

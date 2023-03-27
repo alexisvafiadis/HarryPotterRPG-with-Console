@@ -7,7 +7,6 @@ import Items.Weapon;
 import Magic.Spell;
 
 public class Accio extends Spell {
-    private final double CAST_CHANCE_MULTIPLIER = 5;
 
     public Accio(Game game, Wizard wizard) {
         super(game, wizard, "Accio", 5, 1, 0.7, 0.34);
@@ -25,7 +24,7 @@ public class Accio extends Spell {
         use();
         boolean castSuccessful = isCastSuccessful();
         if (castSuccessful) {
-            if (Math.random() < 1 / (Math.pow(wizard.getMap().calculateDistance(wizard,item),3))) {
+            if (Math.random() < 1 / (Math.pow(wizard.getMap().calculateDistance(wizard,item),4))) {
                 castSuccessful = true;
                 displayCastMessage("summoned a " + item.getItemType().toString());
             }

@@ -6,7 +6,20 @@ import java.util.HashMap;
 
 public class CodeBin {
     /*
-    //just to put code that I replaced for a better one but could be useful later
+    //just to put code that I replaced for another one but could be useful later
+
+        Level newLevel = null;
+        try {
+            Class[] arg = new Class[1];
+            arg[0] = Game.class;
+            newLevel = getClass().getDeclaredConstructor().newInstance(game);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
 
     public void boostStrength(int duration, double amplifier) {
         nbOfStrengthRoundsLeft = duration;

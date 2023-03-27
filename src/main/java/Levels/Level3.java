@@ -3,9 +3,7 @@ package Levels;
 import Characters.Enemies.Dementor;
 import Game.Game;
 import Levels.Essentials.Battle;
-import Magic.Spells.Expectopatronum;
-import Magic.Spells.Expelliarmus;
-import Magic.Spells.Lumos;
+import Magic.Spells.*;
 
 public class Level3 extends Level{
     boolean expectoPatronumUsed;
@@ -24,7 +22,7 @@ public class Level3 extends Level{
         while (!expectoPatronumUsed) {
             Dementor dementor = new Dementor(game);
             dementor.spawn();
-            Battle battle = new Battle(game, this, player, dementor);
+            new Battle(game, this, player, dementor);
         }
         finish();
     }
@@ -33,8 +31,7 @@ public class Level3 extends Level{
     public void conclude() {
         display.congratulate("Well done, you have killed scared the Dementors away!");
         display.displayInfo("Now let me teach you a spell that you'll probably need soon : Lumos");
-        Lumos lumos = new Lumos(game, player);
-        lumos.teach(player);
+        (new Lumos(game, player)).teach(player);
     }
 
     @Override
@@ -42,8 +39,7 @@ public class Level3 extends Level{
         giveLevelInfo();
         display.displayInfo("For this level, you have to scare the Dementors away.");
         display.displayInfo("In order to do that, you have to use the spell Expecto Patronum to summon your Patronus.");
-        Expectopatronum expectopatronum = new Expectopatronum(game, player);
-        expectopatronum.teach(player);
+        (new Expectopatronum(game, player)).teach(player);
         display.displayInfo("It is a very difficult spell to cast, so it may take some time to use it successfully.");
         wishGoodLuck();
     }
@@ -52,4 +48,6 @@ public class Level3 extends Level{
         this.expectoPatronumUsed = true;
         display.displayInfo("You feel a rush of warmth and positive energy as your Patronus takes shape, driving away the dark creatures and filling the air with light");
     }
+
+
 }

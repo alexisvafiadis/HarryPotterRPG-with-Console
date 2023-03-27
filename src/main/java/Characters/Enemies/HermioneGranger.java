@@ -6,7 +6,7 @@ import Magic.Spells.*;
 
 public class HermioneGranger extends EnemyWizard {
     public HermioneGranger(Game game) {
-        super(game, 145, 5, 0.45, 'V', 1, 1.6, 2.5);
+        super(game, 145, 5, 0.45, 'V', 1, 1.6, 6);
         addSpell(new Sectumsempra(game, this), 4);
         addSpell(new Stupefy(game, this), 1);
         addSpell(new Expelliarmus(game, this), 1);
