@@ -88,7 +88,6 @@ public abstract class Spell {
             }
             probability = probability * target.getVulnerabilityToMagic();
         }
-        display.displayInfo("Probability: " + probability);
         boolean b = (Math.random() < probability) ;
         if (!b) {
             if (wizard instanceof Wizard) {

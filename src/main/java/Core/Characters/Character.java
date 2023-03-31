@@ -89,7 +89,7 @@ public abstract class Character {
     }
 
     public void speak(String quote) {
-        display.displayQuote(getName(), quote);
+        display.displayQuote(this, quote);
     }
 
     public double getHP() {
@@ -289,4 +289,5 @@ public abstract class Character {
     public ActiveEffect getActiveEffect(EffectType effectType) {
         return activeEffects.get(effectType);
     }
+
 }

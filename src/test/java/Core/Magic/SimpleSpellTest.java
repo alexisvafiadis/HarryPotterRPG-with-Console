@@ -29,7 +29,7 @@ public class SimpleSpellTest {
     void setUp() {
         game = new Game();
         wizard = game.getPlayer();
-        wizard.setHouse(House.GRYFFINDOR);
+        wizard.setDefaultAttributes();
         wizard.upgradeAccuracy(10);
         wizard.spawn();
         enemy = new Troll(game);

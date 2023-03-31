@@ -22,7 +22,7 @@ public class EnemyTest {
     void setUp() {
         game = new Game();
         wizard = game.getPlayer();
-        wizard.setHouse(House.GRYFFINDOR);
+        wizard.setDefaultAttributes();
         wizard.spawn();
         enemies = new ArrayList<>();
         enemies.add(new Troll(game));

@@ -4,11 +4,15 @@ import Core.Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Core.Characters.Characteristics.Pet;
+import Core.Items.Wand;
+import Core.Items.WandCore;
+import Core.Items.Wood;
 import Core.Magic.Spells.Confundus;
 import Core.Magic.Spells.Engorgio;
 import Core.Magic.Spells.Expelliarmus;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class WizardMaker {
     Game game;
@@ -25,7 +29,7 @@ public class WizardMaker {
         display.displayInfo("Welcome to Hogwarts, " + player.getName());
         display.displayInfo("Now let's get some things sorted.");
         askPet();
-        askWand();
+        makeWand();
         teachBasicSpells();
     }
 
@@ -42,12 +46,20 @@ public class WizardMaker {
         validInputs.put(4, "Toad");
 
         String petName = inputParser.getNumberToStringInput("Choose your pet.", validInputs, "for");
-        display.displayInfo("You chose the pet " + petName + ". Have fun!");
+        display.displayInfo("You chose the pet " + petName + ". I hope you two will get along!");
         game.getPlayer().setPet(Pet.valueOf(petName.toUpperCase()));
     }
 
-    public void askWand() {
-
+    public void makeWand() {
+        display.displayInfo("It's now time to give you your wand. Let me search for the right one for you... ");
+        Random random = new Random();
+        int wandCoreIndex = random.nextInt(WandCore.values().length);
+        WandCore wandCore = WandCore.values()[wandCoreIndex];
+        int woodIndex = random.nextInt(Wood.values().length);
+        Wood wood = Wood.values()[woodIndex];
+        player.setWand(new Wand(wandCore, wood, 1,player));
+        display.displayInfo("... Found it! It's an amazing wand, made of " + wandCore.toString() + " and " + wood.toString());
+        display.displayInfo("I'm sure you'll make great use of it.");
     }
 
     public void teachBasicSpells() {

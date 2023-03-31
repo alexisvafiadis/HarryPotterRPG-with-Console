@@ -44,9 +44,10 @@ public class Level7 extends Level{
             display.displayInfo("You are hailed as a hero, and your name will be remembered for generations to come.");
         }
         else {
+            Voldemort voldemort = new Voldemort(game);
             display.congratulate("The battle was fierce, but you emerged victorious against Harry Potter, Hermione Granger and Ron Weasley.");
-            display.displayQuote("Voldemort","Well done, you have proven your worth, " + player.getName() + ".");
-            display.displayQuote("Voldemort", "We can now rule over the wizarding world together.");
+            display.displayQuote(voldemort,"Well done, you have proven your worth, " + player.getName() + ".");
+            display.displayQuote(voldemort, "We can now rule over the wizarding world together.");
             display.displayInfo("The battle is over, and the wizarding world has been changed forever.");
             display.displayInfo("You have achieved what you set out to do, and your name will be remembered for centuries to come as one of the greatest Death Eaters in history.");
         }

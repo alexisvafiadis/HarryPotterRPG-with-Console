@@ -27,9 +27,10 @@ public class ItemSpellTest {
     void setUp() {
         game = new Game();
         wizard = game.getPlayer();
-        wizard.setHouse(House.GRYFFINDOR);
+        wizard.setDefaultAttributes();
         wizard.spawn();
         enemy = new Troll(game);
+        enemy.spawn();
         Level level = new Level1(game);
         level.initialize();
         battle = new Battle(game, level, wizard, enemy);
@@ -39,7 +40,7 @@ public class ItemSpellTest {
 
     @Test
     void canSpellWork() {
-        double previousHP = wizard.getHP();
+        double previousHP = enemy.getHP();
         boolean castSuccessful = false;
         //Checking a lot of times because of possible failures due to accuracy etc
         for (int i = 0 ; i < 100 ; i++) {
@@ -49,6 +50,6 @@ public class ItemSpellTest {
             }
         }
         assertTrue(castSuccessful, "The wingardium leviosa spell cannot be cast.");
-        assertTrue(wizard.getHP() < previousHP, "The wingardium leviosa spell doesn't deal any damage.");
+        assertTrue(enemy.getHP() < previousHP, "The wingardium leviosa spell doesn't deal any damage.");
     }
 }

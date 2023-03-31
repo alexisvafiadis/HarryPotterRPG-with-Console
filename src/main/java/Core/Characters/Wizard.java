@@ -2,6 +2,8 @@ package Core.Characters;
 
 import Core.Characters.Characteristics.House;
 import Core.Characters.Characteristics.Pet;
+import Core.Items.WandCore;
+import Core.Items.Wood;
 import Core.Magic.EffectType;
 import Core.Game.Game;
 import Core.Magic.Potion;
@@ -45,7 +47,7 @@ public class Wizard extends Character{
     }
 
     public double amplifySpellDamage(double damage) {
-        damage = damage * spellDamageMultiplier * house.getSPELL_DAMAGE_MULTIPLIER();
+        damage = damage * spellDamageMultiplier * house.getSPELL_DAMAGE_MULTIPLIER() * wand.getCore().getSPELL_DAMAGE_MULTIPLIER() * wand.getWood().getSPELL_DAMAGE_MULTIPLIER();
         return damage;
     }
 
@@ -139,7 +141,7 @@ public class Wizard extends Character{
     }
 
     public double getAccuracy() {
-        return this.accuracy * house.getACCURACY_MULTIPLIER();
+        return this.accuracy * house.getACCURACY_MULTIPLIER() * wand.getCore().getACCURACY_MULTIPLIER() * wand.getWood().getACCURACY_MULTIPLIER();
     }
 
     public void consumePotion(Potion potion) {
@@ -164,5 +166,13 @@ public class Wizard extends Character{
 
     public void setAgainstDeathEaters(boolean againstDeathEaters) {
         this.againstDeathEaters = againstDeathEaters;
+    }
+
+    //Function to create the Wizard class easily and without bugs in tests
+    public void setDefaultAttributes() {
+        setHouse(House.GRYFFINDOR);
+        setName("Player");
+        setPet(Pet.CAT);
+        setWand(new Wand(WandCore.AFRICAN_MERMAID_HAIR, Wood.REDWOOD, 1, this));
     }
 }

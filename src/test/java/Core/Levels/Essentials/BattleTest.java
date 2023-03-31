@@ -22,7 +22,7 @@ class BattleTest {
     void setUp() {
         game = new Game();
         wizard = game.getPlayer();
-        wizard.setHouse(House.GRYFFINDOR);
+        wizard.setDefaultAttributes();
         wizard.spawn();
         enemy = new Troll(game);
         enemy.spawn();

@@ -6,6 +6,7 @@ import Core.Levels.Essentials.DoloresUmbridgeBattle;
 import Core.Magic.Spells.Reducto;
 
 public class Level5 extends Level{
+    private DoloresUmbridge doloresUmbridge;
 
     public Level5(Game game) {
         super(game, "The Order of the Phoenix","Great Hall", 5, false);
@@ -17,7 +18,7 @@ public class Level5 extends Level{
     public void start() {
         player.spawn();
         super.start();
-        DoloresUmbridge doloresUmbridge = new DoloresUmbridge(game);
+        doloresUmbridge = new DoloresUmbridge(game);
         doloresUmbridge.spawn();
         new DoloresUmbridgeBattle(game, this, player, doloresUmbridge).start();
         if (!doloresUmbridge.isDistracted()) {
@@ -39,9 +40,9 @@ public class Level5 extends Level{
         display.congratulate("Thanks to you, the fireworks are now ready");
         display.displayInfo("Let the party begin!");
         display.displayInfo("20 minutes later...");
-        display.displayQuote("Dolores Umbridge", "Ok, enough now! It's actually the perfect situation to teach you all a new spell.");
+        display.displayQuote(doloresUmbridge, "Ok, enough now! It's actually the perfect situation to teach you all a new spell.");
         display.displayInfo("Dolores Umbridge casts a spell to destroy the firework machine.. The party is over");
-        display.displayQuote("Dolores Umbridge","This spell is called Reducto and it is very useful, especially in combat.");
+        display.displayQuote(doloresUmbridge,"This spell is called Reducto and it is very useful, especially in combat.");
         (new Reducto(game, player)).teach(player);
     }
 

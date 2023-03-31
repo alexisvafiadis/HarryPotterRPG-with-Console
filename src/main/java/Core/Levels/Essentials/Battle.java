@@ -253,7 +253,7 @@ public class Battle {
 
     public void displayBattleStartMessage() {
         if (enemy.getCustomBattleStartMessage() != null) {
-            display.displayQuote(enemy.getName(), enemy.getCustomBattleStartMessage());
+            display.displayQuote(enemy, enemy.getCustomBattleStartMessage());
         }
         display.displayInfo("You have started a battle against " + enemy.getName());
     }

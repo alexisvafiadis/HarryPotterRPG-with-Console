@@ -22,7 +22,7 @@ class EnemyWizardTest {
     void setUp() {
         game = new Game();
         player = game.getPlayer();
-        player.setHouse(House.GRYFFINDOR);
+        player.setDefaultAttributes();
         player.spawn();
         enemyWizards = new ArrayList<>();
         enemyWizards.add(new DeathEater(game, "Test", 100, 1, 1, 5, ""));
