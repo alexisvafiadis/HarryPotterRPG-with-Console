@@ -25,6 +25,8 @@ public class Level6 extends Level{
             DeathEater malfoy = new DeathEater(game, "Lucius Malfoy", 125, 0.9, 1.85, 3.3, "My loyalty lies with the Dark Lord.");
             malfoy.spawn();
             startBattle(malfoy);
+            display.displayInfo("You are able to rest for a little and gain back some health...");
+            player.heal(60);
             DeathEater yaxley = new DeathEater(game, "Corban Yaxley", 190, 0.7, 1, 4.7, "I serve the Dark Lord and nothing else. You will not break through my defense.");
             yaxley.spawn();
             startBattle(yaxley);
@@ -39,6 +41,8 @@ public class Level6 extends Level{
             Student neville = new Student(game, "Neville Longbottom", 140,1.05,1.05,2.9, "I'm not the same boy you used to know. I've learned a few things since then.");
             neville.spawn();
             startBattle(neville);
+            display.displayInfo("You are able to rest for a little bit and gain back some health...");
+            player.heal(60);
             Student ginny = new Student(game, "Ginny Weasley", 100, 0.85, 1.2, 3.4, "I may be small, but I can pack a punch.");
             ginny.spawn();
             startBattle(ginny);
@@ -52,7 +56,7 @@ public class Level6 extends Level{
     @Override
     public void conclude() {
         if (player.isAgainstDeathEaters()) {
-            display.congratulate("Well done, by winning those intense battles, you have helped Hogwarts defeat the Death Eaters and ensure the safety of Hogwarts.");
+            display.congratulate("Good job, by winning those intense battles, you have helped Hogwarts defeat the Death Eaters and ensure the safety of Hogwarts.");
             display.displayInfo("You have proved yourself of worthy defender of Hogwarts.");
             display.displayInfo("However, with Voldemort still alive somewhere, the hardest task still has to be done. You should prepare yourself.");
         }

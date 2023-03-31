@@ -23,8 +23,8 @@ public class Level1 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have killed the Troll!");
-        display.announceReward("You have earned the right to learn an offensive spell that may come in handy in the future");
+        display.congratulate("You made great use of your spells.");
+        display.announceReward("You have earned the right to learn an offensive spell that may come in handy in the future.");
         (new Stupefy(game, player)).teach(player);
     }
 

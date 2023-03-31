@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Display {
     private Game game;
-    private int DEFAULT_WRITING_DELAY = 15;
+    private int DEFAULT_WRITING_DELAY = 26;
     private final int FAST_WRITING_DELAY = 5;
-    private final int SLOW_WRITING_DELAY = 30;
+    private final int SLOW_WRITING_DELAY = 40;
 
     public Display(Game game) {
         this.game = game;

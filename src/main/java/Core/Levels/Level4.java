@@ -46,7 +46,7 @@ public class Level4 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have gotten away!");
+        display.congratulate("Good job, you have gotten away!");
         teachFunnySpells();
     }
 

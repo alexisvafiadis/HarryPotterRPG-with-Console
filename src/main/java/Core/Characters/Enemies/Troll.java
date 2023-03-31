@@ -7,7 +7,8 @@ import Core.Game.Game;
 
 public class Troll extends Boss {
     public Troll(Game game) {
-        super(game, 100, 16, 1, Weapon.CLUB,'T',1,2);
+        super(game, 110, 16, 1, Weapon.CLUB,'T',1,2);
+        setCustomBattleStartMessage("Grrrrr... Stomp! Stomp!");
     }
 
     public void act() {

@@ -24,7 +24,7 @@ public class Level2 extends Level{
 
     @Override
     public void conclude() {
-        display.congratulate("Well done, you have killed the Basilisk!");
+        display.congratulate("Good job, that battle was impressive.");
         display.displayInfo("Considering the threats you've been facing, it would be a good idea to teach you another offensive spell : Petrificus Totalus.");
         (new PetrificusTotalus(game, player)).teach(player);
         if (!player.knowsSpell("Accio")) {

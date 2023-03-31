@@ -2,7 +2,7 @@ package Core.Items;
 
 public enum Weapon {
     CLUB(6),
-    SWORD_OF_GRYFFINDOR(25),
+    SWORD_OF_GRYFFINDOR(26),
     BASILISK_FANG(25);
 
     double attackDamage;

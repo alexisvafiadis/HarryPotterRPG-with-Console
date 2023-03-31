@@ -31,11 +31,10 @@ public abstract class Level {
     protected boolean levelCompleted;
 
     //Constants
-    protected final double HP_UPGRADE = 20;
-    protected final double SPELL_DAMAGE_UPGRADE = 0.2;
-    protected final double DAMAGE_RESISTANCE_UPGRADE = 0.2;
-    protected final double ACCURACY_UPGRADE = 0.25;
-
+    protected final double HP_UPGRADE = 35;
+    protected final double SPELL_DAMAGE_UPGRADE = 0.27;
+    protected final double DAMAGE_RESISTANCE_UPGRADE = 0.27;
+    protected final double ACCURACY_UPGRADE = 0.32;
 
     public Level(Game game, String name, String place, int number, boolean outdoors) {
         this.game = game;

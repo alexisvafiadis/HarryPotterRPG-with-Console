@@ -7,6 +7,7 @@ public class Dementor extends AbstractEnemy {
 
     public Dementor(Game game) {
         super(game, 30, 35, 1,null,'D',1,1);
+        setCustomBattleStartMessage("Whoooosh... Eerie moaning...");
     }
 
     public void act() {

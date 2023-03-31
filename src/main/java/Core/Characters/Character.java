@@ -121,7 +121,12 @@ public abstract class Character {
     }
 
     public void heal(double hp_restore) {
-        HP = HP + hp_restore;
+        if ((maxHP - HP) < hp_restore) {
+            HP = maxHP;
+        }
+        else {
+            HP = HP + hp_restore;
+        }
     }
 
     public boolean isAlive() {
