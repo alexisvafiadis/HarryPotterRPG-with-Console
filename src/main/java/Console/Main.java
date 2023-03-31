@@ -1,6 +1,6 @@
 package Console;
 
-import Game.Game;
+import Core.Game.Game;
 
 public class Main {
 

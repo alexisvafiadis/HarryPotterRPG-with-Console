@@ -1,6 +1,6 @@
 package Console;
 
-import Game.Game;
+import Core.Game.Game;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;

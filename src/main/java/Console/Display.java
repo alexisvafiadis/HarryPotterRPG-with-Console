@@ -1,10 +1,9 @@
 package Console;
 
-import Characters.Character;
-import Game.Game;
+import Core.Characters.Character;
+import Core.Game.Game;
 
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Display {
