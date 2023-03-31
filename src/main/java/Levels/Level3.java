@@ -22,7 +22,7 @@ public class Level3 extends Level{
         while (!expectoPatronumUsed) {
             Dementor dementor = new Dementor(game);
             dementor.spawn();
-            new Battle(game, this, player, dementor);
+            startBattle(dementor);
         }
         finish();
     }

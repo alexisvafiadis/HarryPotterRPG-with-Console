@@ -44,9 +44,11 @@ public class Battle {
         this.enemy = enemy;
         roundNumber = 1;
         spellInputs = getSpellInputs();
-        displayFightStartMessage();
+    }
 
-        while (getFightContinueCondition()) {
+    public void start() {
+        displayBattleStartMessage();
+        while (getBattleContinueCondition()) {
             display.displayHP(player, true);
             display.displayHP(enemy, false);
             askPlayerForAction();
@@ -54,10 +56,10 @@ public class Battle {
             finishRound();
         }
         if (!player.isAlive()) {
-            level.start();
+            level.fail();
         }
         else {
-            displayFightWinMessage();
+            displayBattleWinMessage();
         }
     }
 
@@ -100,9 +102,16 @@ public class Battle {
         }
     }
 
-    public boolean getFightContinueCondition() {
-        boolean bothFightersAlive = (player.isAlive() && enemy.isAlive());
-        return bothFightersAlive;
+    public boolean getBattleContinueCondition() {
+        return (!getBattleLossCondition() && !getBattleWinCondition());
+    }
+
+    public boolean getBattleLossCondition() {
+        return (!player.isAlive());
+    }
+
+    public boolean getBattleWinCondition() {
+        return (!enemy.isAlive());
     }
 
     public void enemyAttack() {
@@ -243,14 +252,14 @@ public class Battle {
         return potionTypes[idx];
     }
 
-    public void displayFightStartMessage() {
+    public void displayBattleStartMessage() {
         if (enemy.getCustomBattleStartMessage() != null) {
             display.displayQuote(enemy.getName(), enemy.getCustomBattleStartMessage());
         }
         display.displayInfo("You have started a battle against " + enemy.getName());
     }
 
-    public void displayFightWinMessage() {
+    public void displayBattleWinMessage() {
         display.announceSuccess("Well done, you have killed " + enemy.getName());
     }
 }

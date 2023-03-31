@@ -1,11 +1,13 @@
 package Levels;
 
+import Characters.AbstractEnemy;
 import Characters.Wizard;
 import Console.Display;
 import Console.InputParser;
 import Items.Item;
 import Items.ItemType;
 import Game.Game;
+import Levels.Essentials.Battle;
 import Magic.Spell;
 import Magic.Spells.WingardiumLeviosa;
 
@@ -180,5 +182,9 @@ public abstract class Level {
         } else {
             display.announceFail("You cannot move there, sorry. Choose another direction");
         }
+    }
+
+    public void startBattle(AbstractEnemy enemy) {
+        new Battle(game, this, player, enemy).start();
     }
 }

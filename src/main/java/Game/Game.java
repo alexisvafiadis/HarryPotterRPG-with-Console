@@ -16,15 +16,21 @@ public class Game {
     private Display display;
     private InputParser inputParser;
     private Wizard player;
-    Level currentLevel;
-    final boolean DEBUG_MODE = true;
+    private Level currentLevel;
+    private final boolean DEBUG_MODE = true;
 
     public Game() {
         display = new Display(this);
         inputParser = new InputParser(this, new Scanner(System.in));
         player = new Wizard(this);
+    }
+
+    public void start() {
         introduce(player);
-        setLevel(new Level1(this));
+        if (isInDebugMode()) {
+            teachAllSpells();
+        }
+        setLevel(new Level5(this));
         setLevel(new Level2(this));
         setLevel(new Level3(this));
         setLevel(new Level4(this));
@@ -32,20 +38,7 @@ public class Game {
         setLevel(new Level6(this));
         setLevel(new Level7(this));
 
-        if (!isInDebugMode()) {
-            player.learnSpell(new Accio(this, player));
-            player.learnSpell(new WingardiumLeviosa(this, player));
-            player.learnSpell(new Lumos(this, player));
-            player.learnSpell(new Reducto(this, player));
-            player.learnSpell(new Confundus(this, player));
-            player.learnSpell(new Expelliarmus(this, player));
-            player.learnSpell(new Protego(this, player));
-            player.learnSpell(new Rictumsempra(this, player));
-            player.learnSpell(new Sectumsempra(this, player));
-            player.learnSpell(new Tarantallegra(this, player));
-            player.learnSpell(new Stupefy(this, player));
-            player.learnSpell(new SlugulusErecto(this, player));
-        }
+
         finish();
     }
 
@@ -105,5 +98,20 @@ public class Game {
 
     public void finish() {
         display.congratulate("You have finished the game, congratulations!");
+    }
+
+    public void teachAllSpells() {
+        player.learnSpell(new Accio(this, player));
+        player.learnSpell(new WingardiumLeviosa(this, player));
+        player.learnSpell(new Lumos(this, player));
+        player.learnSpell(new Reducto(this, player));
+        player.learnSpell(new Confundus(this, player));
+        player.learnSpell(new Expelliarmus(this, player));
+        player.learnSpell(new Protego(this, player));
+        player.learnSpell(new Rictumsempra(this, player));
+        player.learnSpell(new Sectumsempra(this, player));
+        player.learnSpell(new Tarantallegra(this, player));
+        player.learnSpell(new Stupefy(this, player));
+        player.learnSpell(new SlugulusErecto(this, player));
     }
 }

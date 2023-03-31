@@ -21,7 +21,7 @@ public class Level5 extends Level{
         super.start();
         DoloresUmbridge doloresUmbridge = new DoloresUmbridge(game);
         doloresUmbridge.spawn();
-        new DoloresUmbridgeBattle(game, this, player, doloresUmbridge);
+        new DoloresUmbridgeBattle(game, this, player, doloresUmbridge).start();
         if (!doloresUmbridge.isDistracted()) {
             display.announceFail("You weren't able to distract Dolores Umbridge for enough time.");
             fail();
@@ -29,6 +29,9 @@ public class Level5 extends Level{
         else if (!doloresUmbridge.isAlive()) {
             display.announceFail("You have hurt Dolores Umbridge with a spell and get expelled from Hogwarts.");
             fail();
+        }
+        else {
+            display.announceSuccess("Well done, you have distracted Dolores Umbridge for enough time!");
         }
         finish();
     }

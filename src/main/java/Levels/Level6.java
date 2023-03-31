@@ -26,30 +26,30 @@ public class Level6 extends Level{
         if (player.isAgainstDeathEaters())  {
             DeathEater alecto = new DeathEater(game, "Alecto Carrow", 110, 1, 1.6, 4.2, "I'll make sure you regret ever crossing the Dark Lord.");
             alecto.spawn();
-            new Battle(game, this, player, alecto);
+            startBattle(alecto);
             DeathEater malfoy = new DeathEater(game, "Lucius Malfoy", 125, 0.9, 1.85, 3.3, "My loyalty lies with the Dark Lord.");
             malfoy.spawn();
-            new Battle(game, this, player, malfoy);
+            startBattle(malfoy);
             DeathEater yaxley = new DeathEater(game, "Corban Yaxley", 190, 0.7, 1, 4.7, "I serve the Dark Lord and nothing else. You will not break through my defense.");
             yaxley.spawn();
-            new Battle(game, this, player, yaxley);
+            startBattle(yaxley);
             DeathEater dolohov = new DeathEater(game, "Antonin Dolohov", 130, 0.85, 2.15, 3.8, "I'll take pleasure in taking you down!");
             dolohov.spawn();
-            new Battle(game, this, player, dolohov);
+            startBattle(dolohov);
         }
         else {
             Student cho = new Student(game, "Cho Chang", 90, 1, 1, 4.4, "I won't let you hurt my friends or my school.");
             cho.spawn();
-            new Battle(game,this,player,cho);
+            startBattle(cho);
             Student neville = new Student(game, "Neville Longbottom", 140,1.05,1.05,2.9, "I'm not the same boy you used to know. I've learned a few things since then.");
             neville.spawn();
-            new Battle(game,this,player,neville);
+            startBattle(neville);
             Student ginny = new Student(game, "Ginny Weasley", 100, 0.85, 1.2, 3.4, "I may be small, but I can pack a punch.");
             ginny.spawn();
-            new Battle(game,this,player,ginny);
+            startBattle(ginny);
             Student cedric = new Student(game, "Cedric Diggory", 155, 0.8, 1.45, 4, "Let's make this a fair fight, shall we?");
             cedric.spawn();
-            new Battle(game,this,player,cedric);
+            startBattle(cedric);
         }
         finish();
     }

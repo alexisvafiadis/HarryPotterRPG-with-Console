@@ -21,7 +21,7 @@ public class Level2 extends Level{
         super.start();
         Basilisk basilisk = new Basilisk(game);
         basilisk.spawn();
-        new Battle(game, this, player, basilisk);
+        startBattle(basilisk);
         finish();
     }
 

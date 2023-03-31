@@ -14,17 +14,21 @@ public class DoloresUmbridgeBattle extends Battle {
     }
 
     @Override
-    public boolean getFightContinueCondition() {
-        return (player.isAlive() && enemy.isAlive() && ((DoloresUmbridge) enemy).isDistracted() && roundNumber < NB_OF_ROUNDS_BEFORE_WIN);
+    public boolean getBattleLossCondition() {
+        return (super.getBattleLossCondition() || !enemy.isAlive() || !(((DoloresUmbridge) enemy).isDistracted()));
     }
 
     @Override
-    public void displayFightStartMessage() {
+    public boolean getBattleWinCondition() {
+        return (roundNumber > NB_OF_ROUNDS_BEFORE_WIN);
+    }
+
+    @Override
+    public void displayBattleStartMessage() {
         display.displayInfo("Choose the right spells!");
     }
 
     @Override
-    public void displayFightWinMessage() {
-        display.announceSuccess("Well done, you have distracted Dolores Umbridge for enough time!");
+    public void displayBattleWinMessage() {
     }
 }

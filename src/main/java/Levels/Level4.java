@@ -36,7 +36,7 @@ public class Level4 extends Level{
             askForAction();
         }
         if (seenByVoldemort()) {
-            new Battle(game, this, player, voldemort);
+            startBattle(voldemort);
         }
         else {
             inputParser.waitForYes("Visualize your room in Hogwarts in your head, then touch the Portkey.");
