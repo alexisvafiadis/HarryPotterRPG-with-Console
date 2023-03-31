@@ -14,7 +14,7 @@ public class Game {
     private InputParser inputParser;
     private Wizard player;
     private Level currentLevel;
-    private final boolean DEBUG_MODE = true;
+    private final boolean DEBUG_MODE = false;
 
     public Game() {
         display = new Display(this);
@@ -27,6 +27,10 @@ public class Game {
         if (isInDebugMode()) {
             teachAllSpells();
         }
+        setLevel(new Level1(this));
+        setLevel(new Level2(this));
+        setLevel(new Level3(this));
+        setLevel(new Level4(this));
         setLevel(new Level5(this));
         setLevel(new Level6(this));
         setLevel(new Level7(this));
